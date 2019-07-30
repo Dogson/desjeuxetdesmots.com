@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Helmet} from "react-helmet";
 import {DebounceInput} from 'react-debounce-input';
 import cx from "classnames";
 import styles from "./homepage.module.scss";
@@ -10,6 +11,7 @@ import {ACTIONS_GAMES} from "../actions/gamesActions";
 import {FaSearch, FaGamepad} from "react-icons/fa";
 import {withRouter} from 'react-router-dom'
 import queryString from "query-string";
+
 
 class Homepage extends Component {
     constructor(props) {
@@ -64,6 +66,9 @@ class Homepage extends Component {
 
     render() {
         return <PageLayout>
+            <Helmet>
+                <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'gamer juice for my gamer mouth'}</title>
+            </Helmet>
             <div className={styles.subtitle}>Soif de bons <strong>médias vidéoludiques ?</strong></div>
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
