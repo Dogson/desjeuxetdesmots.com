@@ -65,9 +65,12 @@ export const getGamesBySearch = (search) => {
                 return {
                     ...game,
                     cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
-                    releaseDate: moment.unix(Math.min(...game.release_dates && game.release_dates.map((release_date) => {
-                        return release_date.date;
-                    }))).format('YYYY')
+                    releaseDate: game.release_dates && moment.unix(Math.min(...game.release_dates.map((release_date) => {
+                            return release_date.date;
+                        }).filter((date) => {
+                            return !!date;
+                        })
+                    )).format('YYYY')
                 }
             })
         })

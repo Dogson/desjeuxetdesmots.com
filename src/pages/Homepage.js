@@ -84,12 +84,14 @@ const GameGrid = ({games, isLoading}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
+                console.log(game);
                 return <div className={cx(styles.flipCard, styles.gameCardContainer)} key={game.id}>
                     <div className={styles.flipCardInner}>
                         <div className={styles.flipCardFront}>
                             <img src={game.cover} alt={game.name}/>
                         </div>
                         <div className={styles.flipCardBack}>
+                            <div className={styles.backColor}/>
                             <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}>
                             </div>
                             <div className={styles.title}>
