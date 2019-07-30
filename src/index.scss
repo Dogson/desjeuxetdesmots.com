@@ -1,0 +1,78 @@
+/**
+  GLOBAL VARIABLES
+ */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500");
+@import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
+
+//layout
+$containerWidth: 1000px;
+
+//font weights :
+$weight-light: 300;
+$weight-regular: normal;
+$weight-bold: 500;
+
+//text size
+$size-smaller: 12px;
+$size-small: 15px;
+$size-normal: 18px;
+$size-big: 20px;
+$size-bigger: 24px;
+
+//colors
+$color-dark-1: #2E4052;
+$color-dark-2: #412234;
+$color-bright-1: #BDD9BF;
+$color-bright-2: #FFC857;
+
+//media sizes
+$media-tablet: "screen and (max-width : 1020px)";
+$media-phone: "screen and (max-width : 600px)";
+
+body {
+  margin: 0;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-weight: $weight-light;
+  font-size: $size-normal;
+  background-color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+strong {
+  font-weight: $weight-regular;
+}
+
+.logoFont {
+  font-family: 'Karla', sans-serif;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexSpaceBetween {
+  justify-content: space-between;
+}
+
+.flexCenter {
+  justify-content: center;
+}
+
+.flexAlignCenter {
+  align-items: center;
+}

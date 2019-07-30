@@ -1,0 +1,65 @@
+@import "../index";
+
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  @extend .flexColumn;
+
+  .pageContent {
+    flex: 1;
+    background-color: $color-dark-1;
+  }
+
+  .sidebarContainer {
+    display: none;
+
+    .sidebarButton {
+      position: absolute;
+      left: 17px;
+      top: 17px;
+      z-index: 4;
+      color: $color-bright-1;
+
+      .icon {
+        width: 25px;
+        height: 25px;
+      }
+    }
+
+    .menuNavMobile {
+      @extend .flexColumn;
+      @extend .flexAlignCenter;
+
+      .menuMobileLink {
+        @extend .flexRow;
+        text-transform: uppercase;
+        border-bottom: 1px solid $color-bright-1;
+        font-weight: $weight-light;
+        padding: 15px 50px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+
+        &:hover {
+          color: white;
+          background-color: $color-bright-1;
+        }
+      }
+
+      .menuMobileLinkActive {
+        color: white;
+        background-color: $color-bright-1;
+        font-weight: $weight-regular;
+
+      }
+    }
+  }
+}
+
+@media #{$media-phone} {
+  .pageContainer {
+    .sidebarContainer {
+      display: flex;
+    }
+  }
+}

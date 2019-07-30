@@ -1,0 +1,16 @@
+@import "../../index";
+
+.footerContainer {
+  @extend .flexRow;
+  @extend .flexAlignCenter;
+  width: 100%;
+  height: 30px;
+  background-color: $color-dark-1;
+  color: $color-bright-2;
+  padding: 0 30px;
+  box-sizing: border-box;
+
+  .copyrightContainer {
+    font-size: $size-smaller;
+  }
+}
