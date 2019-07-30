@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {IGBD_API} from "../config/apiConfig";
+import moment from "moment";
 
 export const getAllPopularGames = () => {
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
@@ -15,7 +16,7 @@ export const getAllPopularGames = () => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: "fields name, cover.url; sort popularity desc; where themes!= (42) & popularity > 2; limit: 50;"
+        data: "fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & popularity > 2; limit: 50;"
     })
         .then(response => {
             return response.data.filter((game) => {
@@ -23,7 +24,13 @@ export const getAllPopularGames = () => {
             }).map((game) => {
                 return {
                     ...game,
-                    cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://')
+                    cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
+                    releaseDate: game.release_dates && moment.unix(Math.min(...game.release_dates.map((release_date) => {
+                            return release_date.date;
+                        }).filter((date) => {
+                            return !!date;
+                        })
+                    )).format('YYYY')
                 }
             })
         })
@@ -49,7 +56,7 @@ export const getGamesBySearch = (search) => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields name, cover.url; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 2; limit: 50;`
+        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 2; limit: 50;`
     })
         .then(response => {
             return response.data.filter((game) => {
@@ -57,7 +64,10 @@ export const getGamesBySearch = (search) => {
             }).map((game) => {
                 return {
                     ...game,
-                    cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://')
+                    cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
+                    releaseDate: moment.unix(Math.min(...game.release_dates && game.release_dates.map((release_date) => {
+                        return release_date.date;
+                    }))).format('YYYY')
                 }
             })
         })

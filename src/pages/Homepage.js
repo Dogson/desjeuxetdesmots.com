@@ -36,7 +36,6 @@ class Homepage extends Component {
         this.setState({isLoading: true});
         this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: value});
         getGamesBySearch(value).then((result) => {
-            console.log(value);
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
             this.setState({isLoading: false})
         });
@@ -55,7 +54,7 @@ class Homepage extends Component {
     render() {
         return <PageLayout>
             <div className={styles.subtitle}>Soif de bons <strong>médias vidéoludiques ?</strong></div>
-            <div className={styles.inputContainer}>
+            <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
                     className={styles.input}
@@ -63,7 +62,9 @@ class Homepage extends Component {
                     debounceTimeout={300}
                     onChange={(e) => this._handleChange(e.target.value)}
                     onKeyPress={this._handleKeyPress}
-                    placeholder="Rechercher un jeu"/>
+                    placeholder="Rechercher un jeu"
+                    onFocus={() => this.setState({inputFocused: true})}
+                    onBlur={() => this.setState({inputFocused: false})}/>
             </div>
             <GameGrid games={this.props.games} isLoading={this.state.isLoading}/>
             <Loading isLoading={this.state.isLoading}/>
@@ -83,8 +84,22 @@ const GameGrid = ({games, isLoading}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={styles.gameCardContainer} key={game.id}>
-                    <img src={game.cover} alt={game.name}/>
+                return <div className={cx(styles.flipCard, styles.gameCardContainer)} key={game.id}>
+                    <div className={styles.flipCardInner}>
+                        <div className={styles.flipCardFront}>
+                            <img src={game.cover} alt={game.name}/>
+                        </div>
+                        <div className={styles.flipCardBack}>
+                            <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}>
+                            </div>
+                            <div className={styles.title}>
+                                {game.name}
+                            </div>
+                            <div className={styles.releaseDateContainer}>
+                                {game.releaseDate}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             })
         }
