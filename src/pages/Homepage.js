@@ -8,6 +8,8 @@ import {getAllPopularGames, getGamesBySearch} from "../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../actions/gamesActions";
 import {FaSearch, FaGamepad} from "react-icons/fa";
+import {withRouter} from 'react-router-dom'
+import queryString from "query-string";
 
 class Homepage extends Component {
     constructor(props) {
@@ -32,13 +34,22 @@ class Homepage extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        const nextValues = queryString.parse(nextProps.location.search);
+        const currentValues = queryString.parse(this.props.location.search);
+        if (nextValues.q !== currentValues.q) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
+
+            getGamesBySearch(nextValues.q).then((result) => {
+                this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
+                this.setState({isLoading: false})
+            });
+        }
+    }
+
     _handleChange(value) {
         this.setState({isLoading: true});
-        this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: value});
-        getGamesBySearch(value).then((result) => {
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-            this.setState({isLoading: false})
-        });
+        this.props.history.push(`/?q=${value}`);
     }
 
     _handleKeyPress(e) {
@@ -57,6 +68,7 @@ class Homepage extends Component {
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
+                    value={this.props.searchInput}
                     className={styles.input}
                     minLength={2}
                     debounceTimeout={300}
@@ -84,7 +96,6 @@ const GameGrid = ({games, isLoading}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                console.log(game);
                 return <div className={cx(styles.flipCard, styles.gameCardContainer)} key={game.id}>
                     <div className={styles.flipCardInner}>
                         <div className={styles.flipCardFront}>
@@ -134,4 +145,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps)(Homepage);
+export default withRouter(connect(mapStateToProps)(Homepage));

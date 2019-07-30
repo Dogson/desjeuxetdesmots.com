@@ -16,7 +16,7 @@ export const getAllPopularGames = () => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: "fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & popularity > 2; limit: 50;"
+        data: "fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & popularity > 2; limit: 49;"
     })
         .then(response => {
             return response.data.filter((game) => {
@@ -56,7 +56,7 @@ export const getGamesBySearch = (search) => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 2; limit: 50;`
+        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 2; limit: 49;`
     })
         .then(response => {
             return response.data.filter((game) => {

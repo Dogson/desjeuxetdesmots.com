@@ -46,15 +46,15 @@
 }
 
 .gamesGridContainer {
-  //width: $containerWidth;
   @extend .flexRow;
   @extend .flexCenter;
   flex-wrap: wrap;
+  max-width: 1500px;
 
   .gameCardContainer {
     margin: 10px;
-    width: 200px;
-    height: 267px;
+    width: 180px;
+    height: 240px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     opacity: 0.85;
