@@ -1,12 +1,12 @@
 import axios from 'axios';
-import {IGBD_API} from "../config/apiConfig";
+import {IGDB_API} from "../config/apiConfig";
 import moment from "moment";
 
 export const getAllPopularGames = () => {
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-    let key = IGBD_API.key;
+    let key = IGDB_API.key;
     let endpointName = "games";
-    let url = `${proxyUrl}${IGBD_API.url}${endpointName}`;
+    let url = `${proxyUrl}${IGDB_API.url}${endpointName}`;
 
     return axios({
         url: url,
@@ -44,9 +44,9 @@ export const getGamesBySearch = (search) => {
         return getAllPopularGames();
     }
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-    let key = IGBD_API.key;
+    let key = IGDB_API.key;
     let endpointName = "games";
-    let url = `${proxyUrl}${IGBD_API.url}${endpointName}`;
+    let url = `${proxyUrl}${IGDB_API.url}${endpointName}`;
 
     return axios({
         url: url,
