@@ -35,7 +35,6 @@ class Homepage extends Component {
     _handleChange(value) {
         this.setState({isLoading: true});
         this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: value});
-        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: []});
         getGamesBySearch(value).then((result) => {
             console.log(value);
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
@@ -66,15 +65,21 @@ class Homepage extends Component {
                     onKeyPress={this._handleKeyPress}
                     placeholder="Rechercher un jeu"/>
             </div>
-            <GameGrid games={this.props.games}/>
+            <GameGrid games={this.props.games} isLoading={this.state.isLoading}/>
             <Loading isLoading={this.state.isLoading}/>
         </PageLayout>
     }
 }
 
-const GameGrid = ({games}) => {
-    if (!games)
+const GameGrid = ({games, isLoading}) => {
+    if (!games || isLoading)
         return null;
+    if (games.length === 0) {
+        return <div className={styles.noResultContainer}>
+            <div><strong>Aucun jeu ne correspond à votre recherche.</strong></div>
+            <div>Une typo peut-être ?</div>
+        </div>
+    }
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
