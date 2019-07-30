@@ -1,3 +1,3 @@
-export const igbdConfig = {
+export const igbdApi = {
     key: "your-key"
 };
