@@ -1,0 +1,28 @@
+@import "../index";
+
+.gamesGridContainer {
+  //width: $containerWidth;
+  @extend .flexRow;
+  @extend .flexCenter;
+  flex-wrap: wrap;
+
+  .gameCardContainer {
+    margin: 10px;
+    cursor: pointer;
+
+    img {
+      transition: all 0.1s ease-in-out;
+      opacity: 0.85;
+    }
+
+    &:hover {
+
+      img {
+        box-shadow: 4px 4px 4px rgba(black, 0.5);
+        transition: all 0.15s ease-out;
+        opacity: 1;
+        transform: scale(1.06);
+      }
+    }
+  }
+}

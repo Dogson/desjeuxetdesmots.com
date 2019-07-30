@@ -4,7 +4,7 @@ import Footer from "../components/footer/footer";
 import styles from "./pageLayout.module.scss";
 import Sidebar from "react-sidebar";
 import {FaBars} from "react-icons/fa";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 export default ({children}) => (
     <div className={styles.pageContainer}>
@@ -56,8 +56,7 @@ const MenuNavMobile = () => {
 
 const MenuMobileLink = (props) => {
     const {route, name} = props;
-    return <Link to={route} className={styles.menuMobileLink} activeClassName={styles.menuMobileLinkActive}
-                 partiallyActive={route !== "/"}>
+    return <NavLink to={route} className={styles.menuMobileLink} activeClassName={styles.menuMobileLinkActive}>
         {name}
-    </Link>
+    </NavLink>
 };
