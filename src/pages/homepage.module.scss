@@ -121,6 +121,7 @@
 
     &:hover {
       transition: all 0.15s ease-out;
+      transform: scale(1.1);
       opacity: 1;
 
       .flipCardInner {
