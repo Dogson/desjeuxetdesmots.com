@@ -7,7 +7,7 @@ const querystring = require('querystring');
 const clientId = "YjQ0YWY2MjAwYTU5NDEwYjljOGExOTAyOWJlZjIyZDk6MjMwMTE1ZWFjMmJkNDE2MjkxZTEzNTRiYjk5NTZkNTk=";
 const cosyCornerId = "3WRu0whFXjZoxr8jyy03UN";
 
-process.env.GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/Gwen/Downloads/API Project-8679aea3681c.json";
+// process.env.GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/Gwen/Downloads/API Project-8679aea3681c.json";
 
 function getSpotifyAccessToken() {
     const config = {
@@ -32,42 +32,41 @@ function getSpotifyAccessToken() {
 
 }
 
+function writeCosyCornerEpisodes(token, offset) {
+    const config = {
+        headers: {'Authorization': "Bearer " + token}
+    };
+    return axios.get(
+        `https://api.spotify.com/v1/shows/${cosyCornerId}/episodes?limit=50&offset=${offset}`,
+        config
+    ).then((response) => {
+        if (response.data.items.length <= 0) {
+            return false;
+        }
+        return Promise.all(response.data.items.map((episode) => {
+            return db.collection('cosyCorner').doc(episode.id).set({
+                name: episode.name,
+                description: episode.description,
+                url: episode.external_urls.spotify,
+                image: episode.images && episode.images.length > 0 && episode.images[0].url,
+                releaseDate: episode.release_date
+            }, {merge: true})
+        }))
+            .then(() => {
+                return writeCosyCornerEpisodes(token, offset + 50);
+            });
+    })
+}
+
 exports.getCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) => {
     getSpotifyAccessToken()
         .then((token) => {
-            const config = {
-                headers: {'Authorization': "Bearer " + token}
-            };
-            return axios.get(
-                `https://api.spotify.com/v1/shows/${cosyCornerId}`,
-                config
-            );
+            return writeCosyCornerEpisodes(token, 0);
         })
-        .then((response) => {
-            response.data.episodes.items.forEach((episode) => {
-                db.collection('cosyCorner').doc(episode.id).set({
-                    name: episode.name,
-                    description: episode.description,
-                    url: episode.external_urls.spotify,
-                    image: episode.images && episode.images.length > 0 && episode.images[0].url,
-                    releaseDate: episode.release_date
-                })
-                    .then((result) => {
-                        console.log(result);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-
-                db.collection("cosyCorner").get().then(function(querySnapshot) {
-                    querySnapshot.forEach(function(doc) {
-                        console.log(doc.id, " => ", doc.data());
-                    });
-                });
-            });
-            res.json(response.data.episodes);
-            // return res.json(response.episodes.items.length);
-        }).catch((error) => {
-        console.log(error);
-    });
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 });
