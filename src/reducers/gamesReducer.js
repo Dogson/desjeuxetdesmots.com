@@ -5,7 +5,8 @@ export default (state = {}, action) => {
         case ACTIONS_GAMES.SET_GAMES:
             return {
                 ...state,
-                games: action.payload
+                games: action.payload.games,
+                lastDoc: action.payload.lastDoc
             };
         case ACTIONS_GAMES.SET_SEARCH_INPUT:
             return {

@@ -5,12 +5,13 @@ import cx from "classnames";
 import styles from "./homepage.module.scss";
 import logo from "../assets/images/logo.png";
 import PageLayout from "../layouts/PageLayout";
-import {getAllPopularGames, getGamesBySearch} from "../endpoints/gamesEndpoint";
+import {getAllGames, getGamesBySearch} from "../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../actions/gamesActions";
 import {FaSearch, FaGamepad} from "react-icons/fa";
 import {withRouter} from 'react-router-dom'
 import queryString from "query-string";
+import InfiniteScroll from 'react-infinite-scroller';
 
 
 class Homepage extends Component {
@@ -18,22 +19,12 @@ class Homepage extends Component {
         super(props);
 
         this.state = {
-            isLoading: true
+            hasMoreGames: true
         };
 
         this._handleChange = this._handleChange.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
-    }
-
-    componentDidMount() {
-        if (!this.props.games || this.props.games.length <= 0) {
-            this.setState({isLoading: true});
-            getAllPopularGames().then((result) => {
-                this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-                this.setState({isLoading: false})
-            });
-
-        }
+        this.getMoreGames = this.getMoreGames.bind(this);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -41,28 +32,53 @@ class Homepage extends Component {
         const currentValues = queryString.parse(this.props.location.search);
         if (nextValues.q !== currentValues.q) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-
-            getGamesBySearch(nextValues.q).then((result) => {
-                this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-                this.setState({isLoading: false})
-            });
+            // this.setState({noMoreGames: true});
+            // getGamesBySearch({search: nextValues.q}).then((result) => {
+            //     this.setState({noMoreGames: false});
+            //     this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
+            //     this.setState({isLoading: false})
+            // });
         }
     }
 
     _handleChange(value) {
-        this.setState({isLoading: true});
         this.props.history.push(`/?q=${value}`);
     }
 
     _handleKeyPress(e) {
         if (e.key === 'Enter') {
-            getGamesBySearch(this.props.searchInput).then((result) => {
-                this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-                this.setState({isLoading: false})
-            });
+            // this.setState({noMoreGames: false});
+            // getGamesBySearch({search: this.props.searchInput}).then((result) => {
+            //     this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
+            //     this.setState({isLoading: false})
+            // });
         }
     }
 
+    getMoreGames() {
+        const lastDoc = this.props.lastDoc;
+        const previousGamesArray = this.props.games || [];
+        getAllGames({lastDoc}).then((result) => {
+            if (result.games.length === 0) {
+                this.setState({hasMoreGames: false});
+            }
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}});
+        });
+    }
+
+
+    //render functions
+
+    renderGameGrid() {
+        return <InfiniteScroll
+            pageStart={0}
+            loadMore={this.getMoreGames}
+            hasMore={this.state.hasMoreGames}
+            loader={<div className={styles.loaderContainer} key={0}><Loading isLoading={true}/></div>}
+        >
+            <GameGrid games={this.props.games}/>
+        </InfiniteScroll>
+    };
 
     render() {
         return <PageLayout>
@@ -83,14 +99,13 @@ class Homepage extends Component {
                     onFocus={() => this.setState({inputFocused: true})}
                     onBlur={() => this.setState({inputFocused: false})}/>
             </div>
-            <GameGrid games={this.props.games} isLoading={this.state.isLoading}/>
-            <Loading isLoading={this.state.isLoading}/>
+            {this.renderGameGrid()}
         </PageLayout>
     }
 }
 
-const GameGrid = ({games, isLoading}) => {
-    if (!games || isLoading)
+const GameGrid = ({games}) => {
+    if (!games)
         return null;
     if (games.length === 0) {
         return <div className={styles.noResultContainer}>
@@ -122,9 +137,8 @@ const GameGrid = ({games, isLoading}) => {
                 </div>
             })
         }
-
     </div>
-};
+}
 
 const Loading = ({isLoading}) => {
     if (!isLoading) {
@@ -147,7 +161,8 @@ const Loading = ({isLoading}) => {
 const mapStateToProps = state => {
     return {
         games: state.gamesReducer.games,
-        searchInput: state.gamesReducer.searchInput
+        searchInput: state.gamesReducer.searchInput,
+        lastDoc: state.gamesReducer.lastDoc
     }
 };
 
