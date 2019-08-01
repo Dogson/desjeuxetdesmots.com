@@ -3,6 +3,7 @@ import {IGDB_API} from "../config/apiConfig";
 import moment from "moment";
 
 export const getAllPopularGames = () => {
+    return Promise.resolve([]);
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
     let key = IGDB_API.key;
     let endpointName = "games";
@@ -40,6 +41,7 @@ export const getAllPopularGames = () => {
 };
 
 export const getGamesBySearch = (search) => {
+    // return Promise.resolve([]);
     if (!search || search.length < 1) {
         return getAllPopularGames();
     }
@@ -56,7 +58,7 @@ export const getGamesBySearch = (search) => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 2; limit: 49;`
+        data: `fields name, cover.url, release_dates.date, popularity; sort popularity desc; where themes!= (42) & name~*"${search}"*;limit: 49;`
     })
         .then(response => {
             return response.data.filter((game) => {

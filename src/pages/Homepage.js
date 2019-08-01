@@ -105,6 +105,7 @@ const GameGrid = ({games, isLoading}) => {
                     <div className={styles.flipCardInner}>
                         <div className={styles.flipCardFront}>
                             <img src={game.cover} alt={game.name}/>
+                            <div>{game.popularity}</div>
                         </div>
                         <div className={styles.flipCardBack}>
                             <div className={styles.backColor}/>

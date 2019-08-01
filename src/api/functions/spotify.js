@@ -32,7 +32,7 @@ function getSpotifyAccessToken() {
 
 }
 
-function writeCosyCornerEpisodes(token, offset) {
+function copyAndWriteCosyCornerWithOffset(token, offset) {
     const config = {
         headers: {'Authorization': "Bearer " + token}
     };
@@ -41,7 +41,7 @@ function writeCosyCornerEpisodes(token, offset) {
         config
     ).then((response) => {
         if (response.data.items.length <= 0) {
-            return false;
+            return;
         }
         return Promise.all(response.data.items.map((episode) => {
             return db.collection('cosyCorner').doc(episode.id).set({
@@ -50,18 +50,18 @@ function writeCosyCornerEpisodes(token, offset) {
                 url: episode.external_urls.spotify,
                 image: episode.images && episode.images.length > 0 && episode.images[0].url,
                 releaseDate: episode.release_date
-            }, {merge: true})
+            })
         }))
             .then(() => {
-                return writeCosyCornerEpisodes(token, offset + 50);
+                return copyAndWriteCosyCornerWithOffset(token, offset + 50);
             });
     })
 }
 
-exports.getCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) => {
+exports.copyCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) => {
     getSpotifyAccessToken()
         .then((token) => {
-            return writeCosyCornerEpisodes(token, 0);
+            return copyAndWriteCosyCornerWithOffset(token, 0);
         })
         .then((result) => {
             res.json(result)
