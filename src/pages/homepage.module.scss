@@ -68,7 +68,6 @@
       border-radius: 0;
       background-color: transparent;
       @extend .flexColumn;
-      justify-content: space-evenly;
 
       .backColor {
         background-color: $color-dark-2;
@@ -92,7 +91,7 @@
       }
 
       .title {
-        margin: 20px 5px;
+        margin: 10px 5px;
         color: $color-bright-2;
         opacity: 1;
         position: relative;
@@ -106,6 +105,17 @@
         color: $color-bright-2;
         font-size: $size-small;
         position: relative;
+      }
+
+      .mediasLogosContainer {
+        @extend .flexRow;
+        @extend .flexCenter;
+        position: absolute;
+        bottom: 10px;
+
+        img {
+          width: 35px;
+        }
       }
     }
 
@@ -121,7 +131,8 @@
 
     &:hover {
       transition: all 0.15s ease-out;
-      transform: scale(1.1);
+      //transform: scale(1.1) translateZ(0);
+      backface-visibility: hidden;
       opacity: 1;
 
       .flipCardInner {

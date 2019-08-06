@@ -3,7 +3,6 @@ import {Helmet} from "react-helmet";
 import {DebounceInput} from 'react-debounce-input';
 import cx from "classnames";
 import styles from "./homepage.module.scss";
-import logo from "../assets/images/logo.png";
 import PageLayout from "../layouts/PageLayout";
 import {getGamesBySearch} from "../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
@@ -13,6 +12,9 @@ import {withRouter} from 'react-router-dom'
 import queryString from "query-string";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment";
+
+import logo from "../assets/logos/gamerJuice/logo.png";
+import logoCosyCorner from "../assets/logos/cosyCorner/cosyCornerSmall.png";
 
 
 class Homepage extends Component {
@@ -34,7 +36,7 @@ class Homepage extends Component {
         if (nextValues.q !== currentValues.q) {
             this.setState({lastDoc: null});
             this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload:[]});
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: []});
         }
     }
 
@@ -64,7 +66,10 @@ class Homepage extends Component {
         const previousGamesArray = this.props.games || [];
         getGamesBySearch({lastDoc, search}).then((result) => {
             this.setState({hasMoreGames: result.games.length > 0 && (!search || search.length === 0)});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}});
+            this.props.dispatch({
+                type: ACTIONS_GAMES.SET_GAMES,
+                payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}
+            });
         });
     }
 
@@ -133,6 +138,7 @@ const GameGrid = ({games}) => {
                             <div className={styles.releaseDateContainer}>
                                 {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
                             </div>
+                            <MediaLogos game={game}/>
                         </div>
                     </div>
                 </div>
@@ -140,6 +146,13 @@ const GameGrid = ({games}) => {
         }
     </div>
 }
+
+const MediaLogos = ({game: {cosyCorners}}) => {
+    return <div className={styles.mediasLogosContainer}>
+        {cosyCorners && cosyCorners.length > 0 ?
+            <img src={logoCosyCorner} alt={"Cosy Corner"}/> : null}
+    </div>
+};
 
 const Loading = ({isLoading}) => {
     if (!isLoading) {

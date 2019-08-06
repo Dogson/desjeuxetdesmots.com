@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "./header.module.scss"
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/logos/gamerJuice/logo.png";
 import {NavLink} from "react-router-dom";
 
 const Header = () => (
