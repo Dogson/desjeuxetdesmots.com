@@ -38,7 +38,9 @@
 
 .subtitle {
   color: $color-bright-1;
-  font-size: $size-big;
+  text-transform: lowercase;
+  font-size: $size-small;
+  letter-spacing: 1px;
 
   strong {
     color: $color-bright-2;
@@ -58,71 +60,64 @@
     transition: all 0.1s ease-in-out;
     opacity: 0.85;
     position: relative;
-    backface-visibility: hidden;
     transform: scale(0.90);
 
-    .flipCardFront {
-      border-radius: 0;
+    .hoveredInfo {
+      transition: all 0.2s ease-in-out;
+      opacity: 0;
+      @extend .flexColumn;
+      @extend .flexAlignCenter;
+      padding: 0 5px;
     }
 
-    .flipCardBack {
-      border-radius: 0;
-      background-color: transparent;
-      justify-content: flex-start;
-
-      .backColor {
-        background-color: $color-dark-2;
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        border: 1px solid $color-bright-2;
-      }
-
-      .backImage {
-        opacity: 0.3;
-        background-size: cover;
-        height: 100%;
-        filter: blur(2px);
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-
-      .title {
-        margin: 30px 5px 10px 0;
-        color: $color-bright-2;
-        opacity: 1;
-        position: relative;
-        font-weight: $weight-regular;
-        font-size: $size-normal;
-        text-transform: uppercase;
-      }
-
-      .releaseDateContainer {
-        font-style: italic;
-        color: $color-bright-2;
-        font-size: $size-small;
-        position: relative;
-      }
-
-      .mediasLogosContainer {
-        @extend .flexRow;
-        @extend .flexCenter;
-        position: absolute;
-        bottom: 10px;
-
-        img {
-          width: 35px;
-        }
-      }
+    .backColor {
+      background-color: $color-dark-2;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid $color-bright-2;
+      opacity: 0.8;
     }
 
-    .flipCardInner {
-      transition: all 0.3s ease-in-out;
-      //transform: rotateY(180deg);
+    .backImage {
+      opacity: 0.9;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .title {
+      margin: 30px 5px 10px 0;
+      color: $color-bright-2;
+      opacity: 1;
+      position: relative;
+      font-weight: $weight-regular;
+      font-size: $size-normal;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .releaseDateContainer {
+      font-style: italic;
+      color: $color-bright-2;
+      font-size: $size-small;
+      position: relative;
+    }
+
+    .mediasLogosContainer {
+      @extend .flexRow;
+      @extend .flexCenter;
+      position: absolute;
+      bottom: 10px;
+
+      img {
+        width: 35px;
+      }
     }
 
     img {
@@ -132,12 +127,21 @@
     }
 
     &:hover {
-      transition: all 0.15s ease-out;
+      transition: all 0.2s ease-out;
       transform: scale(1);
       opacity: 1;
 
-      .flipCardInner {
-        transform: rotateY(180deg);
+      .hoveredInfo {
+        opacity: 1;
+        transition: all 0.2s ease-in-out;
+
+        .backImage {
+          opacity: 0.5;
+        }
+      }
+
+      .backImage {
+        filter: blur(0.5px);
       }
     }
   }

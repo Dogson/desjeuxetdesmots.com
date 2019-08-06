@@ -42,8 +42,10 @@ export const getGamesBySearch = ({search, lastDoc}) => {
             return {
                 games: snap.docs.map((doc) => {
                     return doc.data();
+                }).map((game) => {
+                    return {...game, releaseDate: game.releaseDate ? moment.unix(game.releaseDate) : "A venir"}
                 }).sort((gameX, gameY) => {
-                    return gameY.releaseDate - gameX.releaseDate
+                    return gameX.releaseDate === "A venir" ? -1 : gameY.releaseDate === "A venir" ? 2 : gameY.releaseDate - gameX.releaseDate
                 }),
                 lastDoc: snap.docs && snap.docs[snap.docs.length - 1]
             }

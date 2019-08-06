@@ -81,7 +81,7 @@ class Homepage extends Component {
             <Helmet>
                 <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'gamer juice for my gamer mouth'}</title>
             </Helmet>
-            <div className={styles.subtitle}>Soif de bons <strong>médias vidéoludiques ?</strong></div>
+            <div className={styles.subtitle}>Soif de bons médias vidéoludiques ?</div>
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
@@ -111,23 +111,17 @@ const GameGrid = ({games}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={cx(styles.flipCard, styles.gameCardContainer)} key={game.id}>
-                    <div className={styles.flipCardInner}>
-                        <div className={styles.flipCardFront}>
-                            <img src={game.cover} alt={game.name}/>
-                            <div>{game.popularity}</div>
+                return <div className={styles.gameCardContainer} key={game.id}>
+                    <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
+                    <div className={styles.hoveredInfo}>
+                        <div className={styles.backColor}/>
+                        <div className={styles.title}>
+                            {game.name}
                         </div>
-                        <div className={styles.flipCardBack}>
-                            <div className={styles.backColor}/>
-                            <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
-                            <div className={styles.title}>
-                                {game.name}
-                            </div>
-                            <div className={styles.releaseDateContainer}>
-                                {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
-                            </div>
-                            <MediaLogos game={game}/>
+                        <div className={styles.releaseDateContainer}>
+                            {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
                         </div>
+                        <MediaLogos game={game}/>
                     </div>
                 </div>
             })

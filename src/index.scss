@@ -78,10 +78,21 @@ strong {
   align-items: center;
 }
 
-input:focus {
-  outline: none;
-}
+input {
+  background: none;
+  box-shadow: none;
+  padding: 10px 20px;
+  border: 1px solid $color-bright-1;
+  width: 300px;
+  font-size: $size-small;
+  color: $color-bright-1;
+  font-weight: $weight-light;
+  font-family: 'Roboto', sans-serif;
 
+  &:focus {
+    outline: none
+  }
+}
 
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flipCard {
@@ -134,22 +145,12 @@ input:focus {
     span {
       color: $color-bright-1;
       font-size: $size-small;
-      //font-weight: $weight-regular;
       padding: 10px 15px;
       letter-spacing: 1px;
     }
 
     input {
-      background: none;
-      box-shadow: none;
-      padding: 10px 20px;
       border-radius: 25px;
-      border: 1px solid $color-bright-1;
-      width: 300px;
-      font-size: $size-small;
-      color: $color-bright-1;
-      font-weight: $weight-light;
-      font-family: 'Roboto', sans-serif;
     }
 
     &:focus-within {
