@@ -5,13 +5,14 @@ import cx from "classnames";
 import styles from "./homepage.module.scss";
 import logo from "../assets/images/logo.png";
 import PageLayout from "../layouts/PageLayout";
-import {getAllGames, getGamesBySearch} from "../endpoints/gamesEndpoint";
+import {getGamesBySearch} from "../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../actions/gamesActions";
 import {FaSearch, FaGamepad} from "react-icons/fa";
 import {withRouter} from 'react-router-dom'
 import queryString from "query-string";
 import InfiniteScroll from 'react-infinite-scroller';
+import * as moment from "moment";
 
 
 class Homepage extends Component {
@@ -31,13 +32,15 @@ class Homepage extends Component {
         const nextValues = queryString.parse(nextProps.location.search);
         const currentValues = queryString.parse(this.props.location.search);
         if (nextValues.q !== currentValues.q) {
+            this.setState({lastDoc: null});
             this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-            // this.setState({noMoreGames: true});
-            // getGamesBySearch({search: nextValues.q}).then((result) => {
-            //     this.setState({noMoreGames: false});
-            //     this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-            //     this.setState({isLoading: false})
-            // });
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload:[]});
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.searchInput !== this.props.searchInput) {
+            this.setState({hasMoreGames: true});
         }
     }
 
@@ -57,11 +60,10 @@ class Homepage extends Component {
 
     getMoreGames() {
         const lastDoc = this.props.lastDoc;
+        const search = this.props.searchInput;
         const previousGamesArray = this.props.games || [];
-        getAllGames({lastDoc}).then((result) => {
-            if (result.games.length === 0) {
-                this.setState({hasMoreGames: false});
-            }
+        getGamesBySearch({lastDoc, search}).then((result) => {
+            this.setState({hasMoreGames: result.games.length > 0 && (!search || search.length === 0)});
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}});
         });
     }
@@ -110,7 +112,7 @@ const GameGrid = ({games}) => {
     if (games.length === 0) {
         return <div className={styles.noResultContainer}>
             <div><strong>Aucun jeu ne correspond à votre recherche.</strong></div>
-            <div>Une typo peut-être ?</div>
+            <div>Cela signifie probablement qu'aucun média n'a été encore publié à son sujet.</div>
         </div>
     }
     return <div className={styles.gamesGridContainer}>
@@ -124,13 +126,12 @@ const GameGrid = ({games}) => {
                         </div>
                         <div className={styles.flipCardBack}>
                             <div className={styles.backColor}/>
-                            <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}>
-                            </div>
+                            <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
                             <div className={styles.title}>
                                 {game.name}
                             </div>
                             <div className={styles.releaseDateContainer}>
-                                {game.releaseDate}
+                                {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
                             </div>
                         </div>
                     </div>
