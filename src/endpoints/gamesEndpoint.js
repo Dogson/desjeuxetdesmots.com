@@ -19,9 +19,6 @@ const getAllGames = ({lastDoc}) => {
                 }).map((game) => {
                 return {...game, releaseDate: game.releaseDate ? moment.unix(game.releaseDate) : "A venir"}
                 }).sort((gameX, gameY) => {
-                    if (gameX.name === "Star Citizen" || gameY.name === "Star Citizen") {
-                        debugger;
-                    }
                     return gameX.releaseDate === "A venir" ? -1 : gameY.releaseDate === "A venir" ? 2 : gameY.releaseDate - gameX.releaseDate
                 }),
                 lastDoc: snap.docs && snap.docs[snap.docs.length - 1]
