@@ -7,6 +7,10 @@ import PageLayout from "../../layouts/PageLayout";
 
 import styles from "./admin.module.scss";
 import {DebounceInput} from "react-debounce-input";
+import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
+import {PODCASTS} from "../../config/const";
+import * as moment from "../homepage/Homepage";
+import {NavLink} from "react-router-dom";
 
 const firebaseAppAuth = firebase.auth();
 
@@ -62,7 +66,6 @@ class Admin extends Component {
 
     renderLoggingForm() {
         return <form className={styles.formContainer} onSubmit={this._handleSubmit}>
-            <div className={styles.titleContainer}>Panneau d'administration</div>
             <label>
                 <span>email</span>
                 <input type="email" value={this.state.email}
@@ -79,17 +82,40 @@ class Admin extends Component {
     }
 
     renderAdminSection() {
-        return <div>Hello Gwen !</div>;
+        return <SectionGrid title="Podcasts" items={PODCASTS}/>;
     }
 
     render() {
         const {user} = this.props;
-
-        return <PageLayout>
+        // console.log(user);
+        console.log(this.props);
+        return <PageLayout title="Panneau d'administration">
             <Helmet title="Panneau d'administration - gamer juice"/>
-            {user ? this.renderAdminSection() : this.renderLoggingForm()}
+            {user === undefined ? <LoadingSpinner/> : user ? this.renderAdminSection() : this.renderLoggingForm()}
         </PageLayout>
     }
+}
+
+const SectionGrid = ({title, items}) => {
+    return <div className={styles.sectionGridContainer}>
+        <div className={styles.sectionTitle}>{title}</div>
+        <div className={styles.sectionGrid}>
+            {items.map((item) => {
+                return <NavLink className={styles.cardContainer} key={item.dataLabel} to={`/admin/${item.dataLabel}`}>
+                    <div className={styles.backImage} style={{backgroundImage: `url(${item.logo})`}}/>
+                    <div className={styles.hoveredInfo}>
+                        <div className={styles.backColor}/>
+                        <div className={styles.title}>
+                            {item.name}
+                        </div>
+                        <div className={styles.secondaryInfoContainer}>
+                            {item.author}
+                        </div>
+                    </div>
+                </NavLink>
+            })}
+        </div>
+    </div>
 }
 
 export default withFirebaseAuth({

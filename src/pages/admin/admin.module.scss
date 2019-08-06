@@ -5,17 +5,41 @@
   border: 1px solid $color-bright-2;
   padding: 30px 80px;
 
-  .titleContainer {
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: $size-big;
-    color: $color-bright-2;
-    padding: 20px;
-  }
-
   button {
-    //width: 300px;
     margin: 20px 15px;
   }
+}
+
+.sectionGridContainer {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1500px;
+
+  .sectionTitle {
+    text-transform: lowercase;
+    color: $color-bright-2;
+    font-size: $size-bigger;
+    font-weight: $weight-regular;
+    margin: 10px;
+  }
+
+  .sectionGrid {
+    @extend .flexRow;
+    flex: 1;
+
+    .cardContainer {
+      width: 150px;
+      height: 150px;
+
+      .hoveredInfo {
+        justify-content: space-evenly;
+
+        .title {
+          margin: 0;
+        }
+      }
+    }
+
+  }
+
 }

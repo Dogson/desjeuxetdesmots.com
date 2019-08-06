@@ -17,97 +17,9 @@
   flex-wrap: wrap;
   max-width: 1500px;
 
-  .gameCardContainer {
+  .cardContainer {
     width: 200px;
     height: 267px;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
-    opacity: 0.85;
-    position: relative;
-    transform: scale(0.90);
-
-    .hoveredInfo {
-      transition: all 0.2s ease-in-out;
-      opacity: 0;
-      @extend .flexColumn;
-      @extend .flexAlignCenter;
-      padding: 0 5px;
-    }
-
-    .backColor {
-      background-color: $color-dark-2;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      border: 1px solid $color-bright-2;
-      opacity: 0.8;
-    }
-
-    .backImage {
-      opacity: 0.9;
-      background-size: cover;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .title {
-      margin: 30px 5px 10px 0;
-      color: $color-bright-2;
-      opacity: 1;
-      position: relative;
-      font-weight: $weight-regular;
-      font-size: $size-normal;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .releaseDateContainer {
-      font-style: italic;
-      color: $color-bright-2;
-      font-size: $size-small;
-      position: relative;
-    }
-
-    .mediasLogosContainer {
-      @extend .flexRow;
-      @extend .flexCenter;
-      position: absolute;
-      bottom: 10px;
-
-      img {
-        width: 35px;
-      }
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &:hover {
-      transition: all 0.2s ease-out;
-      transform: scale(1);
-      opacity: 1;
-
-      .hoveredInfo {
-        opacity: 1;
-        transition: all 0.2s ease-in-out;
-
-        .backImage {
-          opacity: 0.5;
-        }
-      }
-
-      .backImage {
-        filter: blur(0.5px);
-      }
-    }
   }
 }
 

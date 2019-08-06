@@ -112,14 +112,14 @@ const GameGrid = ({games}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={styles.gameCardContainer} key={game.id}>
+                return <div className={styles.cardContainer} key={game.id}>
                     <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
                     <div className={styles.hoveredInfo}>
                         <div className={styles.backColor}/>
                         <div className={styles.title}>
                             {game.name}
                         </div>
-                        <div className={styles.releaseDateContainer}>
+                        <div className={styles.secondaryInfoContainer}>
                             {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
                         </div>
                         <MediaLogos game={game}/>
