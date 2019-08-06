@@ -52,13 +52,14 @@
   max-width: 1500px;
 
   .gameCardContainer {
-    margin: 10px;
-    width: 180px;
-    height: 240px;
+    width: 200px;
+    height: 267px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     opacity: 0.85;
     position: relative;
+    backface-visibility: hidden;
+    transform: scale(0.90);
 
     .flipCardFront {
       border-radius: 0;
@@ -67,7 +68,7 @@
     .flipCardBack {
       border-radius: 0;
       background-color: transparent;
-      @extend .flexColumn;
+      justify-content: flex-start;
 
       .backColor {
         background-color: $color-dark-2;
@@ -91,7 +92,7 @@
       }
 
       .title {
-        margin: 10px 5px;
+        margin: 30px 5px 10px 0;
         color: $color-bright-2;
         opacity: 1;
         position: relative;
@@ -121,6 +122,7 @@
 
     .flipCardInner {
       transition: all 0.3s ease-in-out;
+      //transform: rotateY(180deg);
     }
 
     img {
@@ -131,7 +133,7 @@
 
     &:hover {
       transition: all 0.15s ease-out;
-      transform: scale(1.096);
+      transform: scale(1);
       opacity: 1;
 
       .flipCardInner {
