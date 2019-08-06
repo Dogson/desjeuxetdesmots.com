@@ -50,7 +50,7 @@ function copyAndWriteCosyCornerWithOffset(token, offset) {
                 url: episode.external_urls.spotify,
                 image: episode.images && episode.images.length > 0 && episode.images[0].url,
                 releaseDate: episode.release_date
-            })
+            }, {merge: true})
         }))
             .then(() => {
                 return copyAndWriteCosyCornerWithOffset(token, offset + 50);

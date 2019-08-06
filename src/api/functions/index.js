@@ -23,7 +23,7 @@ exports.generateCosyCornerGames = functions.firestore
         return parseHelper.getVideoGamesFromString(episode.description, cosyCornerConfig)
             .then((result) => {
                 games = result;
-                return setAllGames(context.params.id, games);
+                return setGamesFromCosyCorner(context.params.id, games);
             })
             .then(() => {
                 return db.collection('cosyCorner').doc(context.params.id).update({
@@ -35,10 +35,10 @@ exports.generateCosyCornerGames = functions.firestore
             });
     });
 
-function setAllGames(episodeId, games) {
+function setGamesFromCosyCorner(episodeId, games) {
     return Promise.all(games.map((game) => {
         return db.collection('games').doc(`${game.id}`).set(
-            game, {merge: true}
+            {...game, lastUpdated: Math.floor(Date.now() / 1000)}, {merge: true}
         )
             .then(() => {
                 return db.collection('games').doc(`${game.id}`).update(
@@ -46,3 +46,15 @@ function setAllGames(episodeId, games) {
             })
     }));
 }
+
+exports.addGameSearchableIndex = functions.firestore
+    .document('games/{id}').onCreate((snap, context) => {
+        const game = snap.data();
+
+        return db.collection('games').doc(context.params.id).update({
+            searchableName: game.name.toUpperCase()
+        })
+            .catch((error) => {
+                console.log(error);
+            });
+    });
