@@ -72,11 +72,11 @@
       .backColor {
         background-color: $color-dark-2;
         height: 100%;
-        filter: blur(2px);
         width: 100%;
         position: absolute;
         top: 0;
         left: 0;
+        border: 1px solid $color-bright-2;
       }
 
       .backImage {
@@ -131,8 +131,7 @@
 
     &:hover {
       transition: all 0.15s ease-out;
-      //transform: scale(1.1) translateZ(0);
-      backface-visibility: hidden;
+      transform: scale(1.096);
       opacity: 1;
 
       .flipCardInner {
