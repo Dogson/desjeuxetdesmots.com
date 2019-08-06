@@ -1,0 +1,21 @@
+@import "../../index";
+
+.formContainer {
+
+  border: 1px solid $color-bright-2;
+  padding: 30px 80px;
+
+  .titleContainer {
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: $size-big;
+    color: $color-bright-2;
+    padding: 20px;
+  }
+
+  button {
+    //width: 300px;
+    margin: 20px 15px;
+  }
+}

@@ -13,6 +13,7 @@ $weight-regular: normal;
 $weight-bold: 500;
 
 //text size
+$size-smallest: 9px;
 $size-smaller: 12px;
 $size-small: 15px;
 $size-normal: 18px;
@@ -120,4 +121,91 @@ input:focus {
 
 .flipCardFront {
   background-color: $color-dark-2;
+}
+
+//Forms
+.formContainer {
+  @extend .flexColumn;
+
+  label {
+    @extend .flexColumn;
+    margin-bottom: 30px;
+
+    span {
+      color: $color-bright-1;
+      font-size: $size-small;
+      //font-weight: $weight-regular;
+      padding: 10px 15px;
+      letter-spacing: 1px;
+    }
+
+    input {
+      background: none;
+      box-shadow: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 1px solid $color-bright-1;
+      width: 300px;
+      font-size: $size-small;
+      color: $color-bright-1;
+      font-weight: $weight-light;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    &:focus-within {
+      input {
+        color: $color-bright-2;
+        border: 1px solid $color-bright-2;
+      }
+
+      span {
+        color: $color-bright-2;
+      }
+    }
+  }
+
+  .errorMessage {
+    font-size: $size-small;
+    margin: 10px 0 0 15px;
+    height: 20px;
+    color: $color-bright-2;
+  }
+}
+
+// Buttons
+.btn, button {
+  @extend .flexRow;
+  @extend .flexCenter;
+  color: $color-bright-1;
+  background-color: transparent;
+  border-radius: 5px;
+  font-weight: $weight-regular;
+  font-size: $size-small;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  border: none;
+  padding: 0 0 10px 0;
+  letter-spacing: 1px;
+  outline: none;
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    height: 1px;
+    width: 20px;
+    border-bottom: 1px solid $color-bright-1;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:hover {
+    color: $color-bright-2;
+
+    &:after {
+      width: 100%;
+      border-bottom: 1px solid $color-bright-2;
+    }
+  }
+
 }

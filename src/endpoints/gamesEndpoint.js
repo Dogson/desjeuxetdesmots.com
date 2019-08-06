@@ -1,11 +1,5 @@
-import axios from 'axios';
-import {IGDB_API} from "../config/apiConfig";
 import moment from "moment";
-import * as firebase from 'firebase';
-
-require('firebase/firestore');
-
-require("../config/firebase");
+import firebase from "../config/firebase";
 
 const db = firebase.firestore();
 

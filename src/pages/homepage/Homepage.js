@@ -3,18 +3,18 @@ import {Helmet} from "react-helmet";
 import {DebounceInput} from 'react-debounce-input';
 import cx from "classnames";
 import styles from "./homepage.module.scss";
-import PageLayout from "../layouts/PageLayout";
-import {getGamesBySearch} from "../endpoints/gamesEndpoint";
+import PageLayout from "../../layouts/PageLayout";
+import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
-import {ACTIONS_GAMES} from "../actions/gamesActions";
+import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch, FaGamepad} from "react-icons/fa";
 import {withRouter} from 'react-router-dom'
-import queryString from "query-string";
+import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
-import * as moment from "moment";
+import * as moment from "moment/moment";
 
-import logo from "../assets/logos/gamerJuice/logo.png";
-import logoCosyCorner from "../assets/logos/cosyCorner/cosyCornerSmall.png";
+import logo from "../../assets/logos/gamerJuice/logo.png";
+import logoCosyCorner from "../../assets/logos/cosyCorner/cosyCornerSmall.png";
 
 
 class Homepage extends Component {
@@ -26,7 +26,6 @@ class Homepage extends Component {
         };
 
         this._handleChange = this._handleChange.bind(this);
-        this._handleKeyPress = this._handleKeyPress.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
     }
 
@@ -48,16 +47,6 @@ class Homepage extends Component {
 
     _handleChange(value) {
         this.props.history.push(`/?q=${value}`);
-    }
-
-    _handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            // this.setState({noMoreGames: false});
-            // getGamesBySearch({search: this.props.searchInput}).then((result) => {
-            //     this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: result});
-            //     this.setState({isLoading: false})
-            // });
-        }
     }
 
     getMoreGames() {
@@ -101,7 +90,6 @@ class Homepage extends Component {
                     minLength={2}
                     debounceTimeout={300}
                     onChange={(e) => this._handleChange(e.target.value)}
-                    onKeyPress={this._handleKeyPress}
                     placeholder="Rechercher un jeu"
                     onFocus={() => this.setState({inputFocused: true})}
                     onBlur={() => this.setState({inputFocused: false})}/>

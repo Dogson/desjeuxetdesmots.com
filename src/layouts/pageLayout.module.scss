@@ -10,6 +10,15 @@
     background-color: $color-dark-1;
     @extend .flexColumn;
     @extend .flexAlignCenter;
+
+    .titleContainer {
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: $size-big;
+      color: $color-bright-1;
+      padding: 20px;
+    }
   }
 
   .sidebarContainer {
