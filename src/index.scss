@@ -170,6 +170,7 @@ input {
     margin: 10px 0 0 15px;
     height: 20px;
     color: $color-bright-2;
+    width: 300px;
   }
 }
 
@@ -209,4 +210,14 @@ input {
     }
   }
 
+}
+input[type="submit"] {
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: $color-bright-2;
+  }
 }

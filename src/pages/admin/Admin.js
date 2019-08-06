@@ -21,7 +21,6 @@ class Admin extends Component {
 
         this._handleChangeEmail = this._handleChangeEmail.bind(this);
         this._handleChangePassword = this._handleChangePassword.bind(this);
-        this._handleKeyPress = this._handleKeyPress.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
 
         this.state = {
@@ -43,13 +42,12 @@ class Admin extends Component {
         this.setState({fields: {...this.state.fields, password: password}, errorMessage: ""});
     }
 
-    _handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            this._handleSubmit();
+    _handleSubmit(e) {
+        e.preventDefault();
+        if (this.state.fields.email.length === 0 || this.state.fields.password.length === 0) {
+            this.setState({errorMessage: "Veuillez remplir les champs ci-dessus"})
+            return;
         }
-    }
-
-    _handleSubmit() {
         this.setState({errorMessage: ""});
         firebase.auth().signInWithEmailAndPassword(this.state.fields.email, this.state.fields.password)
             .catch((error) => {
@@ -63,23 +61,21 @@ class Admin extends Component {
     }
 
     renderLoggingForm() {
-        return <div className={styles.formContainer} onSubmit={this._handleSubmit}>
+        return <form className={styles.formContainer} onSubmit={this._handleSubmit}>
             <div className={styles.titleContainer}>Panneau d'administration</div>
             <label>
                 <span>email</span>
                 <input type="email" value={this.state.email}
-                       onChange={(e) => this._handleChangeEmail(e.target.value)}
-                       onKeyPress={this._handleKeyPress}/>
+                       onChange={(e) => this._handleChangeEmail(e.target.value)}/>
             </label>
             <label>
                 <span>password</span>
                 <input type="password" value={this.state.password}
-                       onChange={(e) => this._handleChangePassword(e.target.value)}
-                       onKeyPress={this._handleKeyPress}/>
+                       onChange={(e) => this._handleChangePassword(e.target.value)}/>
                 <div className={styles.errorMessage}>{this.state.errorMessage}</div>
             </label>
-            <button onClick={this._handleSubmit}>se connecter</button>
-        </div>;
+            <button><input type="submit" value="se connecter"/></button>
+        </form>;
     }
 
     renderAdminSection() {

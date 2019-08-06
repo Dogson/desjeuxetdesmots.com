@@ -7,7 +7,8 @@ import PageLayout from "../../layouts/PageLayout";
 import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
-import {FaSearch, FaGamepad} from "react-icons/fa";
+import {FaSearch} from "react-icons/fa";
+import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
 import {withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
@@ -70,7 +71,7 @@ class Homepage extends Component {
             pageStart={0}
             loadMore={this.getMoreGames}
             hasMore={this.state.hasMoreGames}
-            loader={<div className={styles.loaderContainer} key={0}><Loading isLoading={true}/></div>}
+            loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
             <GameGrid games={this.props.games}/>
         </InfiniteScroll>
@@ -127,30 +128,12 @@ const GameGrid = ({games}) => {
             })
         }
     </div>
-}
+};
 
 const MediaLogos = ({game: {cosyCorners}}) => {
     return <div className={styles.mediasLogosContainer}>
         {cosyCorners && cosyCorners.length > 0 ?
             <img src={logoCosyCorner} alt={"Cosy Corner"}/> : null}
-    </div>
-};
-
-const Loading = ({isLoading}) => {
-    if (!isLoading) {
-        return null;
-    }
-    return <div className={styles.loadingContainer}>
-        <div className={styles.flipCard}>
-            <div className={cx(styles.flipCardInner, styles.rotateVertCenter)}>
-                <div className={styles.flipCardFront}>
-                    <img src={logo} alt={"loading"} className={styles.icon}/>
-                </div>
-                <div className={styles.flipCardBack}>
-                    <FaGamepad className={styles.icon}/>
-                </div>
-            </div>
-        </div>
     </div>
 };
 
