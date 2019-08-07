@@ -1,6 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+// const firebase = require('firebase');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 admin.initializeApp(functions.config().firebase);
@@ -13,6 +14,8 @@ const cosyCornerConfig = {
     excludeStrings: ['Zone de Confort', '[HS]'],
     endOfParseStrings: ['Remerciements', 'Playlist']
 };
+
+const increment = admin.firestore.FieldValue.increment(1);
 
 exports.getCosyCorner = spotify.copyCosyCornerShowsFromSpotify;
 
@@ -28,6 +31,11 @@ exports.generateCosyCornerGames = functions.firestore
             .then(() => {
                 return db.collection('cosyCorner').doc(context.params.id).update({
                     games: games.map((game) => db.doc('games/' + game.id))
+                })
+            })
+            .then(() => {
+                return db.collection('itemsNumber').doc('cosyCorner').update({
+                    count: increment
                 })
             })
             .catch((error) => {

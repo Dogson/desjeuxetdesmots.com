@@ -8,7 +8,7 @@ import PageLayout from "../../layouts/PageLayout";
 import styles from "./admin.module.scss";
 import {DebounceInput} from "react-debounce-input";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
-import {PODCASTS} from "../../config/const";
+import {MEDIAS, PODCASTS} from "../../config/const";
 import * as moment from "../homepage/Homepage";
 import {NavLink} from "react-router-dom";
 
@@ -82,13 +82,11 @@ class Admin extends Component {
     }
 
     renderAdminSection() {
-        return <SectionGrid title="Podcasts" items={PODCASTS}/>;
+        return <SectionGrid title="Medias" items={MEDIAS}/>;
     }
 
     render() {
         const {user} = this.props;
-        // console.log(user);
-        console.log(this.props);
         return <PageLayout title="Panneau d'administration">
             <Helmet title="Panneau d'administration - gamer juice"/>
             {user === undefined ? <LoadingSpinner/> : user ? this.renderAdminSection() : this.renderLoggingForm()}
@@ -101,7 +99,7 @@ const SectionGrid = ({title, items}) => {
         <div className={styles.sectionTitle}>{title}</div>
         <div className={styles.sectionGrid}>
             {items.map((item) => {
-                return <NavLink className={styles.cardContainer} key={item.dataLabel} to={`/admin/${item.dataLabel}`}>
+                return <NavLink className={styles.cardContainer} key={item.constName} to={item.route}>
                     <div className={styles.backImage} style={{backgroundImage: `url(${item.logo})`}}/>
                     <div className={styles.hoveredInfo}>
                         <div className={styles.backColor}/>

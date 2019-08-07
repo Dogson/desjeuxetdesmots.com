@@ -1,17 +1,18 @@
 import React from "react";
-import styles from "./adminMediaSection.module.scss";
+import {PODCASTS} from "../../config/const";
+import AdminMediaRow from "../adminMediaRow/adminMediaRow";
 
-class AdminMediaSection extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+export class AdminMediaSection extends React.Component {
 
     render() {
-        const {name, dataLabel, logo} = this.props.type;
-        return <div className={styles.adminMediaSectionContainer}>
-            <img className={styles.imageContainer} src={logo}/>
+        const {name, constName, logo, medias} = this.props.type;
+        return <div>
+            {
+                medias.map((item) => {
+                    return <AdminMediaRow type={item} key={item.dataLabel}/>
+                })
+            }
+
         </div>
     }
 }
-
-export default AdminMediaSection;

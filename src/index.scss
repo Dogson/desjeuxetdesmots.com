@@ -3,6 +3,8 @@
  */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500");
 @import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css");
 
 //layout
 $containerWidth: 1000px;
@@ -175,7 +177,7 @@ input {
 }
 
 // Buttons
-.btn, button {
+.btn {
   @extend .flexRow;
   @extend .flexCenter;
   color: $color-bright-1;
@@ -264,7 +266,6 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid $color-bright-2;
     opacity: 0.8;
   }
 
@@ -276,6 +277,8 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
+    background-position: center;
+    background-color: $color-dark-2;
   }
 
   .title {
@@ -329,6 +332,14 @@ input[type="submit"] {
 
     .backImage {
       filter: blur(0.5px);
+    }
+  }
+}
+
+ul {
+  li.slick-active {
+    div {
+      opacity: 1;
     }
   }
 }
