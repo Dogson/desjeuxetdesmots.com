@@ -10,8 +10,16 @@ export default class Carousel extends Component {
         super(props);
 
         this.state = {
-            showDots: false
+            showDots: false,
+            showPreviousArrow: false
         };
+
+        this._handleAfterChange = this._handleAfterChange.bind(this);
+    }
+
+    _handleAfterChange(index) {
+        this.setState({showPreviousArrow: index && index > 0})
+        return this.props.onClickNext()
     }
 
     render() {
@@ -23,11 +31,14 @@ export default class Carousel extends Component {
             speed: 1000,
             slidesToShow: onScreenItems,
             slidesToScroll: onScreenItems,
-            nextArrow: <NextArrow onMouseEnter={() => this.setState({showDots: true})} onMouseLeave={() => this.setState({showDots: false})}/>,
-            prevArrow: <PrevArrow onMouseEnter={() => this.setState({showDots: true})} onMouseLeave={() => this.setState({showDots: false})}/>,
+            nextArrow: <NextArrow onMouseEnter={() => this.setState({showDots: true})}
+                                  onMouseLeave={() => this.setState({showDots: false})}/>,
+            prevArrow: <PrevArrow onMouseEnter={() => this.setState({showDots: true})}
+                                  onMouseLeave={() => this.setState({showDots: false})}
+                                  hidden={!this.state.showPreviousArrow}/>,
             appendDots: (dots) => <AppendDots dots={dots} showDots={this.state.showDots}/>,
             customPaging: () => <CustomPaging/>,
-            afterChange: this.props.onClickNext
+            afterChange: this._handleAfterChange
         };
 
         return (
@@ -35,7 +46,7 @@ export default class Carousel extends Component {
                 <Slider {...settings}>
                     {medias.map((media, index) => {
                         return <div className={styles.slideContainer} key={index}>
-                            {media ? <Card media={media}/> : <EmptyCard/>}
+                            {media ? <Card media={media} onClick={() => onClickItem(media)}/> : <EmptyCard/>}
                         </div>
                     })}
                 </Slider>
@@ -44,8 +55,8 @@ export default class Carousel extends Component {
     }
 }
 
-const Card = ({media}) => {
-    return <div className={styles.cardContainer}>
+const Card = ({media, onClick}) => {
+    return <div className={styles.cardContainer} onClick={onClick}>
         {
             !media.isVerified ?
                 <div className={styles.ribbon}/>
@@ -74,8 +85,11 @@ const CustomPaging = () => {
     return <div className={styles.customPagingContainer}/>;
 };
 
-const PrevArrow = ({onClick, className, onMouseEnter, onMouseLeave}) => {
+const PrevArrow = ({onClick, className, onMouseEnter, onMouseLeave, hidden}) => {
     let classnames = cx(className, styles.arrowContainer, {[styles.slickDisabled]: className.indexOf('slick-disabled') > -1});
+    if (hidden) {
+        return null;
+    }
     return <div className={classnames} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
                 onClick={onClick}><FaChevronLeft className={styles.icon}/></div>
 

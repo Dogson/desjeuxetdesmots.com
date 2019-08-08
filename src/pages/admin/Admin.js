@@ -99,7 +99,7 @@ const SectionGrid = ({title, items}) => {
         <div className={styles.sectionTitle}>{title}</div>
         <div className={styles.sectionGrid}>
             {items.map((item) => {
-                return <NavLink className={styles.cardContainer} key={item.constName} to={item.route}>
+                return <NavLink className={styles.cardContainer} key={item.name} to={item.route}>
                     <div className={styles.backImage} style={{backgroundImage: `url(${item.logo})`}}/>
                     <div className={styles.hoveredInfo}>
                         <div className={styles.backColor}/>

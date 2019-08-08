@@ -23,8 +23,8 @@ class PodcastsAdmin extends Component {
 
     render() {
         const {user} = this.props;
-        return <PageLayout title="Administration du Cosy Corner">
-            <Helmet title="Panneau d'administration du Cosy Corner - gamer juice"/>
+        return <PageLayout title="Administration des podcasts">
+            <Helmet title="Panneau d'administration des podcasts - gamer juice"/>
             {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIAS.find((item) => {return item.name === "Podcasts"})}/> : <Redirect to="/admin"/>}
         </PageLayout>
     }

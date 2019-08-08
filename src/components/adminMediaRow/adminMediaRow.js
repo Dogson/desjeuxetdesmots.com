@@ -43,7 +43,6 @@ class AdminMediaRow extends React.Component {
                 if (result.medias.length > 0) {
                    const mediasList = this.state.medias.concat(result.medias);
                     const mediasListWithEmpty = Array.prototype.splice.apply(this.state.mediasWithEmpty, [0, mediasList.length].concat(mediasList));
-                    console.log(mediasList);
                     this.setState({medias: mediasList, lastDoc: result.lastDoc, mediasListWithEmpty: mediasListWithEmpty});
                 } else {
                     this.setState({noMoreMedias: true});
@@ -52,16 +51,14 @@ class AdminMediaRow extends React.Component {
     }
 
     _handleClickNext() {
-        console.log("click on this bro");
         this.loadMoreMedias();
     }
 
-    _handleClickMedia() {
-
+    _handleClickMedia(media) {
+        console.log(media);
     }
 
     render() {
-
         const {name, dataLabel, logoMin} = this.props.type;
         const {medias, mediasWithEmpty, lastDoc, totalCount} = this.state;
         return <div className={styles.adminMediaRowContainer}>

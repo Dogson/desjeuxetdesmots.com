@@ -9,12 +9,13 @@
     @extend .flexAlignCenter;
     text-transform: lowercase;
     letter-spacing: 1px;
-    color: $color-bright-2;
+    color: $color-bright-1;
+    margin: 0 10px 15px;
 
     .imageContainer {
-      height: 50px;
-      width: 50px;
-      margin: 25px 10px 25px;
+      height: 30px;
+      width: 30px;
+      margin-right: 10px;
     }
   }
 

@@ -10,6 +10,19 @@
 
     &:active, &:focus {
       outline: none;
+
+      .cardContainer {
+        transform: scale(1);
+
+        .title {
+          color: $color-bright-2;
+        }
+
+        .backImage {
+          opacity: 0.9;
+          transition: all 0.2s ease-in-out;
+        }
+      }
     }
 
   }
@@ -26,7 +39,7 @@
       position: absolute;
       opacity: 1;
       z-index: 2;
-
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,.5));
     }
 
     .backImage {
@@ -102,7 +115,7 @@
 .dotsContainer {
   @extend .flexRow;
   position: absolute;
-  top: -30px;
+  top: -20px;
   right: 8px;
   list-style-type: none;
   opacity: 1;
@@ -116,8 +129,8 @@
 
 .customPagingContainer {
   opacity: 0.4;
-  height: 12px;
-  width: 6px;
+  height: 8px;
+  width: 5px;
   margin: 1px;
   background-color: $color-bright-1;
 }
