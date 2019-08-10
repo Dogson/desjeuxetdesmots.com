@@ -77,7 +77,7 @@ class Admin extends Component {
                        onChange={(e) => this._handleChangePassword(e.target.value)}/>
                 <div className={styles.errorMessage}>{this.state.errorMessage}</div>
             </label>
-            <button><input type="submit" value="se connecter"/></button>
+            <button className={styles.btn}><input type="submit" value="se connecter"/></button>
         </form>;
     }
 

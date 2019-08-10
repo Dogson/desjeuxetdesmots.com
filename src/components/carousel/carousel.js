@@ -23,12 +23,14 @@ export default class Carousel extends Component {
     }
 
     render() {
-        const {medias, onClickNext, onClickItem, onScreenItems} = this.props;
+        const {medias, activeItem, onClickItem, onScreenItems} = this.props;
 
         const settings = {
             dots: true,
             infinite: true,
             speed: 1000,
+            draggable: false,
+            easing: 'ease-out',
             slidesToShow: onScreenItems,
             slidesToScroll: onScreenItems,
             nextArrow: <NextArrow onMouseEnter={() => this.setState({showDots: true})}
@@ -46,7 +48,7 @@ export default class Carousel extends Component {
                 <Slider {...settings}>
                     {medias.map((media, index) => {
                         return <div className={styles.slideContainer} key={index}>
-                            {media ? <Card media={media} onClick={() => onClickItem(media)}/> : <EmptyCard/>}
+                            {media ? <Card isActive={activeItem && media.id === activeItem.id} media={media} onClick={() => onClickItem(media)}/> : <EmptyCard/>}
                         </div>
                     })}
                 </Slider>
@@ -55,8 +57,8 @@ export default class Carousel extends Component {
     }
 }
 
-const Card = ({media, onClick}) => {
-    return <div className={styles.cardContainer} onClick={onClick}>
+const Card = ({media, onClick, isActive}) => {
+    return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}>
         {
             !media.isVerified ?
                 <div className={styles.ribbon}/>

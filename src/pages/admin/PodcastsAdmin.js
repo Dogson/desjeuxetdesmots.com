@@ -10,7 +10,7 @@ import {DebounceInput} from "react-debounce-input";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import * as moment from "../homepage/Homepage";
 import {NavLink, Redirect} from "react-router-dom";
-import {AdminMediaSection} from "../../components/adminMediaSection/adminMediaSection";
+import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
 import {MEDIAS} from "../../config/const";
 
 const firebaseAppAuth = firebase.auth();

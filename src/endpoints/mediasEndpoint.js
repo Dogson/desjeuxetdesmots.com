@@ -21,8 +21,10 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
         ref = ref.startAfter(lastDoc);
     }
     ref = ref.limit(lastDoc ? offset : offsetInit);
+    let lastDocument;
     return ref.get()
         .then((snap) => {
+            lastDocument = snap.docs && snap.docs[snap.docs.length - 1];
             return {
                 medias: snap.docs.map((doc) => {
                     return {...doc.data(), id: doc.id};
@@ -31,11 +33,38 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
                 }).sort((mediaX, mediaY) => {
                     return mediaX.isVerfied ? 1 : -1;
                 }),
-                lastDoc: snap.docs && snap.docs[snap.docs.length - 1]
             }
+        })
+        .then((result) => {
+            return Promise.all(result.medias.map((media) => {
+                return getMediaGames({media});
+            }))
+        })
+        .then((result) => {
+            return {lastDoc: lastDocument, medias: result}
         })
 
         .catch((error) => {
             console.log(error);
         })
-}
+};
+
+export const getMediaGames = ({media}) => {
+    let gamesResult = [];
+    return Promise.all(media.games.map((gameRef) => {
+        {
+            return gameRef.get()
+                .then((doc) => {
+                    gamesResult.push(doc.data());
+                }).catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+        }
+    }))
+        .then(() => {
+            return {...media, games: gamesResult}
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+};

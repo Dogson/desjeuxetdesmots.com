@@ -1,6 +1,6 @@
 import React from "react";
 import {PODCASTS} from "../../config/const";
-import AdminMediaRow from "../adminMediaRow/adminMediaRow";
+import AdminMediaRow from "./adminMediaRow";
 
 export class AdminMediaSection extends React.Component {
 
