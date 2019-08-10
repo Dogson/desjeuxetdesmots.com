@@ -16,12 +16,29 @@
 
         .title {
           color: $color-bright-2;
+          opacity: 0;
+          transition: all 0.2s ease-in-out;
         }
 
         .backImage {
           opacity: 1;
-          box-shadow:inset 0px 0px 0px 1px $color-bright-2;
-          transition: all 0.2s ease-in-out;
+          box-shadow:inset 0px 0px 0px 2px $color-bright-2;
+          transition: opacity 0.2s ease-in-out;
+
+          &:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+
+            border-top: 10px solid $color-bright-2;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+          }
         }
       }
     }
@@ -37,9 +54,28 @@
     &.active {
       .backImage {
         opacity: 1;
-        box-shadow:inset 0px 0px 0px 1px $color-bright-2;
+        box-shadow:inset 0px 0px 0px 2px $color-bright-2;
+
+        &:after {
+          content: "";
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+
+          border-top: 10px solid $color-bright-2;
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+        }
       }
 
+      .title {
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+      }
     }
     .ribbon {
       content: "";
@@ -77,6 +113,8 @@
       height: 50px;
       width: 100%;
       text-align: center;
+      transition: all 0.1s ease-in-out;
+
     }
 
     &.active {
