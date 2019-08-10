@@ -2,42 +2,96 @@
 
 .adminMediaBoxContainer {
   width: 100%;
-  @extend .flexRow;
-  padding: 10px;
+  @extend .flexColumn;
+  margin: 10px 50px;
 
-  .leftRow, .rightRow {
-    @extend .flexColumn;
-    flex: 0.5;
-  }
+  .titleContainer {
+    //@extend .flexRow;
+    @extend .flexSpaceBetween;
+    @extend .flexAlignCenter;
+    margin-bottom: 10px;
 
-  .leftRow {
-    padding-right: 10px;
-  }
-
-  .leftRow {
-    padding-right: 30px;
-    .titleContainer {
-      //@extend .flexRow;
-      @extend .flexSpaceBetween;
-      @extend .flexAlignCenter;
-      margin-bottom: 10px;
-
-      .title {
-        font-size: $size-bigger;
-        letter-spacing: 2px;
-        color: $color-bright-2;
-        margin-bottom: 5px;
-      }
-      .date {
-        color: $color-bright-1;
-        font-size: $size-small;
-        font-weight: $weight-regular;
-      }
-
+    .title {
+      font-size: $size-bigger;
+      letter-spacing: 2px;
+      color: $color-bright-2;
+      margin-bottom: 5px;
     }
 
-    .description {
+    .date {
       color: $color-bright-1;
+      font-size: $size-small;
+      font-weight: $weight-regular;
+      margin-bottom: 5px;
     }
   }
+
+  .bodyContainer {
+    @extend .flexRow;
+
+    .leftRow, .rightRow {
+      @extend .flexColumn;
+      @extend .flexAlignCenter;
+    }
+
+    .leftRow {
+      padding-right: 30px;
+      flex: 0.4;
+
+
+      .description {
+        color: $color-bright-1;
+        font-weight: $weight-regular;
+        font-size: $size-small;
+      }
+    }
+
+    .rightRow {
+      flex: 0.6;
+
+      .rightRowContainer {
+        position: relative;
+        width: 500px;
+
+        .saveContainer {
+          position: absolute;
+          top: -50px;
+          right: 55px;
+          font-size: 20px;
+          color: $color-bright-2;
+
+          .btn {
+            .icon {
+              font-size: 15px;
+              margin-right: 5px;
+              margin-top: -2px;
+            }
+          }
+
+        }
+
+        .gamesContainer {
+          margin-bottom: 10px;
+          @extend .flexRow;
+          flex-wrap: wrap;
+
+          .cardContainer {
+            width: 112.5px;
+            height: 150px;
+            opacity: 1;
+          }
+
+          .hoveredInfo {
+            @extend .flexCenter;
+
+            .title {
+              font-size: $size-small;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
 }

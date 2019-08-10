@@ -2,6 +2,7 @@ import moment from "moment";
 import firebase from "../config/firebase";
 
 const db = firebase.firestore();
+const functions = firebase.functions();
 
 const offset = 6;
 const offsetInit = offset * 2;
@@ -29,7 +30,6 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
                 medias: snap.docs.map((doc) => {
                     return {...doc.data(), id: doc.id};
                 }).map((media) => {
-                    console.log(media.releaseDate);
                     return {...media, releaseDate: media.releaseDate ? moment(media.releaseDate, 'YYYY-MM-DD') : "A venir"}
                 }).sort((mediaX, mediaY) => {
                     return mediaX.isVerfied ? 1 : -1;
@@ -66,6 +66,22 @@ export const getMediaGames = ({media}) => {
             return {...media, games: gamesResult}
         })
         .catch((error) => {
+            console.log(error);
+        })
+};
+
+export const setGamesForMedia = ({mediaId, mediaType, games}) => {
+    console.log(mediaId);
+    console.log(mediaType);
+    console.log(games);
+    console.log("setting...");
+    return functions.httpsCallable('setGamesForMedia')({mediaId, mediaType, games})
+        .then((result) => {
+            console.log("result");
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log("error");
             console.log(error);
         })
 };

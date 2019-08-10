@@ -66,3 +66,7 @@ exports.addGameSearchableIndex = functions.firestore
                 console.log(error);
             });
     });
+
+exports.setGamesForMedia = functions.https.onCall((data, context) => {
+
+});

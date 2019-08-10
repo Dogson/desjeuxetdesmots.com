@@ -24,43 +24,6 @@
   }
 }
 
-.inputContainer {
-  padding: 0 20px;
-  border: 1px solid $color-bright-1;
-  margin: 20px;
-  border-radius: 50px;
-  @extend .flexRow;
-  @extend .flexAlignCenter;
-
-  .icon {
-    color: $color-bright-1;
-    margin-right: 20px;
-  }
-
-  .input {
-    padding: 10px 0;
-    background: transparent;
-    box-shadow: none;
-    width: 400px;
-    border: none;
-    color: $color-bright-1;
-    font-size: $size-normal;
-    font-weight: $weight-light;
-  }
-
-  &.focus {
-    border: 1px solid $color-bright-2;
-
-    .icon {
-      color: $color-bright-2;
-    }
-
-    .input {
-      color: $color-bright-2;
-    }
-  }
-}
-
 .loaderContainer {
   margin: 50px;
   flex: 1;

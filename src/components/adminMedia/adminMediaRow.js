@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./adminMediaRow.module.scss";
-import {getAllMedia, getNumberOfMedia} from "../../endpoints/mediasEndpoint";
+import {getAllMedia, getNumberOfMedia, setGamesForMedia} from "../../endpoints/mediasEndpoint";
 import Carousel from "../carousel/carousel";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import {AdminMediaBox} from "./adminMediaBox";
@@ -14,6 +14,7 @@ class AdminMediaRow extends React.Component {
 
         this._handleClickNext = this._handleClickNext.bind(this);
         this._handleClickMedia = this._handleClickMedia.bind(this);
+        this._handleSaveGames = this._handleSaveGames.bind(this);
 
         this.state = {
             medias: [],
@@ -72,11 +73,19 @@ class AdminMediaRow extends React.Component {
 
     }
 
+    _handleSaveGames(games) {
+        setGamesForMedia({
+            games: games,
+            mediaType: this.props.mediaActive.mediaType,
+            mediaId: this.props.mediaActive.media.id
+        })
+    }
+
     renderActiveMedia() {
         const {mediaActive, type} = this.props;
         if (!mediaActive || mediaActive.mediaType !== type.dataLabel)
             return null;
-        return <AdminMediaBox media={mediaActive.media}/>
+        return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}/>
     }
 
     render() {
