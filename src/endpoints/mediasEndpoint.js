@@ -29,7 +29,8 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
                 medias: snap.docs.map((doc) => {
                     return {...doc.data(), id: doc.id};
                 }).map((media) => {
-                    return {...media, releaseDate: media.releaseDate ? moment.unix(media.releaseDate) : "A venir"}
+                    console.log(media.releaseDate);
+                    return {...media, releaseDate: media.releaseDate ? moment(media.releaseDate, 'YYYY-MM-DD') : "A venir"}
                 }).sort((mediaX, mediaY) => {
                     return mediaX.isVerfied ? 1 : -1;
                 }),

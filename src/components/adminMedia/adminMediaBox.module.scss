@@ -1,7 +1,43 @@
 @import "../../index";
 
 .adminMediaBoxContainer {
-  border: 1px solid $color-bright-2;
   width: 100%;
-  padding:  10px;
+  @extend .flexRow;
+  padding: 10px;
+
+  .leftRow, .rightRow {
+    @extend .flexColumn;
+    flex: 0.5;
+  }
+
+  .leftRow {
+    padding-right: 10px;
+  }
+
+  .leftRow {
+    padding-right: 30px;
+    .titleContainer {
+      //@extend .flexRow;
+      @extend .flexSpaceBetween;
+      @extend .flexAlignCenter;
+      margin-bottom: 10px;
+
+      .title {
+        font-size: $size-bigger;
+        letter-spacing: 2px;
+        color: $color-bright-2;
+        margin-bottom: 5px;
+      }
+      .date {
+        color: $color-bright-1;
+        font-size: $size-small;
+        font-weight: $weight-regular;
+      }
+
+    }
+
+    .description {
+      color: $color-bright-1;
+    }
+  }
 }
