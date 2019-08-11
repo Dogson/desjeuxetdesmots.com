@@ -3,6 +3,7 @@ import styles from "./adminMediaBox.module.scss";
 import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
+import Loader from 'react-loader-spinner';
 import PageLayout from "../../layouts/PageLayout";
 import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
 import {getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
@@ -137,7 +138,12 @@ export class AdminMediaBox extends React.Component {
                             <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
                                 <button onClick={this._handleOnSaveGames} className={cx(styles.btn, styles.small)}>
                                     {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
-                                        <LoadingSpinner size={15}/>}
+                                        <div style={{padding: '0 5px'}}><Loader
+                                            type="TailSpin"
+                                            color="#FFC857"
+                                            height={15}
+                                            width={15}
+                                        /></div>}
                                     sauvegarder les modifications
                                 </button>
                             </div> :
@@ -145,7 +151,12 @@ export class AdminMediaBox extends React.Component {
                                         {media.isVerified ? null :
                                             <div onClick={this._handleVerifyMedia}  data-tip="Marquer comme vérifié">
                                                 {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
-                                                    <LoadingSpinner size={15}/>}
+                                                    <Loader
+                                                        type="TailSpin"
+                                                        color="#FFC857"
+                                                        height={15}
+                                                        width={15}
+                                                    />}
                                             </div>
                                         }
                                     </div>
