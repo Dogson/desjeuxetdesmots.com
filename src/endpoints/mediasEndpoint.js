@@ -76,7 +76,7 @@ export const getMediaGames = ({media}) => {
 };
 
 export const setGamesForMedia = ({mediaId, mediaType, games}) => {
-    const data = {mediaId: mediaId, mediaType: mediaType, games: games};
+        const data = {mediaId: mediaId, mediaType: mediaType, games: games};
         return functions.httpsCallable('setGamesForMedia')(data)
             .catch((error) => {
                 console.error(error);
@@ -85,7 +85,9 @@ export const setGamesForMedia = ({mediaId, mediaType, games}) => {
 ;
 
 export const toggleVerifyMedia = ({mediaType, mediaId, verified}) => {
-    return db.collection(mediaType).doc(`${mediaId}`).update({
-        isVerified: verified
-    })
-}
+    const data = {mediaId: mediaId, mediaType: mediaType, verified: verified};
+    return functions.httpsCallable('toggleVerifyMedia')(data)
+        .catch((error) => {
+            console.error(error);
+        })
+};

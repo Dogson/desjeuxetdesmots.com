@@ -135,3 +135,20 @@ exports.setGamesForMedia = functions.https.onCall((data, context) => {
             return Promise.reject({status: 'error', error: error});
         })
 });
+
+exports.toggleVerifyMedia = functions.https.onCall((data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+            'while authenticated.');
+    }
+    const {mediaType, mediaId, verified} = data;
+    return db.collection(mediaType).doc(`${mediaId}`).update({
+        isVerified: verified
+    })
+        .then(() => {
+            return Promise.resolve({status: 'success'});
+        })
+        .catch((error) => {
+            return Promise.reject({status: 'error', error: error});
+        })
+});
