@@ -60,7 +60,7 @@ class Admin extends Component {
                 } else {
                     this.setState({errorMessage: "Une erreur est survenue lors de l'envoi du formulaire."})
                 }
-                console.log(error);
+                console.error(error);
             });
     }
 

@@ -17,7 +17,7 @@ export const getNumberOfMedia = ({mediaDataLabel}) => {
 };
 
 export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
-    let ref = db.collection(mediaDataLabel).orderBy("releaseDate", "desc");
+    let ref = db.collection(mediaDataLabel).orderBy("isVerified", "asc");
     if (lastDoc) {
         ref = ref.startAfter(lastDoc);
     }
@@ -30,9 +30,10 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
                 medias: snap.docs.map((doc) => {
                     return {...doc.data(), id: doc.id};
                 }).map((media) => {
-                    return {...media, releaseDate: media.releaseDate ? moment(media.releaseDate, 'YYYY-MM-DD') : "A venir"}
-                }).sort((mediaX, mediaY) => {
-                    return mediaX.isVerfied ? 1 : -1;
+                    return {
+                        ...media,
+                        releaseDate: media.releaseDate ? moment(media.releaseDate, 'YYYY-MM-DD') : "A venir"
+                    }
                 }),
             }
         })
@@ -42,11 +43,15 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
             }))
         })
         .then((result) => {
-            return {lastDoc: lastDocument, medias: result}
+            return {
+                lastDoc: lastDocument, medias: result.sort((mediaX, mediaY) => {
+                    return mediaX.isVerified ? 1 : -1;
+                })
+            }
         })
 
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         })
 };
 
@@ -66,22 +71,21 @@ export const getMediaGames = ({media}) => {
             return {...media, games: gamesResult}
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         })
 };
 
 export const setGamesForMedia = ({mediaId, mediaType, games}) => {
-    console.log(mediaId);
-    console.log(mediaType);
-    console.log(games);
-    console.log("setting...");
-    return functions.httpsCallable('setGamesForMedia')({mediaId, mediaType, games})
-        .then((result) => {
-            console.log("result");
-            console.log(result);
-        })
-        .catch((error) => {
-            console.log("error");
-            console.log(error);
-        })
-};
+    const data = {mediaId: mediaId, mediaType: mediaType, games: games};
+        return functions.httpsCallable('setGamesForMedia')(data)
+            .catch((error) => {
+                console.error(error);
+            })
+    }
+;
+
+export const toggleVerifyMedia = ({mediaType, mediaId, verified}) => {
+    return db.collection(mediaType).doc(`${mediaId}`).update({
+        isVerified: verified
+    })
+}

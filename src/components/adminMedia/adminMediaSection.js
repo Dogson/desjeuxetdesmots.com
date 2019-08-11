@@ -9,7 +9,7 @@ export class AdminMediaSection extends React.Component {
         return <div>
             {
                 medias.map((item) => {
-                    return <AdminMediaRow type={item} key={item.dataLabel}/>
+                    return <AdminMediaRow type={item} key={item.dataLabel} />
                 })
             }
 

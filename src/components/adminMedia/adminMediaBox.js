@@ -4,7 +4,7 @@ import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
 import PageLayout from "../../layouts/PageLayout";
-import {FaSave, FaSearch} from "react-icons/fa";
+import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
 import {getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink} from "react-router-dom";
@@ -18,12 +18,21 @@ export class AdminMediaBox extends React.Component {
         this._handleDeleteGame = this._handleDeleteGame.bind(this);
         this._handleChange = this._handleChange.bind(this);
         this._handleClickSuggestion = this._handleClickSuggestion.bind(this);
-        this.state = {searchResults: [], currentGames: this.props.media.games, showSaveBtn: false, loading: false, noMatch: false}
+        this._handleOnSaveGames = this._handleOnSaveGames.bind(this);
+        this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
+
+        this.state = {
+            searchResults: [],
+            currentGames: this.props.media.games,
+            showSaveBtn: false,
+            loadingSuggestions: false,
+            loadingSaveGames: false,
+            noMatch: false
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.currentGames.length !== this.state.currentGames.length) {
-            debugger;
             if (this.state.currentGames.length !== this.props.media.games.length) {
                 this.setState({showSaveBtn: true});
             } else {
@@ -51,14 +60,14 @@ export class AdminMediaBox extends React.Component {
                 this.setState({searchResults: []});
                 return;
             }
-            this.setState({loading: true});
+            this.setState({loadingSuggestions: true});
             this.setState({noMatch: false});
             getGamesFromIGDB({search: this.state.searchInput, limit: 5})
                 .then((result) => {
                     if (result.length === 0) {
                         this.setState({noMatch: true})
                     }
-                    this.setState({searchResults: result, loading: false})
+                    this.setState({searchResults: result, loadingSuggestions: false})
                 })
         }
     }
@@ -83,9 +92,30 @@ export class AdminMediaBox extends React.Component {
         this.setState({searchInput: value});
     }
 
+    _handleOnSaveGames() {
+        if (this.state.loadingSaveGames) {
+            return;
+        }
+        this.setState({loadingSaveGames: true});
+        return this.props.onSaveGames(this.state.currentGames)
+            .then(() => {
+                this.setState({loadingSaveGames: false, showSaveBtn: false});
+            })
+    }
+
+    _handleVerifyMedia() {
+        if (this.state.loadingSaveGames) {
+            return;
+        }
+        this.setState({loadingSaveGames: true});
+        return this.props.onVerifyMedia()
+            .then(() => {
+                this.setState({loadingSaveGames: false, showSaveBtn: false});
+            })
+    }
+
     render() {
         const {media} = this.props;
-
         return <div className={styles.adminMediaBoxContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
@@ -103,12 +133,24 @@ export class AdminMediaBox extends React.Component {
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
-                        {this.state.showSaveBtn &&
-                        <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
-                            <button onClick={() => this.props.onSaveGames(this.state.currentGames)} className={cx(styles.btn, styles.small)}><FaSave
-                                className={styles.icon}/> sauvegarder les modifications
-                            </button>
-                        </div>}
+                        {this.state.showSaveBtn ?
+                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
+                                <button onClick={this._handleOnSaveGames} className={cx(styles.btn, styles.small)}>
+                                    {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
+                                        <LoadingSpinner size={15}/>}
+                                    sauvegarder les modifications
+                                </button>
+                            </div> :
+                                    <div className={styles.verifyContainer}>
+                                        {media.isVerified ? null :
+                                            <div onClick={this._handleVerifyMedia}  data-tip="Marquer comme vérifié">
+                                                {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
+                                                    <LoadingSpinner size={15}/>}
+                                            </div>
+                                        }
+                                    </div>
+
+                        }
                         <ReactTooltip effect="solid"/>
                         <div className={styles.gamesContainer}>
                             {this.state.currentGames.map((game) => {
@@ -132,14 +174,19 @@ export class AdminMediaBox extends React.Component {
                                     onBlur={() => this.setState({inputFocused: false})}/>
                             </div>
                             <div className={styles.suggestionsContainer}>
-                                {this.state.loading ? <LoadingSpinner size={30}/> : this.state.searchResults.map((result) => {
-                                    return <div className={cx(styles.suggestionItem, {[styles.active]: this.state.currentGames.find((game) => {return game.id === result.id})})} key={result.id}
-                                                onClick={() => this._handleClickSuggestion(result)}>
-                                        {result.name} ({
-                                        moment.isMoment(result.releaseDate) ? result.releaseDate.format('YYYY') : "A venir"
-                                    })
-                                    </div>
-                                })}
+                                {this.state.loadingSuggestions ?
+                                    <LoadingSpinner size={30}/> : this.state.searchResults.map((result) => {
+                                        return <div className={cx(styles.suggestionItem, {
+                                            [styles.active]: this.state.currentGames.find((game) => {
+                                                return game.id === result.id
+                                            })
+                                        })} key={result.id}
+                                                    onClick={() => this._handleClickSuggestion(result)}>
+                                            {result.name} ({
+                                            moment.isMoment(result.releaseDate) ? result.releaseDate.format('YYYY') : "A venir"
+                                        })
+                                        </div>
+                                    })}
                                 {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
                             </div>
                         </div>

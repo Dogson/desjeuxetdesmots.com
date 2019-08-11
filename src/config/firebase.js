@@ -1,8 +1,9 @@
 import * as firebase from 'firebase';
 import {FIREBASE_API} from "./apiConfig";
 
-require('firebase/firestore');
-require('firebase/functions');
+import "firebase/auth";
+import "firebase/firestore";
+// require('firebase-admin');
 
 
 firebase.initializeApp(FIREBASE_API);

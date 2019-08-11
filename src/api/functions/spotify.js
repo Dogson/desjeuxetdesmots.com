@@ -27,7 +27,7 @@ function getSpotifyAccessToken() {
         return response.data.access_token;
     })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         })
 
 }
@@ -67,6 +67,6 @@ exports.copyCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) =>
             res.json(result)
         })
         .catch((error) => {
-            console.log(error)
+            console.error(error)
         })
 });

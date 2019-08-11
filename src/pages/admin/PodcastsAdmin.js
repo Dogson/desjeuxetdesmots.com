@@ -12,6 +12,7 @@ import * as moment from "../homepage/Homepage";
 import {NavLink, Redirect} from "react-router-dom";
 import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
 import {MEDIAS} from "../../config/const";
+import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
 
 const firebaseAppAuth = firebase.auth();
 

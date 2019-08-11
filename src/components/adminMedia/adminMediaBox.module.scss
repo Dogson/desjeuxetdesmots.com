@@ -53,21 +53,27 @@
         position: relative;
         width: 500px;
 
-        .saveContainer {
+        .saveContainer, .verifyContainer {
           position: absolute;
           top: -50px;
           right: 55px;
           font-size: 20px;
           color: $color-bright-2;
 
-          .btn {
-            .icon {
-              font-size: 15px;
-              margin-right: 5px;
-              margin-top: -2px;
-            }
+          .icon {
+            font-size: 15px;
+            margin-right: 5px;
+            margin-top: -2px;
           }
+        }
 
+        .verifyContainer {
+          cursor: pointer;
+          color: $color-bright-1;
+
+          &:hover {
+            color: $color-bright-2;
+          }
         }
 
         .gamesContainer {

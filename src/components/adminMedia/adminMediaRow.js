@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./adminMediaRow.module.scss";
-import {getAllMedia, getNumberOfMedia, setGamesForMedia} from "../../endpoints/mediasEndpoint";
+import {getAllMedia, getNumberOfMedia, setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
 import Carousel from "../carousel/carousel";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import {AdminMediaBox} from "./adminMediaBox";
@@ -15,6 +15,7 @@ class AdminMediaRow extends React.Component {
         this._handleClickNext = this._handleClickNext.bind(this);
         this._handleClickMedia = this._handleClickMedia.bind(this);
         this._handleSaveGames = this._handleSaveGames.bind(this);
+        this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
 
         this.state = {
             medias: [],
@@ -39,6 +40,13 @@ class AdminMediaRow extends React.Component {
         this.loadMoreMedias();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.medias !== prevState.medias) {
+            const mediasListWithEmpty = Array.prototype.splice.apply(this.state.mediasWithEmpty, [0, this.state.medias.length].concat(this.state.medias));
+            this.setState({mediasListWithEmpty})
+        }
+    }
+
     loadMoreMedias() {
         if (this.state.noMoreMedias) {
             return;
@@ -47,11 +55,9 @@ class AdminMediaRow extends React.Component {
             .then((result) => {
                 if (result.medias.length > 0) {
                     const mediasList = this.state.medias.concat(result.medias);
-                    const mediasListWithEmpty = Array.prototype.splice.apply(this.state.mediasWithEmpty, [0, mediasList.length].concat(mediasList));
                     this.setState({
                         medias: mediasList,
                         lastDoc: result.lastDoc,
-                        mediasListWithEmpty: mediasListWithEmpty
                     });
                 } else {
                     this.setState({noMoreMedias: true});
@@ -74,18 +80,67 @@ class AdminMediaRow extends React.Component {
     }
 
     _handleSaveGames(games) {
-        setGamesForMedia({
-            games: games,
+        return setGamesForMedia({
+            games: games.map((game) => {
+                return {...game, cosyCorners: null}
+            }),
             mediaType: this.props.mediaActive.mediaType,
             mediaId: this.props.mediaActive.media.id
         })
+            .then(() => {
+                this.setState({
+                    medias: this.state.medias.map((media) => {
+                        if (media.id === this.props.mediaActive.media.id) {
+                            return {...media, games: games, isVerified: true};
+
+                        }
+                        return media;
+                    })
+                });
+                this.props.dispatch({
+                    type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+                    payload: {
+                        mediaType: this.props.type.dataLabel,
+                        media: {...this.props.mediaActive.media, games: games, isVerified: true}
+                    }
+                });
+                return true;
+            })
+    }
+
+    _handleVerifyMedia() {
+        return toggleVerifyMedia({
+            verified: true,
+            mediaType: this.props.mediaActive.mediaType,
+            mediaId: this.props.mediaActive.media.id
+        })
+            .then(() => {
+                this.setState({
+                    medias: this.state.medias.map((media) => {
+                        if (media.id === this.props.mediaActive.media.id) {
+                            return {...media, isVerified: true};
+
+                        }
+                        return media;
+                    })
+                });
+                this.props.dispatch({
+                    type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+                    payload: {
+                        mediaType: this.props.type.dataLabel,
+                        media: {...this.props.mediaActive.media, isVerified: true}
+                    }
+                });
+                return true;
+            })
     }
 
     renderActiveMedia() {
         const {mediaActive, type} = this.props;
         if (!mediaActive || mediaActive.mediaType !== type.dataLabel)
             return null;
-        return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}/>
+        return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
+                              onVerifyMedia={this._handleVerifyMedia}/>
     }
 
     render() {

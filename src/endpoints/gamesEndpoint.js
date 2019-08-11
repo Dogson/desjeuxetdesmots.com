@@ -2,13 +2,14 @@ import moment from "moment";
 import firebase from "../config/firebase";
 import {IGDB_API} from "../config/apiConfig";
 import * as axios from "axios";
+import {MEDIAS} from "../config/const";
 
 const db = firebase.firestore();
 
 const offset = 28;
 
 const getAllGames = ({lastDoc}) => {
-    let ref = db.collection('games').orderBy("releaseDate", "desc");
+    let ref = db.collection('games').orderBy("lastUpdated", "desc");
     if (lastDoc) {
         ref = ref.startAfter(lastDoc);
     }
@@ -21,14 +22,26 @@ const getAllGames = ({lastDoc}) => {
                 }).map((game) => {
                     return {...game, releaseDate: game.releaseDate ? moment.unix(game.releaseDate) : "A venir"}
                 }).sort((gameX, gameY) => {
-                    return gameX.releaseDate === "A venir" ? -1 : gameY.releaseDate === "A venir" ? 2 : gameY.releaseDate - gameX.releaseDate
+                    return gameX.lastUpdated ? -1 : gameY.lastUpdated === "A venir" ? 2 : gameY.lastUpdated - gameX.lastUpdated
+                }).filter((game) => {
+                    let isDisplayed = false;
+                    for (let i = 0; i< MEDIAS.length; i++) {
+                        const media = MEDIAS[i].medias;
+                        for (let j = 0; j < media.length ; j++) {
+                            const dataLabel = media[j].dataLabel+"s";
+                            if (game[dataLabel] && game[dataLabel].length > 0) {
+                                isDisplayed = true;
+                            }
+                        }
+                    }
+                    return isDisplayed;
                 }),
                 lastDoc: snap.docs && snap.docs[snap.docs.length - 1]
             }
         })
 
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         })
 };
 
@@ -54,7 +67,7 @@ export const getGamesBySearch = ({search, lastDoc, limit}) => {
         })
 
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         })
 };
 
@@ -72,7 +85,7 @@ export const getGamesFromIGDB = ({search, limit}) => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields id, name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"* & popularity > 1; limit: ${limit};`
+        data: `fields id, name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"*; limit: ${limit};`
     })
         .then(response => {
             return response.data.filter((game) => {

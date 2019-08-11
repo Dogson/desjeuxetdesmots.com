@@ -1,4 +1,3 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 // const firebase = require('firebase');
@@ -7,6 +6,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 
+const moment = require('moment');
 const spotify = require('./spotify');
 const parseHelper = require('./parseHelper');
 
@@ -30,7 +30,8 @@ exports.generateCosyCornerGames = functions.firestore
             })
             .then(() => {
                 return db.collection('cosyCorner').doc(context.params.id).update({
-                    games: games.map((game) => db.doc('games/' + game.id))
+                    games: games.map((game) => db.doc('games/' + game.id)),
+                    isVerified: false
                 })
             })
             .then(() => {
@@ -39,7 +40,7 @@ exports.generateCosyCornerGames = functions.firestore
                 })
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             });
     });
 
@@ -63,10 +64,74 @@ exports.addGameSearchableIndex = functions.firestore
             searchableName: game.name.toUpperCase()
         })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             });
     });
 
 exports.setGamesForMedia = functions.https.onCall((data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+            'while authenticated.');
+    }
+    const {mediaId, mediaType, games} = data;
+    return db.collection(mediaType).doc(`${mediaId}`).get()
+        .then((doc) => {
+            const result = doc.data();
+            const oldGames = result.games.map((game) => {
+                return game.id
+            });
+            const currentGames = games.map((game) => {
+                return String(game.id)
+            });
+            const deletedGames = oldGames.filter((game) => {
+                return currentGames.indexOf(game) === -1;
+            });
+            return Promise.all(deletedGames.map((gameId) => {
+                let mediaFields = {};
+                mediaFields[`${mediaType}s`] = admin.firestore.FieldValue.arrayRemove(db.doc(`${mediaType}/${mediaId}`));
+                return db.collection("games").doc(gameId).update(mediaFields);
+            }))
+        })
+        .then(() => {
+            return Promise.all(games.map((game) => {
+                return db.collection('games').doc(`${game.id}`).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            return doc.data();
+                        } else {
+                            let gameMapped = {
+                                cover: game.cover,
+                                id: game.id,
+                                name: game.name,
+                                releaseDate: game.releaseDate.unix ? game.releaseDate.unix() : game.releaseDate,
+                                searchableName: game.name.toUpperCase()
+                            };
+                            gameMapped[`${mediaType}s`] = [];
+                            return db.collection('games').doc(`${game.id}`).set(gameMapped)
+                        }
+                    })
+                    .then(() => {
+                        let gameUpdates = {
+                            lastUpdated: Math.floor(Date.now() / 1000)
+                        };
+                        gameUpdates[`${mediaType}s`] = admin.firestore.FieldValue.arrayUnion(db.doc(`${mediaType}/` + mediaId));
+                        return db.collection('games').doc(`${game.id}`).update(gameUpdates)
 
+                    })
+            }))
+                .then(() => {
+                    return db.collection(`${mediaType}`).doc(`${mediaId}`).update({
+                        games: games.map((game) => {
+                            return db.doc('games/' + game.id)
+                        }),
+                        isVerified: true
+                    })
+                })
+        })
+        .then(() => {
+            return Promise.resolve({'status': 'success'});
+        })
+        .catch((error) => {
+            return Promise.reject({status: 'error', error: error});
+        })
 });
