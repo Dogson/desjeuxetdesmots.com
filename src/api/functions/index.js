@@ -152,3 +152,19 @@ exports.toggleVerifyMedia = functions.https.onCall((data, context) => {
             return Promise.reject({status: 'error', error: error});
         })
 });
+
+exports.scheduledFunction = functions.pubsub
+    .schedule('every wednesday 12:00')
+    .onRun(() => {
+        console.log("fetching cosy corners");
+        return spotify.getSpotifyAccessToken()
+            .then((token) => {
+                return spotify.copyAndWriteCosyCornerWithOffset(token, 0);
+            })
+            .then(() => {
+                console.log("success");
+            })
+            .catch(() => {
+                console.log("error");
+            })
+    });

@@ -9,7 +9,7 @@ const cosyCornerId = "3WRu0whFXjZoxr8jyy03UN";
 
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/Gwen/Downloads/API Project-8679aea3681c.json";
 
-function getSpotifyAccessToken() {
+exports.getSpotifyAccessToken = function() {
     const config = {
         headers: {
             'Authorization': "Basic " + clientId,
@@ -30,9 +30,9 @@ function getSpotifyAccessToken() {
             console.error(error);
         })
 
-}
+};
 
-function copyAndWriteCosyCornerWithOffset(token, offset) {
+exports.copyAndWriteCosyCornerWithOffset = function(token, offset) {
     const config = {
         headers: {'Authorization': "Bearer " + token}
     };
@@ -56,7 +56,7 @@ function copyAndWriteCosyCornerWithOffset(token, offset) {
                 return copyAndWriteCosyCornerWithOffset(token, offset + 50);
             });
     })
-}
+};
 
 exports.copyCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) => {
     getSpotifyAccessToken()
