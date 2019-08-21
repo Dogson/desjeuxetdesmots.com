@@ -7,6 +7,7 @@ import {AdminMediaBox} from "./adminMediaBox";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
+import {MEDIA_TYPES} from "../../config/const";
 
 class AdminMediaRow extends React.Component {
     constructor(props) {
@@ -82,7 +83,15 @@ class AdminMediaRow extends React.Component {
     _handleSaveGames(games) {
         return setGamesForMedia({
             games: games.map((game) => {
-                return {...game, cosyCorners: null}
+                const mappedGame = {...game};
+               MEDIA_TYPES.forEach((mediaType) => {
+                   mediaType.medias.forEach((media) => {
+                       mappedGame[media.dataLabel] = null;
+                   });
+                   if (isNaN(mappedGame.releaseDate))
+                       mappedGame.releaseDate = null;
+               });
+                return mappedGame;
             }),
             mediaType: this.props.mediaActive.mediaType,
             mediaId: this.props.mediaActive.media.id

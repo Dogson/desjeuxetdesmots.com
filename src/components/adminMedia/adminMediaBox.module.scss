@@ -3,7 +3,7 @@
 .adminMediaBoxContainer {
   width: 100%;
   @extend .flexColumn;
-  margin: 10px 50px;
+  margin: 40px 50px;
 
   .titleContainer {
     //@extend .flexRow;
@@ -37,64 +37,78 @@
     .leftRow {
       padding-right: 30px;
       flex: 0.4;
+      position: relative;
 
-
-      .description {
+      .saveContainer, .verifyContainer {
+        @extend .flexRow;
+        justify-content: flex-end;
+        align-self: flex-end;
         color: $color-bright-1;
-        font-weight: $weight-regular;
-        font-size: $size-small;
+
+        div {
+          cursor: pointer;
+        }
+
+        .icon {
+          font-size: 18px;
+          margin-right: 5px;
+          margin-top: -2px;
+        }
+
+        &:hover {
+          color: $color-bright-2;
+        }
+      }
+
+      .gamesContainer {
+        min-height: 150px;
+        margin-bottom: 10px;
+        @extend .flexRow;
+        flex-wrap: wrap;
+        align-self: flex-start;
+
+        .noGame {
+          color: $color-bright-2;
+          text-transform: uppercase;
+          font-size: $size-smaller;
+          font-weight: $weight-regular;
+          letter-spacing: 1px;
+          align-self: center;
+        }
+
+        .cardContainer {
+          width: 112.5px;
+          height: 150px;
+          opacity: 1;
+        }
+
+        .hoveredInfo {
+          @extend .flexCenter;
+
+          .title {
+            font-size: $size-small;
+            margin: 0;
+          }
+        }
+      }
+
+      .inputWithSuggestionsContainer {
+        align-self: flex-start;
       }
     }
 
     .rightRow {
-      flex: 0.6;
+      flex: 0.5;
 
       .rightRowContainer {
-        position: relative;
-        width: 500px;
+        min-height: 320px;
+        @extend .flexColumn;
+        //@extend .flexCenter;
 
-        .saveContainer, .verifyContainer {
-          position: absolute;
-          top: -50px;
-          right: 55px;
-          font-size: 20px;
-          color: $color-bright-2;
-
-          .icon {
-            font-size: 15px;
-            margin-right: 5px;
-            margin-top: -2px;
-          }
-        }
-
-        .verifyContainer {
-          cursor: pointer;
+        .description {
           color: $color-bright-1;
-
-          &:hover {
-            color: $color-bright-2;
-          }
-        }
-
-        .gamesContainer {
-          margin-bottom: 10px;
-          @extend .flexRow;
-          flex-wrap: wrap;
-
-          .cardContainer {
-            width: 112.5px;
-            height: 150px;
-            opacity: 1;
-          }
-
-          .hoveredInfo {
-            @extend .flexCenter;
-
-            .title {
-              font-size: $size-small;
-              margin: 0;
-            }
-          }
+          font-weight: $weight-regular;
+          font-size: $size-small;
         }
       }
     }

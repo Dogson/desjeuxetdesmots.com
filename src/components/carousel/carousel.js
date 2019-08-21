@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import styles from "./carousel.module.scss";
 import {NavLink} from "react-router-dom";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import Dotdotdot from "react-dotdotdot";
 
 export default class Carousel extends Component {
     constructor(props) {
@@ -65,7 +66,7 @@ const Card = ({media, onClick, isActive}) => {
                 : null
         }
         <div className={styles.backImage} style={{backgroundImage: `url(${media.image})`}}/>
-        <div className={styles.title}>{media.name}</div>
+        <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>
 };
 

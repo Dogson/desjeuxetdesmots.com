@@ -8,7 +8,7 @@ import PageLayout from "../../layouts/PageLayout";
 import styles from "./admin.module.scss";
 import {DebounceInput} from "react-debounce-input";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
-import {MEDIAS, PODCASTS} from "../../config/const";
+import {MEDIA_TYPES, PODCASTS} from "../../config/const";
 import * as moment from "../homepage/Homepage";
 import {NavLink} from "react-router-dom";
 
@@ -82,7 +82,7 @@ class Admin extends Component {
     }
 
     renderAdminSection() {
-        return <SectionGrid title="Medias" items={MEDIAS}/>;
+        return <SectionGrid title="Medias" items={MEDIA_TYPES}/>;
     }
 
     render() {

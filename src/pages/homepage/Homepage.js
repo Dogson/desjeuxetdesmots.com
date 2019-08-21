@@ -16,6 +16,7 @@ import * as moment from "moment/moment";
 
 import logo from "../../assets/logos/gamerJuice/logo.png";
 import logoCosyCorner from "../../assets/logos/cosyCorner/cosyCornerSmall.png";
+import {MEDIA_TYPES} from "../../config/const";
 
 
 class Homepage extends Component {
@@ -130,10 +131,17 @@ const GameGrid = ({games}) => {
     </div>
 };
 
-const MediaLogos = ({game: {cosyCorners}}) => {
+const MediaLogos = ({game}) => {
+    console.log(game);
     return <div className={styles.mediasLogosContainer}>
-        {cosyCorners && cosyCorners.length > 0 ?
-            <img src={logoCosyCorner} alt={"Cosy Corner"}/> : null}
+        {MEDIA_TYPES.map((mediaType) => {
+            return mediaType.medias.map((media) => {
+                if (game[media.dataLabel] && game[media.dataLabel].length > 0) {
+                    return  <img src={media.logoMin} alt={media.title}/>
+                }
+                return null;
+            })
+        })}
     </div>
 };
 

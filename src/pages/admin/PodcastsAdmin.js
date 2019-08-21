@@ -11,7 +11,7 @@ import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import * as moment from "../homepage/Homepage";
 import {NavLink, Redirect} from "react-router-dom";
 import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
-import {MEDIAS} from "../../config/const";
+import {MEDIA_TYPES} from "../../config/const";
 import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
 
 const firebaseAppAuth = firebase.auth();
@@ -26,7 +26,7 @@ class PodcastsAdmin extends Component {
         const {user} = this.props;
         return <PageLayout title="Administration des podcasts">
             <Helmet title="Panneau d'administration des podcasts - gamer juice"/>
-            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIAS.find((item) => {return item.name === "Podcasts"})}/> : <Redirect to="/admin"/>}
+            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIA_TYPES.find((item) => {return item.name === "Podcasts"})}/> : <Redirect to="/admin"/>}
         </PageLayout>
     }
 }
