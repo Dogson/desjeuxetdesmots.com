@@ -42,6 +42,7 @@ class GamePage extends React.Component {
     }
 
     _handleClickMedia(media) {
+        console.log(media);
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: {media: media}
@@ -61,7 +62,7 @@ class GamePage extends React.Component {
                 });
                 return mappedGame;
             }),
-            mediaType: this.props.mediaActive.mediaType,
+            mediaType: this.props.mediaActive.media.type,
             mediaId: this.props.mediaActive.media.id
         })
             .then(() => {
@@ -102,6 +103,7 @@ class GamePage extends React.Component {
     }
 
     renderActiveMedia() {
+        debugger;
         const {mediaActive, type} = this.props;
         if (mediaActive && mediaActive.media)
             return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
