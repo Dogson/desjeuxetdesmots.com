@@ -12,7 +12,7 @@ export const getNumberOfMedia = ({mediaDataLabel}) => {
         .then((doc) => {
             return doc.exists ? doc.data() : 0;
         }).catch(function (error) {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
         });
 };
 
@@ -63,7 +63,7 @@ export const getMediaGames = ({media}) => {
                 .then((doc) => {
                     gamesResult.push(doc.data());
                 }).catch(function (error) {
-                    console.log("Error getting document:", error);
+                    console.error("Error getting document:", error);
                 });
         }
     }))

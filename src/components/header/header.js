@@ -4,9 +4,10 @@ import logo from "../../assets/logos/gamerJuice/logo.png";
 import {NavLink} from "react-router-dom";
 import {FaCog} from "react-icons/fa";
 import ReactTooltip from 'react-tooltip'
+import cx from "classnames";
 
-const Header = () => (
-    <div className={styles.headerContainer}>
+const Header = ({smallHeader}) => (
+    <div className={cx(styles.headerContainer, {[styles.smallHeader]: smallHeader})}>
         <NavLink className={styles.titleContainer} to={"/"}>
             <span>gamer juice</span>
             <div className={styles.logo}>

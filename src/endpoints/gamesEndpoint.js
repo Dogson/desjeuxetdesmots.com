@@ -8,6 +8,65 @@ const db = firebase.firestore();
 
 const offset = 28;
 
+async function getMediasFromRefs(refs) {
+    return Promise.all(refs.map((ref) => {
+        return ref.get()
+            .then((doc) => {
+                if (doc.exists) {
+                    return {...doc.data(), id: doc.id};
+                }
+            })
+    }))
+        .then((medias) => {
+            return Promise.all(medias.map((media) => {
+                let games = [];
+                return Promise.all(media.games.map((gameRef) => {
+                    return gameRef.get()
+                        .then((doc) => {
+                            if (doc.exists) {
+                                games.push(doc.data());
+                            }
+                        })
+                }))
+                    .then(() => {
+                        media.games = games;
+                        media.releaseDate = moment(media.releaseDate);
+                        return media;
+                    })
+            }))
+        })
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
+
+export async function getGameById(gameId) {
+    let game;
+    return db.collection('games').doc(gameId).get()
+        .then((snap) => {
+            game = snap.data();
+
+            return asyncForEach(MEDIA_TYPES, async (mediaType) => {
+                game[mediaType.dataLabel] = [];
+                return asyncForEach(mediaType.medias, async (media) => {
+                    if (game[media.dataLabel]) {
+                        const medias = await getMediasFromRefs(game[media.dataLabel]);
+                        game[mediaType.dataLabel] = game[mediaType.dataLabel].concat(medias);
+                    }
+                })
+            })
+        })
+        .then(() => {
+            return game;
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+};
+
 const getAllGames = ({lastDoc}) => {
     let ref = db.collection('games').orderBy("lastUpdated", "desc");
     if (lastDoc) {
@@ -85,16 +144,16 @@ export const getGamesFromIGDB = ({search, limit}) => {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields id, name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"*; limit: ${limit};`
+        data: `fields id, name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${search}"*; limit: ${limit};`
     })
         .then(response => {
             return response.data.filter((game) => {
                 return game.cover;
             }).map((game) => {
-                console.log(game);
                 return {
                     ...game,
                     cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
+                    screenshot: game.screenshots && game.screenshots.length && game.screenshots[game.screenshots.length - 1].url.replace('/t_thumb/', '/t_screenshot_big/').replace('//', 'https://'),
                     releaseDate: game.release_dates && Math.min(...game.release_dates && game.release_dates.map((release_date) => {
                             return release_date.date;
                         })

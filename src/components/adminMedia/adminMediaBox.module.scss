@@ -3,13 +3,14 @@
 .adminMediaBoxContainer {
   width: 100%;
   @extend .flexColumn;
-  margin: 40px 50px;
+  margin: 0 20px;
 
   .titleContainer {
     //@extend .flexRow;
     @extend .flexSpaceBetween;
     @extend .flexAlignCenter;
     margin-bottom: 10px;
+    max-width: 1000px;
 
     .title {
       font-size: $size-bigger;

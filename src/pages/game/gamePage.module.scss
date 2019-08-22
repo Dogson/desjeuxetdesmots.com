@@ -1,0 +1,88 @@
+@import "../../index";
+
+.gamePageContainer {
+  width: 100%;
+
+  .gameHeader {
+    background-color: $color-dark-2;
+    width: 100%;
+    height: 400px;
+    position: relative;
+    @extend .flexColumn;
+    @extend .flexAlignCenter;
+    @extend .flexCenter;
+
+    .headerContent {
+      position: relative;
+      z-index: 2;
+      max-width: 1300px;
+      width: 100%;
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+
+      .coverImg {
+        width: 200px;
+        margin-right: 50px;
+      }
+
+      .gameInfos {
+        color: $color-bright-2;
+
+        .gameTitle {
+          text-transform: uppercase;
+          //letter-spacing: 1px;
+          font-size: $size-bigger;
+          margin: 10px;
+          font-weight: $weight-regular;
+        }
+
+        .gameDate {
+          margin: 10px;
+        }
+      }
+    }
+
+    .backImage {
+      width: 100%;
+      height: 100%;
+      filter: blur(3px);
+      object-fit: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.5;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  .gameContentWrapper {
+    position: relative;
+    z-index: 2;
+    background-color: $color-dark-1;
+    @extend .flexColumn;
+    @extend .flexAlignCenter;
+    padding-top: 20px;
+
+    .gameContent {
+      width: 1300px;
+
+      .title {
+        @extend .flexRow;
+        @extend .flexAlignCenter;
+        text-transform: lowercase;
+        letter-spacing: 1px;
+        color: $color-bright-1;
+        margin: 0 10px 15px;
+
+        .imageContainer {
+          height: 30px;
+          width: 30px;
+          margin-right: 10px;
+        }
+      }
+
+    }
+  }
+}

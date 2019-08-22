@@ -28,7 +28,7 @@ export default class Carousel extends Component {
 
         const settings = {
             dots: true,
-            infinite: true,
+            infinite: medias.length > onScreenItems,
             speed: 1000,
             draggable: false,
             easing: 'ease-out',

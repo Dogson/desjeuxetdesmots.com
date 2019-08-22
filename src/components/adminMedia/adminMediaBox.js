@@ -11,6 +11,7 @@ import ReactTooltip from "react-tooltip";
 import {NavLink} from "react-router-dom";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
+import firebase from '../../config/firebase';
 
 export class AdminMediaBox extends React.Component {
     constructor(props) {
@@ -82,6 +83,8 @@ export class AdminMediaBox extends React.Component {
     }
 
     _handleDeleteGame(game) {
+        if (!firebase.auth().currentUser)
+            return;
         const currentGames = this.state.currentGames.filter((currentGame) => {
             return currentGame.id !== game.id;
         });
@@ -89,7 +92,6 @@ export class AdminMediaBox extends React.Component {
     }
 
     _handleClickSuggestion(game) {
-        console.log(game);
         if (!this.state.currentGames.find((currentGame) => {
             return game.id === currentGame.id
         })) {
@@ -103,7 +105,7 @@ export class AdminMediaBox extends React.Component {
     }
 
     _handleOnSaveGames() {
-        if (this.state.loadingSaveGames) {
+        if (this.state.loadingSaveGames || !firebase.auth().currentUser) {
             return;
         }
         this.setState({loadingSaveGames: true});
@@ -114,7 +116,7 @@ export class AdminMediaBox extends React.Component {
     }
 
     _handleVerifyMedia() {
-        if (this.state.loadingSaveGames) {
+        if (this.state.loadingSaveGames || !firebase.auth().currentUser) {
             return;
         }
         this.setState({loadingSaveGames: true});
@@ -125,6 +127,7 @@ export class AdminMediaBox extends React.Component {
     }
 
     render() {
+        const user = firebase.auth().currentUser;
         const {media} = this.props;
         return <div className={styles.adminMediaBoxContainer} ref={this.ref}>
             <div className={styles.titleContainer}>
@@ -137,7 +140,7 @@ export class AdminMediaBox extends React.Component {
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>
-                    {this.state.showSaveBtn ?
+                    {this.state.showSaveBtn && user ?
                         <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
                             <div onClick={this._handleOnSaveGames} data-tip="Enregistrer">
                                 {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
@@ -150,7 +153,7 @@ export class AdminMediaBox extends React.Component {
                             </div>
                         </div> :
                         <div className={styles.verifyContainer}>
-                            {media.isVerified ? null :
+                            {media.isVerified || !firebase.auth().currentUser ? null :
                                 <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié">
                                     {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
                                         <Loader
@@ -168,12 +171,12 @@ export class AdminMediaBox extends React.Component {
                     <div className={styles.gamesContainer}>
                         {this.state.currentGames.length > 0 ? this.state.currentGames.map((game) => {
                                 return <div key={game.id} onClick={() => this._handleDeleteGame(game)}><GameCard
-                                    game={game}/>
+                                    showDelete={!!user} game={game}/>
                                 </div>
                             }) :
                             <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>}
                     </div>
-                    <div className={styles.inputWithSuggestionsContainer}>
+                    {user && <div className={styles.inputWithSuggestionsContainer}>
                         <div
                             className={cx(styles.inputContainer, styles.small, {[styles.focus]: this.state.inputFocused})}>
                             <FaSearch className={styles.icon}/>
@@ -204,7 +207,7 @@ export class AdminMediaBox extends React.Component {
                                 })}
                             {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
                         </div>
-                    </div>
+                    </div>}
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
@@ -218,14 +221,14 @@ export class AdminMediaBox extends React.Component {
     }
 }
 
-const GameCard = ({game, onDelete}) => {
+const GameCard = ({game, onDelete, showDelete}) => {
     return <div className={styles.cardContainer}>
         <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
         <div className={styles.hoveredInfo}>
             <div className={styles.backColor}/>
-            <div className={styles.title}>
+            {showDelete && <div className={styles.title}>
                 Remove
-            </div>
+            </div>}
         </div>
     </div>
 }

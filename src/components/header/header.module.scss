@@ -8,6 +8,7 @@
   padding: 0 30px;
   box-sizing: border-box;
   position: relative;
+  z-index: 2;
   @extend .flexRow;
   @extend .flexCenter;
 
@@ -43,5 +44,23 @@
       transition: all 0.3s ease-in-out;
       transform: rotate(180deg);
     }
+  }
+
+  &.smallHeader {
+    height: 50px;
+
+    .titleContainer {
+      font-size: $size-big;
+
+      .logo {
+        padding: 0 5px;
+        width: 25px;
+      }
+
+    }
+    .adminButtonContainer {
+    top: 17px;
+    }
+
   }
 }

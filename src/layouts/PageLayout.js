@@ -6,10 +6,10 @@ import Sidebar from "react-sidebar";
 import {FaBars} from "react-icons/fa";
 import {NavLink} from "react-router-dom";
 
-export default ({children, title}) => (
+export default ({children, title, smallHeader}) => (
     <div className={styles.pageContainer}>
         <DrawerNav/>
-        <Header/>
+        <Header smallHeader={smallHeader} />
         <div className={styles.pageContent}>
             {title ? <div className={styles.titleContainer}>{title}</div> : null}
             {children}

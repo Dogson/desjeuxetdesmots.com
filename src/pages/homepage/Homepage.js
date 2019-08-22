@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch} from "react-icons/fa";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
-import {withRouter} from 'react-router-dom'
+import {NavLink, Route, withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
@@ -17,6 +17,8 @@ import * as moment from "moment/moment";
 import logo from "../../assets/logos/gamerJuice/logo.png";
 import logoCosyCorner from "../../assets/logos/cosyCorner/cosyCornerSmall.png";
 import {MEDIA_TYPES} from "../../config/const";
+import GamePage from "../game/GamePage";
+import Admin from "../admin/Admin";
 
 
 class Homepage extends Component {
@@ -114,17 +116,19 @@ const GameGrid = ({games}) => {
         {
             games.map((game) => {
                 return <div className={styles.cardContainer} key={game.id}>
-                    <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
-                    <div className={styles.hoveredInfo}>
-                        <div className={styles.backColor}/>
-                        <div className={styles.title}>
-                            {game.name}
+                    <NavLink to= {`/game/${game.id}`}>
+                        <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
+                        <div className={styles.hoveredInfo}>
+                            <div className={styles.backColor}/>
+                            <div className={styles.title}>
+                                {game.name}
+                            </div>
+                            <div className={styles.secondaryInfoContainer}>
+                                {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
+                            </div>
+                            <MediaLogos game={game}/>
                         </div>
-                        <div className={styles.secondaryInfoContainer}>
-                            {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
-                        </div>
-                        <MediaLogos game={game}/>
-                    </div>
+                    </NavLink>
                 </div>
             })
         }
@@ -132,12 +136,11 @@ const GameGrid = ({games}) => {
 };
 
 const MediaLogos = ({game}) => {
-    console.log(game);
     return <div className={styles.mediasLogosContainer}>
         {MEDIA_TYPES.map((mediaType) => {
             return mediaType.medias.map((media) => {
                 if (game[media.dataLabel] && game[media.dataLabel].length > 0) {
-                    return  <img src={media.logoMin} alt={media.title}/>
+                    return <div key={game.id}><img src={media.logoMin} alt={media.title}/></div>
                 }
                 return null;
             })

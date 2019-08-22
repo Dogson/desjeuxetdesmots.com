@@ -1,7 +1,7 @@
 # Credits
 
 ## Development   
-IGBD API, Firebase
+IGDB API, Firebase
 
 ## Content 
 

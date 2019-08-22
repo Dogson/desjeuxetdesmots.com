@@ -6,14 +6,16 @@ const PODCASTS = [
         name: "Le Cosy Corner",
         author: "À L'aise Blaze",
         logo: require("../assets/logos/cosyCorner/cosyCornerFull.jpg"),
-        logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png")
+        logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png"),
+        app: "spotify"
     },
     {
         dataLabel: "silenceOnJoue",
         name: "Silence On Joue",
         author: "Erwan Cario",
         logo: require("../assets/logos/silenceOnJoue/silenceOnJoueFull.jpg"),
-        logoMin: require("../assets/logos/silenceOnJoue/silenceOnJoueMini.png")
+        logoMin: require("../assets/logos/silenceOnJoue/silenceOnJoueMini.png"),
+        app: "spotify"
     }
 ];
 
@@ -24,6 +26,8 @@ export const MEDIA_TYPES = [
         medias: PODCASTS,
         route: "/admin/podcasts",
         logo: require("../assets/logos/mediaTypes/podcasts.jpg"),
-        component: PodcastsAdmin
+        logoMin: require("../assets/logos/mediaTypes/podcastsMin.png"),
+        component: PodcastsAdmin,
+        dataLabel: "podcasts"
     }
 ]
