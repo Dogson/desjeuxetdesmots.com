@@ -8,12 +8,14 @@ import PageLayout from "../../layouts/PageLayout";
 import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
 import {getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
-import {NavLink} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
 import firebase from '../../config/firebase';
+import {connect} from "react-redux";
+import {TrashWidget} from "../trashWidget/trashWidget";
 
-export class AdminMediaBox extends React.Component {
+class AdminMediaBox extends React.Component {
     constructor(props) {
         super(props);
 
@@ -82,7 +84,9 @@ export class AdminMediaBox extends React.Component {
         }
     }
 
-    _handleDeleteGame(game) {
+    _handleDeleteGame(e, game) {
+        e.preventDefault();
+        e.stopPropagation();
         if (!firebase.auth().currentUser)
             return;
         const currentGames = this.state.currentGames.filter((currentGame) => {
@@ -170,8 +174,11 @@ export class AdminMediaBox extends React.Component {
                     <ReactTooltip effect="solid" place="left"/>
                     <div className={styles.gamesContainer}>
                         {this.state.currentGames.length > 0 ? this.state.currentGames.map((game) => {
-                                return <div key={game.id} onClick={() => this._handleDeleteGame(game)}><GameCard
-                                    showDelete={!!user} game={game}/>
+                                return <div key={game.id}>
+                                    <NavLink to={`/game/${game.id}`}>
+                                        <GameCard
+                                            showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
+                                    </NavLink>
                                 </div>
                             }) :
                             <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>}
@@ -221,14 +228,22 @@ export class AdminMediaBox extends React.Component {
     }
 }
 
-const GameCard = ({game, onDelete, showDelete}) => {
+const GameCard = ({game, showDelete, onDelete}) => {
     return <div className={styles.cardContainer}>
         <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
         <div className={styles.hoveredInfo}>
             <div className={styles.backColor}/>
-            {showDelete && <div className={styles.title}>
-                Remove
+            <div className={styles.title}>
+                {game.name}
+            </div>
+            <div className={styles.secondaryInfoContainer}> &nbsp;</div>
+            {showDelete && <div className={styles.footer}>
+                <div onClick={(e) => {onDelete(e, game)}} style={{height: '100%'}}>
+                    <TrashWidget color="#FFC857"/>
+                </div>
             </div>}
         </div>
     </div>
 }
+
+export default withRouter(AdminMediaBox);

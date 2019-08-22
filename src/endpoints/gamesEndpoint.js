@@ -13,7 +13,6 @@ async function getMediasFromRefs(refs, mediaType) {
         return ref.get()
             .then((doc) => {
                 if (doc.exists) {
-                    console.log(doc);
                     return {...doc.data(), id: doc.id};
                 }
             })

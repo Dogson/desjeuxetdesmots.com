@@ -363,6 +363,15 @@ input[type="submit"] {
     @extend .flexAlignCenter;
     padding: 0 5px;
     height: 100%;
+    position: relative;
+
+    .footer {
+      height: 25px;
+      position: absolute;
+      bottom: 0;
+      width: 100%
+    }
+
   }
 
   .backColor {

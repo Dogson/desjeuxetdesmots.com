@@ -3,7 +3,7 @@ import styles from "./adminMediaRow.module.scss";
 import {getAllMedia, getNumberOfMedia, setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
 import Carousel from "../carousel/carousel";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
-import {AdminMediaBox} from "./adminMediaBox";
+import AdminMediaBox from "./adminMediaBox";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";

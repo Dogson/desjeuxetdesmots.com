@@ -8,11 +8,12 @@ import localization from 'moment/locale/fr';
 import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import Carousel from "../../components/carousel/carousel";
-import {AdminMediaBox} from "../../components/adminMedia/adminMediaBox";
+import AdminMediaBox from "../../components/adminMedia/adminMediaBox";
 import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_TYPES} from "../../config/const";
 import {setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
+import {TrashWidget} from "../../components/trashWidget/trashWidget";
 
 class GamePage extends React.Component {
 
@@ -20,8 +21,7 @@ class GamePage extends React.Component {
         moment.locale('fr', localization);
         super(props);
         this.state = {
-            game: {},
-            loading: true
+            game: {}
         };
 
         this._handleClickMedia = this._handleClickMedia.bind(this);
@@ -30,6 +30,17 @@ class GamePage extends React.Component {
     }
 
     componentDidMount() {
+        this.refreshGame();
+    }
+
+    componentDidUpdate(prevProps) {
+       if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
+            this.refreshGame();
+       }
+    }
+
+    refreshGame() {
+        this.setState({loading: true});
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: {media: null}
@@ -42,7 +53,6 @@ class GamePage extends React.Component {
     }
 
     _handleClickMedia(media) {
-        console.log(media);
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: {media: media}
@@ -103,7 +113,6 @@ class GamePage extends React.Component {
     }
 
     renderActiveMedia() {
-        debugger;
         const {mediaActive, type} = this.props;
         if (mediaActive && mediaActive.media)
             return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}

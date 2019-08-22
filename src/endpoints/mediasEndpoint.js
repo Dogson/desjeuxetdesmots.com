@@ -77,7 +77,6 @@ export const getMediaGames = ({media}) => {
 
 export const setGamesForMedia = ({mediaId, mediaType, games}) => {
         const data = {mediaId: mediaId, mediaType: mediaType, games: games};
-        console.log(data);
         return functions.httpsCallable('setGamesForMedia')(data)
             .catch((error) => {
                 console.error(error);
