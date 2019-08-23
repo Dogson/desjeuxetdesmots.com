@@ -8,7 +8,7 @@ const db = firebase.firestore();
 
 const offset = 28;
 
-async function getMediasFromRefs(refs, mediaType) {
+async function getMediasFromRefs(refs, mediaType, mediaApp) {
     return Promise.all(refs.map((ref) => {
         return ref.get()
             .then((doc) => {
@@ -32,6 +32,7 @@ async function getMediasFromRefs(refs, mediaType) {
                         media.games = games;
                         media.releaseDate = moment(media.releaseDate);
                         media.type = mediaType;
+                        media.app = mediaApp;
                         return media;
                     })
             }))
@@ -54,7 +55,7 @@ export async function getGameById(gameId) {
                 game[mediaType.dataLabel] = [];
                 return asyncForEach(mediaType.medias, async (media) => {
                     if (game[media.dataLabel]) {
-                        const medias = await getMediasFromRefs(game[media.dataLabel], media.dataLabel);
+                        const medias = await getMediasFromRefs(game[media.dataLabel], media.dataLabel, media.app);
                         game[mediaType.dataLabel] = game[mediaType.dataLabel].concat(medias);
                     }
                 })

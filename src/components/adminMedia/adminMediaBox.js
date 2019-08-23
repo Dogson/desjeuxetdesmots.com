@@ -14,6 +14,7 @@ import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
 import firebase from '../../config/firebase';
 import {connect} from "react-redux";
 import {TrashWidget} from "../trashWidget/trashWidget";
+import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 
 class AdminMediaBox extends React.Component {
     constructor(props) {
@@ -218,6 +219,9 @@ class AdminMediaBox extends React.Component {
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
+                        <div className={styles.mediaPlayerContainer}>
+                            <MediaPlayer url={media.url} type={media.app}/>
+                        </div>
                         <div className={styles.description}>
                             {media.description}
                         </div>
