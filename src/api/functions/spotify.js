@@ -5,11 +5,18 @@ const db = admin.firestore();
 const querystring = require('querystring');
 
 const clientId = "YjQ0YWY2MjAwYTU5NDEwYjljOGExOTAyOWJlZjIyZDk6MjMwMTE1ZWFjMmJkNDE2MjkxZTEzNTRiYjk5NTZkNTk=";
-const cosyCornerId = "3WRu0whFXjZoxr8jyy03UN";
+exports.cosyCorner = {
+    id: "3WRu0whFXjZoxr8jyy03UN",
+    name: 'cosyCorner'
+};
+exports.silenceOnJoue = {
+    id: "5tFF5VpV1wmsSaGTnx7pSQ",
+    name: 'silenceOnJoue'
+};
 
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/Gwen/Downloads/API Project-8679aea3681c.json";
 
-exports.getSpotifyAccessToken = function() {
+exports.getSpotifyAccessToken = function () {
     const config = {
         headers: {
             'Authorization': "Basic " + clientId,
@@ -32,19 +39,19 @@ exports.getSpotifyAccessToken = function() {
 
 };
 
-exports.copyAndWriteCosyCornerWithOffset = function(token, offset) {
+exports.copyAndWriteMediaWithOffset = function (token, offset, media) {
     const config = {
         headers: {'Authorization': "Bearer " + token}
     };
     return axios.get(
-        `https://api.spotify.com/v1/shows/${cosyCornerId}/episodes?limit=50&offset=${offset}`,
+        `https://api.spotify.com/v1/shows/${media.id}/episodes?limit=50&offset=${offset}`,
         config
     ).then((response) => {
         if (response.data.items.length <= 0) {
             return;
         }
         return Promise.all(response.data.items.map((episode) => {
-            return db.collection('cosyCorner').doc(episode.id).set({
+            return db.collection(media.name).doc(episode.id).set({
                 name: episode.name,
                 description: episode.description,
                 url: episode.external_urls.spotify,
@@ -52,16 +59,29 @@ exports.copyAndWriteCosyCornerWithOffset = function(token, offset) {
                 releaseDate: episode.release_date
             }, {merge: true})
         }))
-            .then(() => {
-                return copyAndWriteCosyCornerWithOffset(token, offset + 50);
-            });
+        // .then(() => {
+        //     return exports.copyAndWriteMediaWithOffset(token, offset + 50, media);
+        // });
     })
 };
 
-exports.copyCosyCornerShowsFromSpotify = functions.https.onRequest((req, res) => {
+exports.copyCosyCornerFromSpotify = functions.https.onRequest((req, res) => {
     getSpotifyAccessToken()
         .then((token) => {
-            return copyAndWriteCosyCornerWithOffset(token, 0);
+            return exports.copyAndWriteMediaWithOffset(token, 0, exports.cosyCorner);
+        })
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+});
+
+exports.copySilenceOnJoueFromSpotify = functions.https.onRequest((req, res) => {
+    exports.getSpotifyAccessToken()
+        .then((token) => {
+            return exports.copyAndWriteMediaWithOffset(token, 0, exports.silenceOnJoue);
         })
         .then((result) => {
             res.json(result)

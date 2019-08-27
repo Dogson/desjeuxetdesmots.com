@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const IGDB_API = {
     url: "https://api-v3.igdb.com/",
-    key: "bf136b87b5fff2ab005efc2c5f06e70d"
+    key: "a57068f8a420f99cab8feb4584c911e4"
 };
 
 exports.getVideoGamesFromString = ((string, {excludeStrings, endOfParseStrings}) => {
@@ -12,7 +12,6 @@ exports.getVideoGamesFromString = ((string, {excludeStrings, endOfParseStrings})
 });
 
 
-let hit = 0;
 async function getGamesAsync(string, {excludeStrings, endOfParseStrings}) {
     const punctuations = ":, ?, !, ., &";
     for (let i = 0; i < excludeStrings.length; i++) {
@@ -22,6 +21,9 @@ async function getGamesAsync(string, {excludeStrings, endOfParseStrings}) {
     }
 
     string = string.replace(/ \[.*?\]/g, '');
+    string = string.replace('«', '');
+    string = string.replace('»', '');
+    string = string.replace(',', '');
 
     // Removing useless part
     for (let i = 0; i < endOfParseStrings.length; i++) {
@@ -78,7 +80,14 @@ async function getGamesAsync(string, {excludeStrings, endOfParseStrings}) {
                     const game = {
                         ...exactMatchGames,
                         cover: exactMatchGames.cover && exactMatchGames.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
-                        releaseDate: (exactMatchGames.release_dates && exactMatchGames.release_dates[0] && exactMatchGames.release_dates[0].date) || null
+                        screenshot: exactMatchGames.screenshots && exactMatchGames.screenshots.length && exactMatchGames.screenshots[exactMatchGames.screenshots.length - 1].url.replace('/t_thumb/', '/t_screenshot_big/').replace('//', 'https://'),
+                        releaseDate: exactMatchGames.release_dates && Math.min(...exactMatchGames.release_dates && exactMatchGames.release_dates.map((release_date) => {
+                                return release_date.date;
+                            })
+                                .filter((date) => {
+                                    return date != null;
+                                })
+                        )
                     };
                     delete game.release_dates;
                     games.push(game);
@@ -105,7 +114,7 @@ async function hasPartialMatch(string) {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${string}"* & popularity > 1; limit 50;`
+        data: `fields name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${string}"* & popularity > 1; limit 50;`
     })
         .then((response) => {
             return response.data.length === 0 ? null : response.data;
@@ -127,7 +136,7 @@ async function hasExactMatch(string) {
             'user-key': key,
             "X-Requested-With": "XMLHttpRequest"
         },
-        data: `fields name, cover.url, release_dates.date; sort popularity desc; where themes!= (42) & name~"${string}" & popularity > 1; limit 50;`
+        data: `fields name, cover.url, screenshot.url, release_dates.date; sort popularity desc; where themes!= (42) & name~"${string}" & popularity > 1; limit 50;`
     })
         .then((response) => {
             const games = response.data;
