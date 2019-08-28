@@ -140,7 +140,6 @@ class GamePage extends React.Component {
 
     render() {
         const {game, loading} = this.state;
-        console.log(game);
         return <PageLayout smallHeader>
             {game && game.name && <Helmet title={`${game.name} - gamer juice`}/>}
             {loading ? <LoadingSpinner/> :

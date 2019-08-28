@@ -33,7 +33,7 @@ class Admin extends Component {
                 password: ""
             },
             errorMessage: ""
-        }
+        };
     }
 
     // HANDLING EVENTS

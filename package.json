@@ -29,6 +29,7 @@
     "react-with-firebase-auth": "^1.0.3",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "rss-parser": "^3.7.2",
     "slick-carousel": "^1.8.1"
   },
   "scripts": {

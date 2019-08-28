@@ -165,7 +165,8 @@ class AdminMediaRow extends React.Component {
                 this.state.loading ? <LoadingSpinner/> : this.state.medias.length > 0 ?
                     <Carousel medias={mediasWithEmpty} onClickNext={this._handleClickNext}
                               onClickItem={this._handleClickMedia}
-                              onScreenItems={6} activeItem={activeItem}/> :
+                              onScreenItems={6} activeItem={activeItem}
+                    /> :
                     null
             }
             {this.renderActiveMedia()}

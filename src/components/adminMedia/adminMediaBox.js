@@ -39,7 +39,7 @@ class AdminMediaBox extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"});
+        window.scrollTo({top: this.ref.current.offsetTop - 265, behavior: "smooth"});
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -64,7 +64,7 @@ class AdminMediaBox extends React.Component {
             }
         }
         if (prevProps.media.id !== this.props.media.id) {
-            window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"});
+            window.scrollTo({top: this.ref.current.offsetTop - 265, behavior: "smooth"});
 
             this.setState({currentGames: this.props.media.games, searchInput: "", showSaveBtn: false});
         }
@@ -220,7 +220,7 @@ class AdminMediaBox extends React.Component {
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            <MediaPlayer url={media.url} type={media.app}/>
+                            {media && media.url ? <MediaPlayer url={media.url} type={media.app}/> : <LoadingSpinner/>}
                         </div>
                         <div className={styles.description}>
                             {media.description}

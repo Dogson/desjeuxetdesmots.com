@@ -59,6 +59,9 @@ export default class Carousel extends Component {
 }
 
 const Card = ({media, onClick, isActive}) => {
+    if (!media.image) {
+
+    }
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}>
         {
             !media.isVerified ?
