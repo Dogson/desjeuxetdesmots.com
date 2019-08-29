@@ -1,4 +1,5 @@
 import PodcastsAdmin from "../pages/admin/PodcastsAdmin";
+import VideosAdmin from "../pages/admin/VideosAdmin";
 
 const PODCASTS = [
     {
@@ -35,6 +36,16 @@ const PODCASTS = [
     }
 ];
 
+const VIDEOS = [
+    {
+        dataLabel: "gameMakerToolkit",
+        name: "Game Maker Toolkit",
+        author: "Mark Brown",
+        logo: require("../assets/logos/gameMakerToolkit/gameMakerToolkitFull.jpg"),
+        logoMin: require("../assets/logos/gameMakerToolkit/gameMakerToolkitMin.png"),
+        app: "youtube"
+    }
+];
 
 export const MEDIA_TYPES = [
     {
@@ -45,5 +56,14 @@ export const MEDIA_TYPES = [
         logoMin: require("../assets/logos/mediaTypes/podcastsMin.png"),
         component: PodcastsAdmin,
         dataLabel: "podcasts"
+    },
+    {
+        name: "Vidéos",
+        medias: VIDEOS,
+        route: "/admin/videos",
+        logo: require("../assets/logos/mediaTypes/videos.jpg"),
+        logoMin: require("../assets/logos/mediaTypes/videosMin.png"),
+        component: VideosAdmin,
+        dataLabel: "videos"
     }
 ]

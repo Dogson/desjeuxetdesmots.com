@@ -3,7 +3,7 @@ import styles from "./adminMediaRow.module.scss";
 import {getAllMedia, getNumberOfMedia, setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
 import Carousel from "../carousel/carousel";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
-import AdminMediaBox from "./adminMediaBox";
+import ActiveMediaBox from "../activeMediaBox/activeMediaBox";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
@@ -84,13 +84,13 @@ class AdminMediaRow extends React.Component {
         return setGamesForMedia({
             games: games.map((game) => {
                 const mappedGame = {...game};
-               MEDIA_TYPES.forEach((mediaType) => {
-                   mediaType.medias.forEach((media) => {
-                       mappedGame[media.dataLabel] = null;
-                   });
-                   if (isNaN(mappedGame.releaseDate))
-                       mappedGame.releaseDate = null;
-               });
+                MEDIA_TYPES.forEach((mediaType) => {
+                    mediaType.medias.forEach((media) => {
+                        mappedGame[media.dataLabel] = null;
+                    });
+                    if (isNaN(mappedGame.releaseDate))
+                        mappedGame.releaseDate = null;
+                });
                 return mappedGame;
             }),
             mediaType: this.props.mediaActive.mediaType,
@@ -148,13 +148,15 @@ class AdminMediaRow extends React.Component {
         const {mediaActive, type} = this.props;
         if (!mediaActive || mediaActive.mediaType !== type.dataLabel)
             return null;
-        return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                              onVerifyMedia={this._handleVerifyMedia}/>
+        return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
+                              onVerifyMedia={this._handleVerifyMedia} app={type.app} hideDescription={type.app === "youtube"}/>
     }
 
     render() {
         const {name, dataLabel, logoMin} = this.props.type;
         const {medias, mediasWithEmpty, lastDoc, totalCount} = this.state;
+        const smallerCards = this.props.match.url === '/admin/videos';
+
         const activeItem = this.props.mediaActive && this.props.mediaActive.media;
         return <div className={styles.adminMediaRowContainer}>
             <div className={styles.title}>
@@ -165,7 +167,7 @@ class AdminMediaRow extends React.Component {
                 this.state.loading ? <LoadingSpinner/> : this.state.medias.length > 0 ?
                     <Carousel medias={mediasWithEmpty} onClickNext={this._handleClickNext}
                               onClickItem={this._handleClickMedia}
-                              onScreenItems={6} activeItem={activeItem}
+                              onScreenItems={6} activeItem={activeItem} smallerCards={smallerCards}
                     /> :
                     null
             }

@@ -12,7 +12,7 @@ import {MEDIA_TYPES} from "../../config/const";
 
 const firebaseAppAuth = firebase.auth();
 
-class PodcastsAdmin extends Component {
+class VideosAdmin extends Component {
 
     constructor(props) {
         super(props);
@@ -20,13 +20,13 @@ class PodcastsAdmin extends Component {
 
     render() {
         const {user} = this.props;
-        return <PageLayout title="Administration des podcasts">
-            <Helmet title="Panneau d'administration des podcasts - gamer juice"/>
-            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIA_TYPES.find((item) => {return item.name === "Podcasts"})}/> : <Redirect to="/admin"/>}
+        return <PageLayout title="Administration des vidéos">
+            <Helmet title="Panneau d'administration des vidéos - gamer juice"/>
+            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIA_TYPES.find((item) => {return item.name === "Vidéos"})}/> : <Redirect to="/admin"/>}
         </PageLayout>
     }
 }
 
 export default withFirebaseAuth({
     firebaseAppAuth,
-})(PodcastsAdmin);
+})(VideosAdmin);

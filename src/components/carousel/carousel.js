@@ -24,7 +24,7 @@ export default class Carousel extends Component {
     }
 
     render() {
-        const {medias, activeItem, onClickItem, onScreenItems} = this.props;
+        const {medias, activeItem, onClickItem, onScreenItems, smallerCards} = this.props;
 
         const settings = {
             dots: true,
@@ -49,7 +49,10 @@ export default class Carousel extends Component {
                 <Slider {...settings}>
                     {medias.map((media, index) => {
                         return <div className={styles.slideContainer} key={index}>
-                            {media ? <Card isActive={activeItem && media.id === activeItem.id} media={media} onClick={() => onClickItem(media)}/> : <EmptyCard/>}
+                            {media ? <Card isActive={activeItem && media.id === activeItem.id} media={media}
+                                           onClick={() => onClickItem(media)}
+                                           smaller={smallerCards}/> :
+                                <EmptyCard smaller={smallerCards}/>}
                         </div>
                     })}
                 </Slider>
@@ -58,25 +61,29 @@ export default class Carousel extends Component {
     }
 }
 
-const Card = ({media, onClick, isActive}) => {
+const Card = ({media, onClick, isActive, smaller}) => {
     if (!media.image) {
 
     }
-    return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}>
+    return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
+                style={smaller ? {height: '190px'} : {}}>
         {
             !media.isVerified ?
                 <div className={styles.ribbon}/>
                 : null
         }
-        <div className={styles.backImage} style={{backgroundImage: `url(${media.image})`}}/>
+        <div className={styles.backImage} style={smaller ? {
+            height: '130px',
+            backgroundImage: `url(${media.image})`
+        } : {backgroundImage: `url(${media.image})`}}/>
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>
 };
 
-const EmptyCard = () => {
-    return <div className={styles.cardContainer}>
+const EmptyCard = ({smaller}) => {
+    return <div className={styles.cardContainer} style={smaller ? {height: '190px'}: {}}>
         <div className={styles.hoveredInfo}>
-            <div className={styles.backImage}/>
+            <div className={styles.backImage} style={smaller ? {height: '130px'}: {}}/>
         </div>
     </div>
 };

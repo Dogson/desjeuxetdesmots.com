@@ -8,7 +8,7 @@ import localization from 'moment/locale/fr';
 import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import Carousel from "../../components/carousel/carousel";
-import AdminMediaBox from "../../components/adminMedia/adminMediaBox";
+import ActiveMediaBox from "../../components/activeMediaBox/activeMediaBox";
 import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_TYPES} from "../../config/const";
@@ -115,8 +115,8 @@ class GamePage extends React.Component {
     renderActiveMedia() {
         const {mediaActive, type} = this.props;
         if (mediaActive && mediaActive.media)
-            return <AdminMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                                  onVerifyMedia={this._handleVerifyMedia}/>
+            return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
+                                  onVerifyMedia={this._handleVerifyMedia} app={type.app} hideDescription={type.app === "youtube"}/>
     }
 
     renderMediaTypeRow(mediaType) {

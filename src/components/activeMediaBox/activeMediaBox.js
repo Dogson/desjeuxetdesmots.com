@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./adminMediaBox.module.scss";
+import styles from "./activeMediaBox.module.scss";
 import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
@@ -16,7 +16,7 @@ import {connect} from "react-redux";
 import {TrashWidget} from "../trashWidget/trashWidget";
 import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 
-class AdminMediaBox extends React.Component {
+class ActiveMediaBox extends React.Component {
     constructor(props) {
         super(props);
 
@@ -133,8 +133,8 @@ class AdminMediaBox extends React.Component {
 
     render() {
         const user = firebase.auth().currentUser;
-        const {media} = this.props;
-        return <div className={styles.adminMediaBoxContainer} ref={this.ref}>
+        const {media, hideDescription, app} = this.props;
+        return <div className={styles.activeMediaBoxContainer} ref={this.ref}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
@@ -220,11 +220,12 @@ class AdminMediaBox extends React.Component {
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            {media && media.url ? <MediaPlayer url={media.url} type={media.app}/> : <LoadingSpinner/>}
+                            {media && media.url ? <MediaPlayer url={media.url} type={app}/> : <LoadingSpinner/>}
                         </div>
-                        <div className={styles.description}>
+                        {!hideDescription && <div className={styles.description}>
                             {media.description}
-                        </div>
+                        </div>}
+
                     </div>
                 </div>
             </div>
@@ -242,7 +243,9 @@ const GameCard = ({game, showDelete, onDelete}) => {
             </div>
             <div className={styles.secondaryInfoContainer}> &nbsp;</div>
             {showDelete && <div className={styles.footer}>
-                <div onClick={(e) => {onDelete(e, game)}} style={{height: '100%'}}>
+                <div onClick={(e) => {
+                    onDelete(e, game)
+                }} style={{height: '100%'}}>
                     <TrashWidget color="#FFC857"/>
                 </div>
             </div>}
@@ -250,4 +253,4 @@ const GameCard = ({game, showDelete, onDelete}) => {
     </div>
 }
 
-export default withRouter(AdminMediaBox);
+export default withRouter(ActiveMediaBox);
