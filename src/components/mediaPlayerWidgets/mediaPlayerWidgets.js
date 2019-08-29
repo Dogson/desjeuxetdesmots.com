@@ -21,6 +21,7 @@ export class MediaPlayer extends React.Component {
 
     render() {
         const {url, type} = this.props;
+        const colorDark = "#08090A";
         let embedUrl;
         switch (type) {
             case "spotify" :
@@ -32,7 +33,7 @@ export class MediaPlayer extends React.Component {
                         top: 0,
                         width: '560px',
                         height: '250px',
-                        backgroundColor: '#2E4052'
+                        backgroundColor: colorDark
                     }}><LoadingSpinner size={40}/></div> : null}
                     <Iframe url={embedUrl} width="560" height="250" frameBorder="0" allowtransparency="true"
                             allow="encrypted-media" onLoad={() => this.setState({isLoading: false})}/>
@@ -45,7 +46,7 @@ export class MediaPlayer extends React.Component {
                         top: 0,
                         width: '560px',
                         height: '250px',
-                        backgroundColor: '#2E4052'
+                        backgroundColor: colorDark
                     }}><LoadingSpinner size={40}/></div> : null}
                     <Iframe width="560" height="250" scrolling="no" frameBorder="0" allow="autoplay"
                             url={`https://w.soundcloud.com/player/?url=${url}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`}
@@ -60,7 +61,7 @@ export class MediaPlayer extends React.Component {
                         top: 0,
                         width: '560px',
                         height: '315px',
-                        backgroundColor: '#2E4052'
+                        backgroundColor: colorDark
                     }}><LoadingSpinner size={40}/></div> : null}
                     <Iframe width="560" height="315" url={`https://www.youtube.com/embed/${embedUrl}`}
                             frameBorder="0"

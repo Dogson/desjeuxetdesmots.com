@@ -1,6 +1,7 @@
 import styles from "./gamePage.module.scss";
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
+import cx from "classnames";
 import {getGameById} from "../../endpoints/gamesEndpoint";
 import PageLayout from "../../layouts/PageLayout";
 import moment from "moment";
@@ -112,11 +113,17 @@ class GamePage extends React.Component {
             })
     }
 
-    renderActiveMedia(mediaType) {
+    renderActiveMedia(mediaActive, appType) {
+        return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
+                               onVerifyMedia={this._handleVerifyMedia} app={appType}
+                               hideDescription={appType === "youtube"}/>
+    }
+
+    renderMediaTypeRow(mediaType) {
         const {mediaActive} = this.props;
         let appType = "";
         let mediaActiveType = "";
-        if (mediaActive.media) {
+        if (mediaActive && mediaActive.media) {
             MEDIA_TYPES.forEach((mediaType) => {
                 mediaType.medias.forEach((media) => {
                     if (media.dataLabel === mediaActive.media.type) {
@@ -126,31 +133,24 @@ class GamePage extends React.Component {
                 })
             });
         }
-        if (!mediaActive.media || mediaType.dataLabel !== mediaActiveType) {
-            return;
-        }
-
-        if (mediaActive && mediaActive.media)
-            return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                                   onVerifyMedia={this._handleVerifyMedia} app={appType}
-                                   hideDescription={appType === "youtube"}/>
-    }
-
-    renderMediaTypeRow(mediaType) {
         const medias = this.state.game[mediaType.dataLabel];
         const activeItem = this.props.mediaActive && this.props.mediaActive.media;
+
         if (medias && medias.length > 0) {
-            return <div key={mediaType.dataLabel} className={styles.mediaRowContainer}>
-                <div className={styles.title}>
-                    <img className={styles.imageContainer} src={mediaType.logoMin}/>
-                    {mediaType.name}
+            return <div key={mediaType.dataLabel}
+                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType})}>
+                <div className={styles.mediaRowWrapper}>
+                    <div className={styles.title}>
+                        <img className={styles.imageContainer} src={mediaType.logoMin}/>
+                        {mediaType.name}
+                    </div>
+                    <Carousel medias={medias}
+                              onClickItem={this._handleClickMedia}
+                              onScreenItems={6}
+                              activeItem={activeItem}
+                              smallerCards={mediaType.dataLabel === "videos"}/>
+                    {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType && this.renderActiveMedia(mediaActive, appType)}
                 </div>
-                <Carousel medias={medias}
-                          onClickItem={this._handleClickMedia}
-                          onScreenItems={6}
-                          activeItem={activeItem}
-                          smallerCards={mediaType.dataLabel === "videos"}/>
-                {this.renderActiveMedia(mediaType)}
             </div>
         }
         return null;

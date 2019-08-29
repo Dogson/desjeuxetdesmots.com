@@ -24,7 +24,7 @@ $size-bigger: 24px;
 
 //colors
 $color-dark-1: #2E4052;
-$color-dark-2: #412234;
+$color-dark-2: #08090A;
 $color-bright-1: #BDD9BF;
 $color-bright-2: #FFC857;
 
@@ -381,7 +381,7 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   .backImage {
@@ -424,6 +424,7 @@ input[type="submit"] {
       width: 30px;
       height: 30px;
       opacity: 0.8;
+      padding: 0 3px;
     }
   }
 

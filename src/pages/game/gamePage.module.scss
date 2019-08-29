@@ -50,7 +50,7 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      opacity: 0.5;
+      opacity: 1;
       position: absolute;
       left: 0;
       top: 0;
@@ -61,15 +61,26 @@
     position: relative;
     z-index: 2;
     background-color: $color-dark-1;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
-    padding-top: 20px;
 
     .gameContent {
-      width: 1300px;
+      width: 100%;
 
       .mediaRowContainer {
-        margin-bottom: 20px;
+        padding-top: 20px;
+        width: 100%;
+        padding-bottom: 20px;
+        @extend .flexColumn;
+        @extend .flexAlignCenter;
+        transition: background-color 0.1s ease-in-out;
+
+        &.mediaRowContainerActive {
+          background-color: $color-dark-2;
+          transition: background-color 0.3s ease-in-out;
+        }
+      }
+
+      .mediaRowWrapper  {
+        width: 1300px;
       }
 
       .title {
