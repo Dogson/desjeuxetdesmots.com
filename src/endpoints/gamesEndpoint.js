@@ -15,11 +15,15 @@ async function getMediasFromRefs(refs, mediaType, mediaApp) {
                 if (doc.exists) {
                     return {...doc.data(), id: doc.id};
                 }
+                else return {}
             })
     }))
         .then((medias) => {
             return Promise.all(medias.map((media) => {
                 let games = [];
+                if (!media.games) {
+                    media.games = [];
+                }
                 return Promise.all(media.games.map((gameRef) => {
                     return gameRef.get()
                         .then((doc) => {

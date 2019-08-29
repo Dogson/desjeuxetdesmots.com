@@ -39,7 +39,7 @@ class ActiveMediaBox extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo({top: this.ref.current.offsetTop - 265, behavior: "smooth"});
+        window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"});
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -64,7 +64,7 @@ class ActiveMediaBox extends React.Component {
             }
         }
         if (prevProps.media.id !== this.props.media.id) {
-            window.scrollTo({top: this.ref.current.offsetTop - 265, behavior: "smooth"});
+            window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"});
 
             this.setState({currentGames: this.props.media.games, searchInput: "", showSaveBtn: false});
         }

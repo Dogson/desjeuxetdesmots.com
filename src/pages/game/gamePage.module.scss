@@ -68,13 +68,17 @@
     .gameContent {
       width: 1300px;
 
+      .mediaRowContainer {
+        margin-bottom: 20px;
+      }
+
       .title {
         @extend .flexRow;
         @extend .flexAlignCenter;
         text-transform: lowercase;
         letter-spacing: 1px;
         color: $color-bright-1;
-        margin: 0 10px 15px;
+        margin: 0 10px 5px;
 
         .imageContainer {
           height: 30px;

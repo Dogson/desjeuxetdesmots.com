@@ -34,9 +34,9 @@ class GamePage extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-       if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
+        if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
             this.refreshGame();
-       }
+        }
     }
 
     refreshGame() {
@@ -112,18 +112,35 @@ class GamePage extends React.Component {
             })
     }
 
-    renderActiveMedia() {
-        const {mediaActive, type} = this.props;
+    renderActiveMedia(mediaType) {
+        const {mediaActive} = this.props;
+        let appType = "";
+        let mediaActiveType = "";
+        if (mediaActive.media) {
+            MEDIA_TYPES.forEach((mediaType) => {
+                mediaType.medias.forEach((media) => {
+                    if (media.dataLabel === mediaActive.media.type) {
+                        appType = media.app;
+                        mediaActiveType = mediaType.dataLabel;
+                    }
+                })
+            });
+        }
+        if (!mediaActive.media || mediaType.dataLabel !== mediaActiveType) {
+            return;
+        }
+
         if (mediaActive && mediaActive.media)
             return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                                  onVerifyMedia={this._handleVerifyMedia} app={type.app} hideDescription={type.app === "youtube"}/>
+                                   onVerifyMedia={this._handleVerifyMedia} app={appType}
+                                   hideDescription={appType === "youtube"}/>
     }
 
     renderMediaTypeRow(mediaType) {
         const medias = this.state.game[mediaType.dataLabel];
         const activeItem = this.props.mediaActive && this.props.mediaActive.media;
         if (medias && medias.length > 0) {
-            return <div key={mediaType.dataLabel}>
+            return <div key={mediaType.dataLabel} className={styles.mediaRowContainer}>
                 <div className={styles.title}>
                     <img className={styles.imageContainer} src={mediaType.logoMin}/>
                     {mediaType.name}
@@ -131,8 +148,9 @@ class GamePage extends React.Component {
                 <Carousel medias={medias}
                           onClickItem={this._handleClickMedia}
                           onScreenItems={6}
-                          activeItem={activeItem}/>
-                {this.renderActiveMedia()}
+                          activeItem={activeItem}
+                          smallerCards={mediaType.dataLabel === "videos"}/>
+                {this.renderActiveMedia(mediaType)}
             </div>
         }
         return null;

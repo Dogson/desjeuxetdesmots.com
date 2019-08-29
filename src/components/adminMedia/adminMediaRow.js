@@ -149,7 +149,7 @@ class AdminMediaRow extends React.Component {
         if (!mediaActive || mediaActive.mediaType !== type.dataLabel)
             return null;
         return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                              onVerifyMedia={this._handleVerifyMedia} app={type.app} hideDescription={type.app === "youtube"}/>
+                              onVerifyMedia={this._handleVerifyMedia} app={type.app} hideDescription={false}/>
     }
 
     render() {
