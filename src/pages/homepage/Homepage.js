@@ -136,11 +136,13 @@ const GameGrid = ({games}) => {
 };
 
 const MediaLogos = ({game}) => {
+    const dataLabels = [];
     return <div className={styles.mediasLogosContainer}>
         {MEDIA_TYPES.map((mediaType) => {
             return mediaType.medias.map((media) => {
-                if (game[media.dataLabel] && game[media.dataLabel].length > 0) {
-                    return <div key={game.id}><img src={media.logoMin} alt={media.title}/></div>
+                if (game[media.dataLabel] && game[media.dataLabel].length > 0 && dataLabels.indexOf(media.dataLabel) < 0) {
+                    dataLabels.push(media.dataLabel);
+                    return <div key={media.dataLabel}><img src={media.logoMin} alt={media.title}/></div>
                 }
                 return null;
             })
