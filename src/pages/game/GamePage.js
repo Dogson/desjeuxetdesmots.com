@@ -149,7 +149,9 @@ class GamePage extends React.Component {
                               onScreenItems={6}
                               activeItem={activeItem}
                               smallerCards={mediaType.dataLabel === "videos"}/>
-                    {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType && this.renderActiveMedia(mediaActive, appType)}
+                    <div className={styles.activeMediaContainer}>
+                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType && this.renderActiveMedia(mediaActive, appType)}
+                    </div>
                 </div>
             </div>
         }

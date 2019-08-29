@@ -23,6 +23,7 @@
       .coverImg {
         width: 200px;
         margin-right: 50px;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
       }
 
       .gameInfos {
@@ -50,7 +51,7 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      opacity: 1;
+      opacity: 0.8;
       position: absolute;
       left: 0;
       top: 0;
@@ -71,11 +72,21 @@
         padding-bottom: 20px;
         @extend .flexColumn;
         @extend .flexAlignCenter;
-        transition: background-color 0.1s ease-in-out;
+        transition: background-color 0.3s ease-in-out 0.1s, max-height 0.3s ease-in-out 0.1s;
+        max-height: 400px;
+
+        .activeMediaContainer {
+          opacity: 0;
+          transition: all 0.3s ease-in-out 0.3s;
+        }
 
         &.mediaRowContainerActive {
           background-color: $color-dark-2;
-          transition: background-color 0.3s ease-in-out;
+          max-height: 1000px;
+
+          .activeMediaContainer {
+            opacity: 1;
+          }
         }
       }
 
