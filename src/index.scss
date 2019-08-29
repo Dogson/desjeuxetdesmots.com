@@ -421,10 +421,11 @@ input[type="submit"] {
     bottom: 10px;
 
     img {
-      width: 30px;
-      height: 30px;
+      width: 31px;
+      height: 31px;
       opacity: 0.8;
       padding: 0 3px;
+      box-sizing: border-box;
     }
   }
 

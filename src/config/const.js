@@ -1,4 +1,5 @@
 import PodcastsAdmin from "../pages/admin/PodcastsAdmin";
+import React from 'react';
 import VideosAdmin from "../pages/admin/VideosAdmin";
 
 const PODCASTS = [
@@ -8,7 +9,7 @@ const PODCASTS = [
         author: "À L'aise Blaze",
         logo: require("../assets/logos/cosyCorner/cosyCornerFull.jpg"),
         logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png"),
-        app: "spotify"
+        app: "spotify",
     },
     {
         dataLabel: "silenceOnJoue",
@@ -43,7 +44,7 @@ const VIDEOS = [
         author: "Mark Brown",
         logo: require("../assets/logos/gameMakerToolkit/gameMakerToolkitFull.jpg"),
         logoMin: require("../assets/logos/gameMakerToolkit/gameMakerToolkitMin.png"),
-        app: "youtube"
+        app: "youtube",
     }
 ];
 
@@ -55,7 +56,8 @@ export const MEDIA_TYPES = [
         logo: require("../assets/logos/mediaTypes/podcasts.jpg"),
         logoMin: require("../assets/logos/mediaTypes/podcastsMin.png"),
         component: PodcastsAdmin,
-        dataLabel: "podcasts"
+        dataLabel: "podcasts",
+        ref: React.createRef()
     },
     {
         name: "Vidéos",
@@ -64,6 +66,7 @@ export const MEDIA_TYPES = [
         logo: require("../assets/logos/mediaTypes/videos.jpg"),
         logoMin: require("../assets/logos/mediaTypes/videosMin.png"),
         component: VideosAdmin,
-        dataLabel: "videos"
+        dataLabel: "videos",
+        ref: React.createRef()
     }
 ]

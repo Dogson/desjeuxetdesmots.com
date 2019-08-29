@@ -72,12 +72,13 @@
         padding-bottom: 20px;
         @extend .flexColumn;
         @extend .flexAlignCenter;
-        transition: background-color 0.3s ease-in-out 0.1s, max-height 0.3s ease-in-out 0.1s;
-        max-height: 400px;
+        transition: background-color 0.3s ease-in-out, max-height 0.3s ease-in-out;
+        max-height: 300px;
+        overflow: hidden;
 
         .activeMediaContainer {
           opacity: 0;
-          transition: all 0.3s ease-in-out 0.3s;
+          transition: all 0.2s ease-in-out 0.2s;
         }
 
         &.mediaRowContainerActive {

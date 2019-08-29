@@ -54,10 +54,22 @@ class GamePage extends React.Component {
     }
 
     _handleClickMedia(media) {
+        debugger;
+        let mediaActiveType;
+        MEDIA_TYPES.forEach((mediaType) => {
+            mediaType.medias.forEach((newMedia) => {
+                if (newMedia.dataLabel === media.type) {
+                    mediaActiveType = mediaType;
+                }
+            })
+        });
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: {media: media}
         });
+        setTimeout(() => {
+            window.scrollTo({top: mediaActiveType.ref.current.offsetParent.offsetTop, behavior: "smooth"})
+        }, 200);
     }
 
     _handleSaveGames(games) {
@@ -128,7 +140,7 @@ class GamePage extends React.Component {
                 mediaType.medias.forEach((media) => {
                     if (media.dataLabel === mediaActive.media.type) {
                         appType = media.app;
-                        mediaActiveType = mediaType.dataLabel;
+                        mediaActiveType = mediaType;
                     }
                 })
             });
@@ -137,20 +149,22 @@ class GamePage extends React.Component {
         const activeItem = this.props.mediaActive && this.props.mediaActive.media;
 
         if (medias && medias.length > 0) {
-            return <div key={mediaType.dataLabel}
-                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType})}>
+            return <div key={mediaType.dataLabel} ref={mediaType.ref}
+                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
                         <img className={styles.imageContainer} src={mediaType.logoMin}/>
                         {mediaType.name}
                     </div>
                     <Carousel medias={medias}
-                              onClickItem={this._handleClickMedia}
+                              onClickItem={(media) => {
+                                  this._handleClickMedia(media, mediaActiveType)
+                              }}
                               onScreenItems={6}
                               activeItem={activeItem}
                               smallerCards={mediaType.dataLabel === "videos"}/>
                     <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType && this.renderActiveMedia(mediaActive, appType)}
+                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel && this.renderActiveMedia(mediaActive, appType)}
                     </div>
                 </div>
             </div>

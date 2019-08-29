@@ -38,10 +38,6 @@ class ActiveMediaBox extends React.Component {
         this.ref = React.createRef();
     }
 
-    componentDidMount() {
-        setTimeout(() => {window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"})}, 100);
-    }
-
     componentDidUpdate(prevProps, prevState) {
         if (prevState.currentGames.length !== this.state.currentGames.length) {
             if (this.state.currentGames.length !== this.props.media.games.length) {
@@ -64,8 +60,6 @@ class ActiveMediaBox extends React.Component {
             }
         }
         if (prevProps.media.id !== this.props.media.id) {
-            setTimeout(() => {window.scrollTo({top: this.ref.current.offsetTop, behavior: "smooth"})}, 200);
-
             this.setState({currentGames: this.props.media.games, searchInput: "", showSaveBtn: false});
         }
         if (this.state.searchInput !== prevState.searchInput) {
