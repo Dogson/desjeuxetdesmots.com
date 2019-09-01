@@ -1,6 +1,6 @@
 export const IGDB_API = {
     url: "https://api-v3.igdb.com/",
-    key: "ce80beb5b66a2481382dbc585411fe8c"
+    key: "e96d3dcb3da70046dfcfd9204e27ac26"
 };
 
 export const FIREBASE_API = {
