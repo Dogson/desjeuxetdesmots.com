@@ -26,10 +26,13 @@ async function getGamesFromArray(words) {
         let word = words[i];
         let exactGameTitle;
         let j = i;
-        let matchingStr = word;
         let matchingGames = [];
-        // debugger;
+        if (word.length <= 4) {
+            j++;
+            word = word + " " + words[j]
+        }
         matchingGames = await getAllPartiallyMatchingGames(word);
+        let matchingStr = word;
         let nonEmptyMatchingGames;
         if (matchingGames.length > 0) {
             nonEmptyMatchingGames = matchingGames;
@@ -48,17 +51,13 @@ async function getGamesFromArray(words) {
             //On vérifie si le dernier nonEmptyMatchingGames contient le titre en entier
             if (nonEmptyMatchingGames) {
                 exactGameTitle = getExactMatchingGame(matchingStr, nonEmptyMatchingGames);
-                console.log(exactGameTitle);
                 if (exactGameTitle && resultGames.indexOf(exactGameTitle) === -1) {
                     resultGames.push(exactGameTitle);
-                    console.log(resultGames);
                     i = j - 1;
                 }
             }
         }
     }
-    console.log("________________________");
-    console.log(resultGames);
     return resultGames;
 };
 
@@ -79,7 +78,6 @@ async function getAllPartiallyMatchingGames(string, matchingGames) {
             return game.name.toUpperCase().indexOf(string.toUpperCase() + " ") === 0 || game.name.toUpperCase() === string.toUpperCase();
         })
     } else {
-        console.log(string);
         // debugger;
         return axios({
             url: url,
@@ -89,11 +87,9 @@ async function getAllPartiallyMatchingGames(string, matchingGames) {
                 'user-key': key,
                 "X-Requested-With": "XMLHttpRequest"
             },
-            data: `fields name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${string}"* & popularity > 1; limit 50;`
+            data: `fields name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~"${string}"* & popularity > 1; limit 50;`
         })
             .then((response) => {
-                // debugger;
-                console.log(response.data);
                 return response.data.length === 0 ? [] : mappedGames(response.data);
             })
     }
