@@ -6,15 +6,14 @@ const querystring = require('querystring');
 const moment = require('moment');
 const Parser = require("rss-parser");
 let parser = new Parser();
+let _ = require("lodash");
 
 exports.getZQSD = functions.https.onRequest((req, res) => {
     return generateZQSD()
         .then((result) => {
             res.json(result);
-            console.log("bite");
         })
         .catch((error) => {
-            console.log("chatte");
             console.log(error);
             res.json(error);
         })
@@ -22,7 +21,6 @@ exports.getZQSD = functions.https.onRequest((req, res) => {
 
 async function generateZQSD() {
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-    console.log(parser);
     const feed = await parser.parseURL('https://www.zqsd.fr/zqsd.xml');
     console.log(feed);
     const entries = feed.items.map(function (entry) {
@@ -40,6 +38,7 @@ async function generateZQSD() {
             description: entry.itunes.summary,
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
             url: "api.soundcloud.com/tracks/" + id,
+            hasGeneratedGames: false,
             isVerified: false //TODO REMOVE !!!!!
         };
     });
@@ -84,4 +83,49 @@ async function generateGamekult() {
             ...episode
         }, {merge: true})
     }))
+}
+
+exports.getSilenceOnJoue = functions.https.onRequest((req, res) => {
+    return generateSilenceOnJoue()
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.json(error);
+        })
+});
+
+async function generateSilenceOnJoue() {
+    const feed = await parser.parseURL("https://feeds.acast.com/public/shows/5b7ac427c6a58e726f576cff");
+    const entries = feed.items.map(function (entry) {
+        console.log(entry.guid);
+        return {
+            id: entry.guid,
+            name: entry.title,
+            image: entry.itunes.image,
+            description: strip_html_tags(entry.itunes.summary).substring(0, strip_html_tags(entry.itunes.summary).indexOf('Voir Acast')),
+            releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
+            url: `https://player.acast.com/5b7ac427c6a58e726f576cff/episodes/${entry.guid}`,
+            hasGeneratedGames: false,
+            isVerified: false //TODO REMOVE !!!!!
+        };
+    })
+        .filter((entry) => entry.id.indexOf("//") === -1);
+
+    return Promise.all(entries.map((episode) => {
+        return db.collection('silenceOnJoue').doc(episode.id).set({
+            ...episode
+        }, {merge: true})
+    }))
+}
+
+function strip_html_tags(str) {
+    if ((str == null) || (str === ''))
+        return false;
+    else
+        str = str.toString();
+    str = _.unescape(str.replace(/<\/?[^>]+(>|$)/g, ""));
+    str = str.replace(/&nbsp;/g, ' ');
+    return str;
 }

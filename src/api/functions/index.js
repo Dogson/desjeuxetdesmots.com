@@ -7,12 +7,16 @@ const IGDB_API = {
     key: "e96d3dcb3da70046dfcfd9204e27ac26"
 };
 
+const runtimeOpts = {
+    timeoutSeconds: 540,
+    memory: '1GB'
+}
+
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 
 const moment = require('moment');
-const spotify = require('./spotify');
 const parseHelper = require('./parseHelper');
 const rss = require('./rss');
 
@@ -22,9 +26,15 @@ const cosyCornerConfig = {
 };
 
 const silenceOnJoueConfig = {
+    excludeStrings: ["Silence On Joue"],
+    endOfParseStrings: [],
+    parseProperty: "name"
+};
+
+const exServConfig = {
     excludeStrings: [],
     endOfParseStrings: []
-};
+}
 
 const increment = admin.firestore.FieldValue.increment(1);
 
@@ -51,9 +61,9 @@ exports.getZQSD = rss.getZQSD;
 
 exports.getGamekult = rss.getGamekult;
 
-exports.getCosyCorner = spotify.copyCosyCornerFromSpotify;
+// exports.getCosyCorner = spotify.copyCosyCornerFromSpotify;
 
-exports.getSilenceOnJoue = spotify.copySilenceOnJoueFromSpotify;
+exports.getSilenceOnJoue = rss.getSilenceOnJoue;
 
 exports.generateCosyCornerGames = functions.firestore
     .document('cosyCorner/{id}').onCreate((snap, context) => {
@@ -80,30 +90,35 @@ exports.generateCosyCornerGames = functions.firestore
             });
     });
 
-exports.generateSilenceOnJoueGames = functions.firestore
+exports.generateSilenceOnJoueGames = functions.runWith(runtimeOpts).firestore
     .document('silenceOnJoue/{id}').onCreate((snap, context) => {
-        const episode = snap.data();
-        let games;
-        return parseHelper.getVideoGamesFromString(episode.name, silenceOnJoueConfig)
-            .then((result) => {
-                games = result;
-                return setGamesFromMedia(context.params.id, games, 'silenceOnJoue');
-            })
-            .then(() => {
-                return db.collection('silenceOnJoue').doc(context.params.id).update({
-                    games: games.map((game) => db.doc('games/' + game.id)),
-                    isVerified: false
-                })
-            })
-            .then(() => {
-                return db.collection('itemsNumber').doc('silenceOnJoue').update({
-                    count: increment
-                })
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        return generateEpisodeGames("silenceOnJoue", silenceOnJoueConfig, snap.data(), context)
     });
+
+
+function generateEpisodeGames(mediaName, mediaConfig, episode, context) {
+    let games;
+    return parseHelper.getVideoGamesFromString(episode[mediaConfig.parseProperty], mediaConfig)
+        .then((result) => {
+            games = result;
+            return setGamesFromMedia(context.params.id, games, mediaName);
+        })
+        .then(() => {
+            return db.collection(mediaName).doc(context.params.id).update({
+                games: games.map((game) => db.doc('games/' + game.id)),
+                isVerified: false,
+                hasGeneratedGames: true
+            })
+        })
+        .then(() => {
+            return db.collection('itemsNumber').doc(mediaName).update({
+                count: increment
+            })
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 function setGamesFromMedia(episodeId, games, media) {
     return Promise.all(games.map((game) => {
@@ -215,23 +230,6 @@ exports.toggleVerifyMedia = functions.https.onCall((data, context) => {
         })
 });
 
-exports.scheduledFunction = functions.pubsub
-    .schedule('every wednesday 12:00')
-    .onRun(() => {
-        console.log("fetching cosy corners");
-        return spotify.getSpotifyAccessToken()
-            .then((token) => {
-                return spotify.copyAndWriteMediaWithOffset(token, 0, spotify.cosyCorner.id);
-            })
-            .then(() => {
-                console.log("success");
-            })
-            .catch(() => {
-                console.log("error");
-            })
-    });
-
-
 // exports.addScreenshotToExistingGames = functions.https.onRequest((req, res) => {
 //     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
 //     let key = IGDB_API.key;
@@ -291,3 +289,19 @@ exports.scheduledFunction = functions.pubsub
 //                 });
 //         })
 // });
+
+exports.setGamesForSilenceOnJoue = functions.https.onRequest((req, res) => {
+    return setGamesForNonGeneratedEpisodesOfMedia("silenceOnJoue", silenceOnJoueConfig);
+});
+
+function setGamesForNonGeneratedEpisodesOfMedia(mediaName, mediaConfig) {
+    return db.collection(mediaName).where("hasGeneratedGames", "==", false)
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                const id = doc.id;
+                return generateEpisodeGames(mediaName, mediaConfig, doc.data(), {params: {id}})
+            });
+        })
+
+}

@@ -4,145 +4,139 @@ const axios = require('axios');
 
 const IGDB_API = {
     url: "https://api-v3.igdb.com/",
-    key: "a57068f8a420f99cab8feb4584c911e4"
+    key: "b3c57654c5e634007b9ade6ed9f0457f"
 };
 
-exports.getVideoGamesFromString = ((string, {excludeStrings, endOfParseStrings}) => {
-    return getGamesAsync(string, {excludeStrings, endOfParseStrings});
-});
+exports.getVideoGamesFromString = (string, mediaConfig) => {
+    return getGamesForMedia(string, mediaConfig);
+}
 
 
-async function getGamesAsync(string, {excludeStrings, endOfParseStrings}) {
-    const punctuations = ":, ?, !, ., &";
-    for (let i = 0; i < excludeStrings.length; i++) {
-        if (string.indexOf(excludeStrings[i]) >= 0) {
-            return Promise.resolve([]);
-        }
-    }
-
-    string = string.replace(/ \[.*?\]/g, '');
-    string = string.replace('«', '');
-    string = string.replace('»', '');
-    string = string.replace(',', '');
-
-    // Removing useless part
-    for (let i = 0; i < endOfParseStrings.length; i++) {
-        string = string.split(endOfParseStrings[i])[0];
-    }
-
-    const arrayString = string.split(/[ ,-]+/);
+async function getGamesForMedia(string, mediaConfig) {
     let games = [];
-
-    for (let i = 0; i < arrayString.length; i++) {
-        const word = arrayString[i];
-        let wordPartialMatches = word.length ? word[0].toUpperCase() === word[0] : false;
-        wordPartialMatches = wordPartialMatches && (word.length > 3 ? await hasPartialMatch(word) : []);
-        if (wordPartialMatches) {
-            let hasMatch = true;
-            let assembledWords = word;
-            let j = i + 1;
-            let partialResults;
-            if (wordPartialMatches.length < 50 && wordPartialMatches.length > 0) {
-                partialResults = wordPartialMatches;
-            }
-            while (hasMatch) {
-                assembledWords += " " + arrayString[j];
-                if (arrayString[j] && arrayString[j].length > 3 && arrayString[j][0] !== arrayString[j][0].toUpperCase()) {
-                    hasMatch = false;
-                    assembledWords = assembledWords.split(" " + arrayString[j])[0];
-                    j++;
-                    break;
-                }
-                if (arrayString[j] && punctuations.indexOf(arrayString[j][0]) > -1) {
-                    hasMatch = false;
-                    assembledWords = assembledWords.split(" " + arrayString[j])[0];
-                    j++;
-                    break;
-                }
-                let partialMatchAssembled = partialResults ? partialResults.filter((result) => {
-                    return result.name.toUpperCase().indexOf(assembledWords.toUpperCase()) !== -1
-                }) : await hasPartialMatch(assembledWords);
-                if (partialMatchAssembled && partialMatchAssembled.length < 50 && partialMatchAssembled.length > 0) {
-                    partialResults = partialMatchAssembled;
-                }
-                if (!partialMatchAssembled || partialMatchAssembled.length <= 0) {
-                    hasMatch = false;
-                    assembledWords = assembledWords.split(" " + arrayString[j])[0];
-                }
-                j++;
-            }
-            let exactMatchGames = assembledWords.length > 3;
-            exactMatchGames = exactMatchGames && (partialResults ? partialResults.find((result) => {
-                return result.name.toUpperCase() === assembledWords.toUpperCase()
-            }) : await hasExactMatch(assembledWords));
-            if (exactMatchGames) {
-                if (exactMatchGames.cover && exactMatchGames.release_dates) {
-                    const game = {
-                        ...exactMatchGames,
-                        cover: exactMatchGames.cover && exactMatchGames.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
-                        screenshot: exactMatchGames.screenshots && exactMatchGames.screenshots.length && exactMatchGames.screenshots[exactMatchGames.screenshots.length - 1].url.replace('/t_thumb/', '/t_screenshot_big/').replace('//', 'https://'),
-                        releaseDate: exactMatchGames.release_dates && Math.min(...exactMatchGames.release_dates && exactMatchGames.release_dates.map((release_date) => {
-                                return release_date.date;
-                            })
-                                .filter((date) => {
-                                    return date != null;
-                                })
-                        )
-                    };
-                    delete game.release_dates;
-                    games.push(game);
-                    i = j - 2;
-                }
-            }
-        }
-    }
+    string = parseDescription(string, mediaConfig);
+    let words = string.split(/\s+/);
+    games = await getGamesFromArray(words);
     return games;
 }
 
-async function hasPartialMatch(string) {
-    hit++;
+async function getGamesFromArray(words) {
+    let resultGames = [];
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        let exactGameTitle;
+        let j = i;
+        let matchingStr = word;
+        let matchingGames = [];
+        // debugger;
+        matchingGames = await getAllPartiallyMatchingGames(word);
+        let nonEmptyMatchingGames;
+        if (matchingGames.length > 0) {
+            nonEmptyMatchingGames = matchingGames;
+            // On itère en ajoutant des mots, jusqu'à ce qu'on ne trouve plus que 1 ou 0 résultat
+            while (matchingGames.length > 0 && j - 1 < words.length) {
+                j++;
+                const newMatchingStr = matchingStr + " " + words[j];
+                matchingGames = await getAllPartiallyMatchingGames(newMatchingStr, matchingGames);
+                if (matchingGames.length > 0) {
+                    matchingStr = newMatchingStr;
+                    //On récupère le dernier array non vide des matchingGames
+                    nonEmptyMatchingGames = matchingGames;
+                }
+            }
+
+            //On vérifie si le dernier nonEmptyMatchingGames contient le titre en entier
+            if (nonEmptyMatchingGames) {
+                exactGameTitle = getExactMatchingGame(matchingStr, nonEmptyMatchingGames);
+                console.log(exactGameTitle);
+                if (exactGameTitle && resultGames.indexOf(exactGameTitle) === -1) {
+                    resultGames.push(exactGameTitle);
+                    console.log(resultGames);
+                    i = j - 1;
+                }
+            }
+        }
+    }
+    console.log("________________________");
+    console.log(resultGames);
+    return resultGames;
+};
+
+const getExactMatchingGame = (string, matchingGames) => {
+    return matchingGames.find((game) => game.name.toUpperCase() === string.toUpperCase())
+}
+
+// Looks for string occurences in matchingGames
+// If matchingGames is not set, looks for string occurences in API Call
+async function getAllPartiallyMatchingGames(string, matchingGames) {
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
     let key = IGDB_API.key;
     let endpointName = "games";
     let url = `${proxyUrl}${IGDB_API.url}${endpointName}`;
 
-    return axios({
-        url: url,
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'user-key': key,
-            "X-Requested-With": "XMLHttpRequest"
-        },
-        data: `fields name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${string}"* & popularity > 1; limit 50;`
-    })
-        .then((response) => {
-            return response.data.length === 0 ? null : response.data;
+    if (matchingGames) {
+        return matchingGames.filter((game) => {
+            return game.name.toUpperCase().indexOf(string.toUpperCase() + " ") === 0 || game.name.toUpperCase() === string.toUpperCase();
+        })
+    } else {
+        console.log(string);
+        // debugger;
+        return axios({
+            url: url,
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'user-key': key,
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            data: `fields name, cover.url, screenshots.url, release_dates.date; sort popularity desc; where themes!= (42) & name~*"${string}"* & popularity > 1; limit 50;`
+        })
+            .then((response) => {
+                // debugger;
+                console.log(response.data);
+                return response.data.length === 0 ? [] : mappedGames(response.data);
+            })
+    }
+}
+
+function mappedGames(games) {
+    return games
+        .filter((game) => {
+            return game.release_dates && game.cover && game.screenshots;
+        })
+        .map((game) => {
+            let result = {
+                ...game,
+                cover: game.cover && game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
+                screenshot: game.screenshots && game.screenshots.length && game.screenshots[game.screenshots.length - 1].url.replace('/t_thumb/', '/t_screenshot_big/').replace('//', 'https://'),
+                releaseDate: game.release_dates && Math.min(...game.release_dates && game.release_dates.map((release_date) => {
+                        return release_date.date;
+                    })
+                        .filter((date) => {
+                            return date != null;
+                        })
+                )
+            };
+            delete result.release_dates;
+            delete result.screenshots;
+            return result;
         })
 }
 
-async function hasExactMatch(string) {
-    hit++;
-    const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-    let key = IGDB_API.key;
-    let endpointName = "games";
-    let url = `${proxyUrl}${IGDB_API.url}${endpointName}`;
+const parseDescription = (str, mediaConfig) => {
+    str = str.toUpperCase();
+    let parsed = removeSpecialCharacters(str);
+    parsed = removeUselessWhiteSpaces(parsed);
+    mediaConfig.excludeStrings.forEach((string) => {
+        parsed = parsed.replace(string.toUpperCase(), "");
+    });
+    return parsed;
+};
 
-    return axios({
-        url: url,
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'user-key': key,
-            "X-Requested-With": "XMLHttpRequest"
-        },
-        data: `fields name, cover.url, screenshot.url, release_dates.date; sort popularity desc; where themes!= (42) & name~"${string}" & popularity > 1; limit 50;`
-    })
-        .then((response) => {
-            const games = response.data;
-            if (games.length) {
-                return games[0];
-            }
-            return null;
-        })
+const removeSpecialCharacters = (str) => {
+    return str.replace(/[`~!@#$%^&*()_|+=?;«»'",.<>\{\}\[\]\\\/]/gi, '');
+};
+
+const removeUselessWhiteSpaces = (str) => {
+    return str.replace(/\s+(\W)/g, "$1");
 }
