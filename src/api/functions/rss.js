@@ -37,7 +37,7 @@ async function generateZQSD() {
             keywords: entry.itunes.keywords,
             description: entry.itunes.summary,
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
-            url: "api.soundcloud.com/tracks/" + id,
+            url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
             hasGeneratedGames: false,
             isVerified: false //TODO REMOVE !!!!!
         };
@@ -62,9 +62,7 @@ exports.getGamekult = functions.https.onRequest((req, res) => {
 });
 
 async function generateGamekult() {
-    console.log(parser);
     const feed = await parser.parseURL('https://feeds.soundcloud.com/users/soundcloud:users:110920201/sounds.rss');
-    console.log(feed);
     const entries = feed.items.map(function (entry) {
         let id = entry.guid && entry.guid.substring(entry.guid.indexOf('tracks/') + 1).replace('racks/', '');
         return {
@@ -73,15 +71,16 @@ async function generateGamekult() {
             image: entry.itunes.image,
             description: entry.itunes.summary,
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
-            url: "api.soundcloud.com/tracks/" + id,
-            isVerified: false //TODO REMOVE !!!!!
+            url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
+            isVerified: false, //TODO REMOVE !!!!!
+            hasGeneratedGames: false
         };
     });
 
     return Promise.all(entries.map((episode) => {
         return db.collection('gamekult').doc(episode.id).set({
             ...episode
-        }, {merge: true})
+        })
     }))
 }
 
@@ -99,7 +98,6 @@ exports.getSilenceOnJoue = functions.https.onRequest((req, res) => {
 async function generateSilenceOnJoue() {
     const feed = await parser.parseURL("https://feeds.acast.com/public/shows/5b7ac427c6a58e726f576cff");
     const entries = feed.items.map(function (entry) {
-        console.log(entry.guid);
         return {
             id: entry.guid,
             name: entry.title,
@@ -117,6 +115,40 @@ async function generateSilenceOnJoue() {
         return db.collection('silenceOnJoue').doc(episode.id).set({
             ...episode
         }, {merge: true})
+    }))
+}
+
+exports.getCosyCorner = functions.https.onRequest((req, res) => {
+    return generateCosyCorner()
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.json(error);
+        })
+});
+
+async function generateCosyCorner() {
+    const feed = await parser.parseURL("https://feeds.soundcloud.com/users/soundcloud:users:274829367/sounds.rss");
+    const entries = feed.items.map(function (entry) {
+        let id = entry.guid && entry.guid.substring(entry.guid.indexOf('tracks/') + 1).replace('racks/', '');
+        return {
+            id: id,
+            name: entry.title,
+            image: entry.itunes.image,
+            description: entry.itunes.summary,
+            releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
+            url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
+            isVerified: false, //TODO REMOVE !!!!!
+            hasGeneratedGames: false
+        };
+    });
+
+    return Promise.all(entries.map((episode) => {
+        return db.collection('cosyCorner').doc(episode.id).set({
+            ...episode
+        })
     }))
 }
 

@@ -21,13 +21,26 @@ const parseHelper = require('./parseHelper');
 const rss = require('./rss');
 
 const cosyCornerConfig = {
-    excludeStrings: ['Zone de Confort', '[HS]'],
-    endOfParseStrings: ['Remerciements', 'Playlist']
+    excludeStrings: ['où il est entre autres question de', 'Le cosy corner numéro', 'cosy corner', 'le cosy corner', 'Un épisode où il est entre autres question de'],
+    excludeRegex: [/\\[[^\\]]*\\]/],
+    ignoreEpisode: ['Zone de Confort', '[HS]'],
+    endOfParseStrings: ['Remerciements', 'Playlist'],
+    parseProperty: "description"
 };
 
 const silenceOnJoueConfig = {
     excludeStrings: ["Silence On Joue"],
+    excludeRegex: [],
+    ignoreEpisode: [],
     endOfParseStrings: [],
+    parseProperty: "name"
+};
+
+const gamekultConfig = {
+    excludeStrings: ["gamekult", "l'émission"],
+    excludeRegex: [],
+    ignoreEpisode: [],
+    endOfParseStrings: ["by gamekult"],
     parseProperty: "name"
 };
 
@@ -61,38 +74,23 @@ exports.getZQSD = rss.getZQSD;
 
 exports.getGamekult = rss.getGamekult;
 
-// exports.getCosyCorner = spotify.copyCosyCornerFromSpotify;
+exports.getCosyCorner = rss.getCosyCorner;
 
 exports.getSilenceOnJoue = rss.getSilenceOnJoue;
 
-exports.generateCosyCornerGames = functions.firestore
+exports.generateCosyCornerGames = functions.runWith(runtimeOpts).firestore
     .document('cosyCorner/{id}').onCreate((snap, context) => {
-        const episode = snap.data();
-        let games;
-        return parseHelper.getVideoGamesFromString(episode.description, cosyCornerConfig)
-            .then((result) => {
-                games = result;
-                return setGamesFromMedia(context.params.id, games, 'cosyCorner');
-            })
-            .then(() => {
-                return db.collection('cosyCorner').doc(context.params.id).update({
-                    games: games.map((game) => db.doc('games/' + game.id)),
-                    isVerified: false
-                })
-            })
-            .then(() => {
-                return db.collection('itemsNumber').doc('cosyCorner').update({
-                    count: increment
-                })
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        return generateEpisodeGames("cosyCorner", cosyCornerConfig, snap.data(), context)
     });
 
 exports.generateSilenceOnJoueGames = functions.runWith(runtimeOpts).firestore
     .document('silenceOnJoue/{id}').onCreate((snap, context) => {
         return generateEpisodeGames("silenceOnJoue", silenceOnJoueConfig, snap.data(), context)
+    });
+
+exports.generateGamekultGames = functions.runWith(runtimeOpts).firestore
+    .document('gamekult/{id}').onCreate((snap, context) => {
+        return generateEpisodeGames("gamekult", gamekultConfig, snap.data(), context)
     });
 
 
@@ -292,6 +290,10 @@ exports.toggleVerifyMedia = functions.https.onCall((data, context) => {
 
 exports.setGamesForSilenceOnJoue = functions.https.onRequest((req, res) => {
     return setGamesForNonGeneratedEpisodesOfMedia("silenceOnJoue", silenceOnJoueConfig);
+});
+
+exports.setGamesForGamekult = functions.https.onRequest((req, res) => {
+    return setGamesForNonGeneratedEpisodesOfMedia("gamekult", gamekultConfig);
 });
 
 function setGamesForNonGeneratedEpisodesOfMedia(mediaName, mediaConfig) {

@@ -14,6 +14,15 @@ exports.getVideoGamesFromString = (string, mediaConfig) => {
 
 async function getGamesForMedia(string, mediaConfig) {
     let games = [];
+    let ignoreEpisode = false;
+    mediaConfig.ignoreEpisode.forEach((str) => {
+        if (string.indexOf(str) > -1) {
+            ignoreEpisode = true;
+        }
+    });
+    if (ignoreEpisode) {
+        return [];
+    }
     string = parseDescription(string, mediaConfig);
     let words = string.split(/\s+/);
     games = await getGamesFromArray(words);
@@ -121,12 +130,43 @@ function mappedGames(games) {
 
 const parseDescription = (str, mediaConfig) => {
     str = str.toUpperCase();
-    let parsed = removeSpecialCharacters(str);
+    let parsed = removeExcludedRegex(str, mediaConfig);
+    parsed = removeSpecialCharacters(parsed);
+    parsed = removeEndOfParse(parsed, mediaConfig);
     parsed = removeUselessWhiteSpaces(parsed);
-    mediaConfig.excludeStrings.forEach((string) => {
-        parsed = parsed.replace(string.toUpperCase(), "");
-    });
+    parsed = removedExcludedStrings(parsed, mediaConfig);
+
     return parsed;
+};
+
+const removedExcludedStrings = (str, mediaConfig) => {
+    let result = str;
+    mediaConfig.excludeStrings.forEach((string) => {
+        result = result.replace(string.toUpperCase(), "");
+    });
+
+    return result;
+};
+
+
+const removeExcludedRegex = (str, mediaConfig) => {
+    let result = str;
+    mediaConfig.excludeRegex.forEach((regex) => {
+        result = result.replace(regex, "");
+    });
+
+    return result;
+};
+
+const removeEndOfParse = (str, mediaConfig) => {
+    let result = str;
+    mediaConfig.endOfParseStrings.forEach((endOfParse) => {
+        if (result.indexOf(endOfParse.toUpperCase()) > -1) {
+            result = result.substring(0, result.indexOf(endOfParse.toUpperCase()));
+        }
+    });
+
+    return result;
 };
 
 const removeSpecialCharacters = (str) => {
