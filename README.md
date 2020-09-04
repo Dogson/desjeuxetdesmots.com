@@ -1,3 +1,5 @@
+Plateforme web de découverte de média francophone (surtout) et anglophone (aussi) de qualité qui parlent du jeu vidéo de votre choix
+
 # Credits
 
 ## Development   
@@ -11,13 +13,16 @@ IGDB API, Firebase
 * Silence On Joue
 * ZQSD
 * Gamekult l'Emission
-* Gaijin Dash
+* Fin du Game
 
 ### Vidéos
 
-* Game Maker Toolkit
-* NakeyJakey
-* VideoGameDunkey
-* Noclip
+* Game Next Door
+* ExServ
+* GK (streams)
+* Canard PC (streams)
 * Raycevick
-* CanardPC Emission
+* Osmosis
+* Jacob Geller
+* GMTK
+* Girlfriend Reviews
