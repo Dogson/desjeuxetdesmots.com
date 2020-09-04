@@ -6,6 +6,13 @@ import {MEDIA_TYPES} from "../config/const";
 
 const db = firebase.firestore();
 
+if (window.location.hostname === "localhost") {
+    db.settings({
+        host: "localhost:8080",
+        ssl: false
+    });
+}
+
 const offset = 28;
 
 async function getMediasFromRefs(refs, mediaType, mediaApp) {

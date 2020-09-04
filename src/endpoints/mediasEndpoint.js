@@ -3,6 +3,12 @@ import firebase from "../config/firebase";
 import Parser from "rss-parser";
 
 const db = firebase.firestore();
+if (window.location.hostname === "localhost") {
+    db.settings({
+        host: "localhost:8080",
+        ssl: false
+    });
+}
 const functions = firebase.functions();
 
 const offset = 6;
