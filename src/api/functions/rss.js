@@ -7,6 +7,8 @@ const moment = require('moment');
 const Parser = require("rss-parser");
 let parser = new Parser();
 let _ = require("lodash");
+const config = require('./config').appConfig;
+const {medias} = config;
 
 exports.getZQSD = functions.https.onRequest((req, res) => {
     return generateZQSD()
@@ -39,7 +41,7 @@ async function generateZQSD() {
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
             url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
             hasGeneratedGames: false,
-            isVerified: false //TODO REMOVE !!!!!
+            isVerified: false
         };
     });
 
@@ -72,7 +74,7 @@ async function generateGamekult() {
             description: entry.itunes.summary,
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
             url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
-            isVerified: false, //TODO REMOVE !!!!!
+            isVerified: false,
             hasGeneratedGames: false
         };
     });
@@ -106,7 +108,7 @@ async function generateSilenceOnJoue() {
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
             url: `https://player.acast.com/5b7ac427c6a58e726f576cff/episodes/${entry.guid}`,
             hasGeneratedGames: false,
-            isVerified: false //TODO REMOVE !!!!!
+            isVerified: false
         };
     })
         .filter((entry) => entry.id.indexOf("//") === -1);
@@ -140,7 +142,42 @@ async function generateCosyCorner() {
             description: entry.itunes.summary,
             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
             url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
-            isVerified: false, //TODO REMOVE !!!!!
+            isVerified: false,
+            hasGeneratedGames: false
+        };
+    });
+
+    return Promise.all(entries.map((episode) => {
+        return db.collection('cosyCorner').doc(episode.id).set({
+            ...episode
+        })
+    }))
+}
+
+exports.getExServ = functions.https.onRequest((req, res) => {
+    return generateYoutubeMedia("exServ", medias.exServ)
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.json(error);
+        })
+});
+
+async function generateYoutubeMedia(mediaName, mediaConfig) {
+    const feed = await parser.parseURL("https://www.youtube.com/feeds/videos.xml?channel_id=UC2FAM-zL-PhH0OkIT95aWJQ");
+    console.log(feed);
+    const entries = feed.entries.map(function (entry) {
+        let id = entry.guid && entry.guid.substring(entry.guid.indexOf('tracks/') + 1).replace('racks/', '');
+        return {
+            id: id,
+            name: entry.title,
+            image: entry.itunes.image,
+            description: entry.itunes.summary,
+            releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
+            url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + id,
+            isVerified: false,
             hasGeneratedGames: false
         };
     });

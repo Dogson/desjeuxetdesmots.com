@@ -2,15 +2,8 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 // const firebase = require('firebase');
 const axios = require('axios');
-const IGDB_API = {
-    url: "https://api-v3.igdb.com/",
-    key: "e96d3dcb3da70046dfcfd9204e27ac26"
-};
-
-const runtimeOpts = {
-    timeoutSeconds: 540,
-    memory: '1GB'
-}
+const config = require('./config').appConfig;
+const {runtimeOpts, medias} = config;
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 admin.initializeApp(functions.config().firebase);
@@ -19,35 +12,6 @@ const db = admin.firestore();
 const moment = require('moment');
 const parseHelper = require('./parseHelper');
 const rss = require('./rss');
-
-const cosyCornerConfig = {
-    excludeStrings: ['où il est entre autres question de', 'Le cosy corner numéro', 'cosy corner', 'le cosy corner', 'Un épisode où il est entre autres question de'],
-    excludeRegex: [/\\[[^\\]]*\\]/],
-    ignoreEpisode: ['Zone de Confort', '[HS]'],
-    endOfParseStrings: ['Remerciements', 'Playlist'],
-    parseProperty: "description"
-};
-
-const silenceOnJoueConfig = {
-    excludeStrings: ["Silence On Joue"],
-    excludeRegex: [],
-    ignoreEpisode: [],
-    endOfParseStrings: [],
-    parseProperty: "name"
-};
-
-const gamekultConfig = {
-    excludeStrings: ["gamekult", "l'émission"],
-    excludeRegex: [],
-    ignoreEpisode: [],
-    endOfParseStrings: ["by gamekult"],
-    parseProperty: "name"
-};
-
-const exServConfig = {
-    excludeStrings: [],
-    endOfParseStrings: []
-}
 
 const increment = admin.firestore.FieldValue.increment(1);
 
@@ -78,19 +42,21 @@ exports.getCosyCorner = rss.getCosyCorner;
 
 exports.getSilenceOnJoue = rss.getSilenceOnJoue;
 
+exports.getExServ = rss.getExServ;
+
 exports.generateCosyCornerGames = functions.runWith(runtimeOpts).firestore
     .document('cosyCorner/{id}').onCreate((snap, context) => {
-        return generateEpisodeGames("cosyCorner", cosyCornerConfig, snap.data(), context)
+        return generateEpisodeGames("cosyCorner", medias.cosyCorner, snap.data(), context)
     });
 
 exports.generateSilenceOnJoueGames = functions.runWith(runtimeOpts).firestore
     .document('silenceOnJoue/{id}').onCreate((snap, context) => {
-        return generateEpisodeGames("silenceOnJoue", silenceOnJoueConfig, snap.data(), context)
+        return generateEpisodeGames("silenceOnJoue", media.silenceOnJoue, snap.data(), context)
     });
 
 exports.generateGamekultGames = functions.runWith(runtimeOpts).firestore
     .document('gamekult/{id}').onCreate((snap, context) => {
-        return generateEpisodeGames("gamekult", gamekultConfig, snap.data(), context)
+        return generateEpisodeGames("gamekult", media.gamekult, snap.data(), context)
     });
 
 
@@ -289,11 +255,11 @@ exports.toggleVerifyMedia = functions.https.onCall((data, context) => {
 // });
 
 exports.setGamesForSilenceOnJoue = functions.https.onRequest((req, res) => {
-    return setGamesForNonGeneratedEpisodesOfMedia("silenceOnJoue", silenceOnJoueConfig);
+    return setGamesForNonGeneratedEpisodesOfMedia("silenceOnJoue", medias.silenceOnJoue);
 });
 
 exports.setGamesForGamekult = functions.https.onRequest((req, res) => {
-    return setGamesForNonGeneratedEpisodesOfMedia("gamekult", gamekultConfig);
+    return setGamesForNonGeneratedEpisodesOfMedia("gamekult", media.gamekult);
 });
 
 function setGamesForNonGeneratedEpisodesOfMedia(mediaName, mediaConfig) {

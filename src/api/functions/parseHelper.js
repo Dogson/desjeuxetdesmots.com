@@ -2,10 +2,8 @@ const moment = require('moment');
 
 const axios = require('axios');
 
-const IGDB_API = {
-    url: "https://api-v3.igdb.com/",
-    key: "b3c57654c5e634007b9ade6ed9f0457f"
-};
+const config = require('./config').appConfig;
+const {IGDB_API} = config;
 
 exports.getVideoGamesFromString = (string, mediaConfig) => {
     return getGamesForMedia(string, mediaConfig);
