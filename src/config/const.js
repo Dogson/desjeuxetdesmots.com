@@ -45,6 +45,14 @@ const VIDEOS = [
         logo: require("../assets/logos/gameMakerToolkit/gameMakerToolkitFull.jpg"),
         logoMin: require("../assets/logos/gameMakerToolkit/gameMakerToolkitMin.png"),
         app: "youtube",
+    },
+    {
+        dataLabel: "exServ",
+        name: "Ex Serv",
+        author: "Ex Serv",
+        logo: require("../assets/logos/exServ/exServFull.jpg"),
+        logoMin: require("../assets/logos/exServ/exServMin.jpg"),
+        app: "youtube",
     }
 ];
 
