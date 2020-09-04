@@ -54,7 +54,6 @@ class GamePage extends React.Component {
     }
 
     _handleClickMedia(media) {
-        debugger;
         let mediaActiveType;
         MEDIA_TYPES.forEach((mediaType) => {
             mediaType.medias.forEach((newMedia) => {
