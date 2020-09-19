@@ -295,7 +295,7 @@ input {
     font-size: $size-smaller;
 
     &:after {
-      bottom: 0px;
+      bottom: 0;
     }
   }
 
@@ -417,15 +417,27 @@ input[type="submit"] {
   .mediasLogosContainer {
     @extend .flexRow;
     @extend .flexCenter;
-    position: absolute;
-    bottom: 10px;
+    margin-top: 10px;
+    //positio/n: absolute;
+    //bottom: 10px;
 
-    img {
-      width: 31px;
-      height: 31px;
-      opacity: 0.8;
-      padding: 0 3px;
+    .mediaLogo {
+      position: relative;
+      overflow: hidden;
+      width: 50px;
+      height: 50px;
+      padding: 5px;
+
+      img {
+        display: inline;
+        height: 100%;
+        margin: 0 auto;
+        opacity: 0.8;
+      }
+
     }
+
+
   }
 
   img {

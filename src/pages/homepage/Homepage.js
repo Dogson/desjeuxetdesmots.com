@@ -9,16 +9,10 @@ import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch} from "react-icons/fa";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
-import {NavLink, Route, withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
-
-import logo from "../../assets/logos/gamerJuice/logo.png";
-import logoCosyCorner from "../../assets/logos/cosyCorner/cosyCornerSmall.png";
-import {MEDIA_TYPES} from "../../config/const";
-import GamePage from "../game/GamePage";
-import Admin from "../admin/Admin";
 
 
 class Homepage extends Component {
@@ -58,11 +52,11 @@ class Homepage extends Component {
         const search = this.props.searchInput;
         const previousGamesArray = this.props.games || [];
         const games = await getGamesBySearch({lastDoc, search});
-            this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
-            this.props.dispatch({
-                type: ACTIONS_GAMES.SET_GAMES,
-                payload: {games: previousGamesArray.concat(games), lastDoc: null}
-            });
+        this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
+        this.props.dispatch({
+            type: ACTIONS_GAMES.SET_GAMES,
+            payload: {games: previousGamesArray.concat(games), lastDoc: null}
+        });
 
     }
 
@@ -116,7 +110,7 @@ const GameGrid = ({games}) => {
         {
             games.map((game) => {
                 return <div className={styles.cardContainer} key={game.id}>
-                    <NavLink to= {`/game/${game.id}`}>
+                    <NavLink to={`/game/${game.id}`}>
                         <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
                         <div className={styles.hoveredInfo}>
                             <div className={styles.backColor}/>
@@ -136,17 +130,15 @@ const GameGrid = ({games}) => {
 };
 
 const MediaLogos = ({game}) => {
-    const dataLabels = [];
     return <div className={styles.mediasLogosContainer}>
-        {MEDIA_TYPES.map((mediaType) => {
-            return mediaType.medias.map((media) => {
-                if (game[media.dataLabel] && game[media.dataLabel].length > 0 && dataLabels.indexOf(media.dataLabel) < 0) {
-                    dataLabels.push(media.dataLabel);
-                    return <div key={media.dataLabel}><img src={media.logoMin} alt={media.title}/></div>
-                }
-                return null;
+        {
+            game.medias.map((media) => {
+                return <div key={media.name} className={styles.mediaLogo}>
+                    <img src={media.logo} alt={media.name}/>
+                </div>
             })
-        })}
+        }
+
     </div>
 };
 
