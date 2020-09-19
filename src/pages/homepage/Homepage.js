@@ -20,20 +20,25 @@ class Homepage extends Component {
         super(props);
 
         this.state = {
-            hasMoreGames: true
+            hasMoreGames: true,
+            loading: false
         };
 
         this._handleChange = this._handleChange.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
     }
 
+    componentDidMount() {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {page: 1}});
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         const nextValues = queryString.parse(nextProps.location.search);
         const currentValues = queryString.parse(this.props.location.search);
         if (nextValues.q !== currentValues.q) {
-            this.setState({lastDoc: null});
+            this.setState({page: 1});
             this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: []});
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         }
     }
 
@@ -48,16 +53,20 @@ class Homepage extends Component {
     }
 
     async getMoreGames() {
-        const lastDoc = this.props.lastDoc;
+        if (this.state.loading) {
+            return
+        }
+        this.setState({loading: true});
+        const page = this.props.page || 1;
         const search = this.props.searchInput;
         const previousGamesArray = this.props.games || [];
-        const games = await getGamesBySearch({lastDoc, search});
+        const games = await getGamesBySearch({search, page});
         this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
         this.props.dispatch({
             type: ACTIONS_GAMES.SET_GAMES,
-            payload: {games: previousGamesArray.concat(games), lastDoc: null}
+            payload: {games: previousGamesArray.concat(games), page: page + 1}
         });
-
+        this.setState({loading: false})
     }
 
 
@@ -65,7 +74,6 @@ class Homepage extends Component {
 
     renderGameGrid() {
         return <InfiniteScroll
-            pageStart={0}
             loadMore={this.getMoreGames}
             hasMore={this.state.hasMoreGames}
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
@@ -146,7 +154,7 @@ const mapStateToProps = state => {
     return {
         games: state.gamesReducer.games,
         searchInput: state.gamesReducer.searchInput,
-        lastDoc: state.gamesReducer.lastDoc
+        page: state.gamesReducer.page
     }
 };
 

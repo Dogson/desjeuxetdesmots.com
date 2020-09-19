@@ -5,14 +5,14 @@ export const IGDB_API = {
 
 export const API_CONFIG = {
     endpoints: {
-        GAME: "games/",
-        MEDIA: "media/",
+        GAME: "games",
+        MEDIA: "media",
         GENERATE: "media/generate/"
     }
-}
+};
 
 export const FIREBASE_API = {
     apiKey: "AIzaSyAweCHZ6FCV0g91IqbJEDnmKwyKa1YAMKE",
     authDomain: "gamer-juice.firebaseapp.com",
     projectId: "gamer-juice"
-}
+};

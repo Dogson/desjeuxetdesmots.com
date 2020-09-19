@@ -1,6 +1,5 @@
 import moment from "moment";
 import firebase from "../config/firebase";
-import Parser from "rss-parser";
 
 const db = firebase.firestore();
 if (window.location.hostname === "localhost") {
@@ -23,16 +22,16 @@ export const getNumberOfMedia = ({mediaDataLabel}) => {
         });
 };
 
-export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
+export const getAllMedia = ({mediaDataLabel, page}) => {
     let ref = db.collection(mediaDataLabel).orderBy("isVerified", "asc");
-    if (lastDoc) {
-        ref = ref.startAfter(lastDoc);
+    if (page) {
+        ref = ref.startAfter(page);
     }
-    ref = ref.limit(lastDoc ? offset : offsetInit);
-    let lastDocument;
+    ref = ref.limit(page ? offset : offsetInit);
+    let pageument;
     return ref.get()
         .then((snap) => {
-            lastDocument = snap.docs && snap.docs[snap.docs.length - 1];
+            pageument = snap.docs && snap.docs[snap.docs.length - 1];
             return {
                 medias: snap.docs.map((doc) => {
                     return {...doc.data(), id: doc.id};
@@ -51,7 +50,7 @@ export const getAllMedia = ({mediaDataLabel, lastDoc}) => {
         })
         .then((result) => {
             return {
-                lastDoc: lastDocument, medias: result.sort((mediaX, mediaY) => {
+                page: pageument, medias: result.sort((mediaX) => {
                     return mediaX.isVerified ? 1 : -1;
                 })
             }

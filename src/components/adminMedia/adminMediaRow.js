@@ -52,13 +52,13 @@ class AdminMediaRow extends React.Component {
         if (this.state.noMoreMedias) {
             return;
         }
-        getAllMedia({mediaDataLabel: this.props.type.dataLabel, lastDoc: this.state.lastDoc})
+        getAllMedia({mediaDataLabel: this.props.type.dataLabel, page: this.state.page})
             .then((result) => {
                 if (result.medias.length > 0) {
                     const mediasList = this.state.medias.concat(result.medias);
                     this.setState({
                         medias: mediasList,
-                        lastDoc: result.lastDoc,
+                        page: result.page,
                     });
                 } else {
                     this.setState({noMoreMedias: true});
@@ -153,14 +153,14 @@ class AdminMediaRow extends React.Component {
     }
 
     render() {
-        const {name, dataLabel, logoMin} = this.props.type;
-        const {medias, mediasWithEmpty, lastDoc, totalCount} = this.state;
+        const {name, logoMin} = this.props.type;
+        const {mediasWithEmpty} = this.state;
         const smallerCards = this.props.match.url === '/admin/videos';
 
         const activeItem = this.props.mediaActive && this.props.mediaActive.media;
         return <div className={styles.adminMediaRowContainer}>
             <div className={styles.title}>
-                <img className={styles.imageContainer} src={logoMin}/>
+                <img className={styles.imageContainer} src={logoMin} alt={name}/>
                 {name}
             </div>
             {
