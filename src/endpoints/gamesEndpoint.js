@@ -1,8 +1,9 @@
 import moment from "moment";
 import firebase from "../config/firebase";
-import {IGDB_API} from "../config/apiConfig";
+import {API_CONFIG, IGDB_API} from "../config/apiConfig";
 import * as axios from "axios";
 import {MEDIA_TYPES} from "../config/const";
+import {get} from "../utils";
 
 const db = firebase.firestore();
 
@@ -57,67 +58,15 @@ async function asyncForEach(array, callback) {
 }
 
 export async function getGameById(gameId) {
-    let game;
-    return db.collection('games').doc(gameId).get()
-        .then((snap) => {
-            game = snap.data();
-
-            return asyncForEach(MEDIA_TYPES, async (mediaType) => {
-                game[mediaType.dataLabel] = [];
-                return asyncForEach(mediaType.medias, async (media) => {
-                    if (game[media.dataLabel]) {
-                        const medias = await getMediasFromRefs(game[media.dataLabel], media.dataLabel, media.app);
-                        game[mediaType.dataLabel] = game[mediaType.dataLabel].concat(medias);
-                    }
-                })
-            })
-        })
-        .then(() => {
-            return game;
-        })
-        .catch((error) => {
-            console.error(error);
-        })
+    return await get(API_CONFIG.endpoints.GAME + gameId);
 };
 
-const getAllGames = ({lastDoc}) => {
-    let ref = db.collection('games').orderBy("lastUpdated", "desc");
-    if (lastDoc) {
-        ref = ref.startAfter(lastDoc);
-    }
-    ref = ref.limit(offset);
-    return ref.get()
-        .then((snap) => {
-            return {
-                games: snap.docs.map((doc) => {
-                    return doc.data();
-                }).map((game) => {
-                    return {...game, releaseDate: game.releaseDate ? moment.unix(game.releaseDate) : "A venir"}
-                }).sort((gameX, gameY) => {
-                    return gameX.lastUpdated ? -1 : gameY.lastUpdated === "A venir" ? 2 : gameY.lastUpdated - gameX.lastUpdated
-                }).filter((game) => {
-                    let isDisplayed = false;
-                    for (let i = 0; i < MEDIA_TYPES.length; i++) {
-                        const media = MEDIA_TYPES[i].medias;
-                        for (let j = 0; j < media.length; j++) {
-                            const dataLabel = media[j].dataLabel;
-                            if (game[dataLabel] && game[dataLabel].length > 0) {
-                                isDisplayed = true;
-                            }
-                        }
-                    }
-                    return isDisplayed;
-                }),
-                lastDoc: snap.docs && snap.docs[snap.docs.length - 1]
-            }
-        })
-
-        .catch((error) => {
-            console.error(error);
-        })
+async function getAllGames({lastDoc})  {
+   const games = await get(API_CONFIG.endpoints.GAME);
+   return games.map(_mapResultToGame);
 };
 
-export const getGamesBySearch = ({search, lastDoc, limit}) => {
+export async function getGamesBySearch({search, lastDoc, limit}) {
     if (!search || search.length <= 0) {
         return getAllGames({lastDoc});
     }
@@ -142,6 +91,13 @@ export const getGamesBySearch = ({search, lastDoc, limit}) => {
             console.error(error);
         })
 };
+
+function _mapResultToGame(result) {
+    return {
+        ...result,
+        releaseDate: moment(result.releaseDate)
+    }
+}
 
 export const getGamesFromIGDB = ({search, limit}) => {
     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";

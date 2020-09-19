@@ -3,6 +3,14 @@ export const IGDB_API = {
     key: "b3c57654c5e634007b9ade6ed9f0457f"
 };
 
+export const API_CONFIG = {
+    endpoints: {
+        GAME: "games/",
+        MEDIA: "media/",
+        GENERATE: "media/generate/"
+    }
+}
+
 export const FIREBASE_API = {
     apiKey: "AIzaSyAweCHZ6FCV0g91IqbJEDnmKwyKa1YAMKE",
     authDomain: "gamer-juice.firebaseapp.com",

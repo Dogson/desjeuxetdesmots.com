@@ -53,17 +53,17 @@ class Homepage extends Component {
         this.props.history.push(`/?q=${value}`);
     }
 
-    getMoreGames() {
+    async getMoreGames() {
         const lastDoc = this.props.lastDoc;
         const search = this.props.searchInput;
         const previousGamesArray = this.props.games || [];
-        getGamesBySearch({lastDoc, search}).then((result) => {
-            this.setState({hasMoreGames: result.games.length > 0 && (!search || search.length === 0)});
+        const games = await getGamesBySearch({lastDoc, search});
+            this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
             this.props.dispatch({
                 type: ACTIONS_GAMES.SET_GAMES,
-                payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}
+                payload: {games: previousGamesArray.concat(games), lastDoc: null}
             });
-        });
+
     }
 
 

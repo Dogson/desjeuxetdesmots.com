@@ -12,7 +12,7 @@ IGDB API, Firebase
 * Cosy Corner 
 * Silence On Joue
 * ZQSD
-* Gamekult l'Emission
+* Gamekult l'Emission   
 * Fin du Game
 
 ### Vidéos
