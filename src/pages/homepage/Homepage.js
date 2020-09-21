@@ -54,13 +54,13 @@ class Homepage extends Component {
 
     async getMoreGames() {
         if (this.state.loading) {
-            return
+            return;
         }
         this.setState({loading: true});
         const page = this.props.page || 1;
         const search = this.props.searchInput;
         const previousGamesArray = this.props.games || [];
-        const games = await getGamesBySearch({search, page});
+        const games = await getGamesBySearch({name: search, page});
         this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
         this.props.dispatch({
             type: ACTIONS_GAMES.SET_GAMES,
@@ -78,7 +78,7 @@ class Homepage extends Component {
             hasMore={this.state.hasMoreGames}
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
-            <GameGrid games={this.props.games}/>
+            <GameGrid games={this.props.games} loading={this.state.loading}/>
         </InfiniteScroll>
     };
 
@@ -105,10 +105,10 @@ class Homepage extends Component {
     }
 }
 
-const GameGrid = ({games}) => {
+const GameGrid = ({games, loading}) => {
     if (!games)
         return null;
-    if (games.length === 0) {
+    if (games.length === 0 && !loading) {
         return <div className={styles.noResultContainer}>
             <div><strong>Aucun jeu ne correspond à votre recherche.</strong></div>
             <div>Cela signifie probablement qu'aucun média n'a été encore publié à son sujet.</div>
@@ -118,7 +118,7 @@ const GameGrid = ({games}) => {
         {
             games.map((game) => {
                 return <div className={styles.cardContainer} key={game.id}>
-                    <NavLink to={`/game/${game.id}`}>
+                    <NavLink to={`/game/${game._id}`}>
                         <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
                         <div className={styles.hoveredInfo}>
                             <div className={styles.backColor}/>

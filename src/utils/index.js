@@ -19,11 +19,11 @@ export async function post(endpoint, data) {
 }
 
 export async function get(endpoint, params) {
-    params = _parseParams(params);
+    params = params && _parseParams(params);
     const result = await axios({
         url: process.env.REACT_APP_API_URL + endpoint,
         method: 'GET',
-        params: new URLSearchParams(params),
+        params: params && new URLSearchParams(params),
         headers: {
             'Accept': 'application/json',
             "X-Requested-With": "XMLHttpRequest"
