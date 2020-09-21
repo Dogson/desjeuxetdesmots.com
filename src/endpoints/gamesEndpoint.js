@@ -14,7 +14,8 @@ if (window.location.hostname === "localhost") {
 }
 
 export async function getGameById(gameId) {
-    return await get(`${API_CONFIG.endpoints.GAME}/${gameId}`);
+    const game = await get(`${API_CONFIG.endpoints.GAME}/${gameId}`);
+    return _mapResultToGame(game);
 }
 
 export async function getGamesBySearch(params) {
@@ -24,8 +25,13 @@ export async function getGamesBySearch(params) {
 }
 
 function _mapResultToGame(result) {
+    let medias = result.episodes.map(episode => episode.media);
+    medias = medias.filter((media, index) => {
+        return medias.map(med => med.name).indexOf(media.name) === index;
+    });
     return {
         ...result,
+        medias,
         releaseDate: moment(result.releaseDate)
     }
 }
