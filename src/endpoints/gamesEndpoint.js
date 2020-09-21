@@ -18,6 +18,7 @@ export async function getGameById(gameId) {
 }
 
 export async function getGamesBySearch(params) {
+    params.limit = params.limit || 28;
     const games = await get(API_CONFIG.endpoints.GAME, params);
     return games.map(_mapResultToGame);
 }
