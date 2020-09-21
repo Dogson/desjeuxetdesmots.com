@@ -13,6 +13,12 @@ export default (state = {}, action) => {
                 ...state,
                 searchInput: action.payload
             };
+        case ACTIONS_GAMES.SET_CURRENT_GAME:
+            console.log(action);
+            return {
+                ...state,
+                currentGame: action.payload
+            };
         default:
             return {
                 ...state

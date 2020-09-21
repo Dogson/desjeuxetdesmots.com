@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch} from "react-icons/fa";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
-import {NavLink, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
@@ -21,15 +21,17 @@ class Homepage extends Component {
 
         this.state = {
             hasMoreGames: true,
-            loading: false
+            loading: false,
         };
 
         this._handleChange = this._handleChange.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
+        this.setCurrentGame = this.setCurrentGame.bind(this);
     }
 
     componentDidMount() {
         this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {page: 1}});
+        this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -46,10 +48,18 @@ class Homepage extends Component {
         if (prevProps.searchInput !== this.props.searchInput) {
             this.setState({hasMoreGames: true});
         }
+
+        if (this.props.currentGame) {
+            this.props.history.push(`/game/${this.props.currentGame._id}`)
+        }
     }
 
     _handleChange(value) {
         this.props.history.push(`/?q=${value}`);
+    }
+
+    setCurrentGame(game) {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
     }
 
     async getMoreGames() {
@@ -78,7 +88,7 @@ class Homepage extends Component {
             hasMore={this.state.hasMoreGames}
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
-            <GameGrid games={this.props.games} loading={this.state.loading}/>
+            <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
         </InfiniteScroll>
     };
 
@@ -105,7 +115,7 @@ class Homepage extends Component {
     }
 }
 
-const GameGrid = ({games, loading}) => {
+const GameGrid = ({games, loading, setCurrentGame}) => {
     if (!games)
         return null;
     if (games.length === 0 && !loading) {
@@ -117,20 +127,18 @@ const GameGrid = ({games, loading}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={styles.cardContainer} key={game.id}>
-                    <NavLink to={`/game/${game._id}`}>
-                        <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
-                        <div className={styles.hoveredInfo}>
-                            <div className={styles.backColor}/>
-                            <div className={styles.title}>
-                                {game.name}
-                            </div>
-                            <div className={styles.secondaryInfoContainer}>
-                                {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
-                            </div>
-                            <MediaLogos game={game}/>
+                return <div className={styles.cardContainer} key={game.id} onClick={() => setCurrentGame(game)}>
+                    <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
+                    <div className={styles.hoveredInfo}>
+                        <div className={styles.backColor}/>
+                        <div className={styles.title}>
+                            {game.name}
                         </div>
-                    </NavLink>
+                        <div className={styles.secondaryInfoContainer}>
+                            {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
+                        </div>
+                        <MediaLogos game={game}/>
+                    </div>
                 </div>
             })
         }
@@ -154,7 +162,8 @@ const mapStateToProps = state => {
     return {
         games: state.gamesReducer.games,
         searchInput: state.gamesReducer.searchInput,
-        page: state.gamesReducer.page
+        page: state.gamesReducer.page,
+        currentGame: state.gamesReducer.currentGame
     }
 };
 
