@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import cx from "classnames";
 import Slider from "react-slick";
 import styles from "./carousel.module.scss";
-import {NavLink} from "react-router-dom";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
 
@@ -12,19 +11,25 @@ export default class Carousel extends Component {
 
         this.state = {
             showDots: false,
-            showPreviousArrow: false
+            showPreviousArrow: false,
         };
+
+        this.references = [];
+        this.props.medias.forEach(() => {
+            this.references.push(React.createRef())
+        });
 
         this._handleAfterChange = this._handleAfterChange.bind(this);
     }
 
     _handleAfterChange(index) {
-        this.setState({showPreviousArrow: index && index > 0})
-        return this.props.onClickNext()
+        this.setState({showPreviousArrow: index && index > 0});
+        return this.props.onClickNext();
     }
 
     render() {
         const {medias, activeItem, onClickItem, onScreenItems, smallerCards} = this.props;
+        const _this = this;
 
         const settings = {
             dots: true,
@@ -47,10 +52,10 @@ export default class Carousel extends Component {
         return (
             <div className={styles.carouselContainer}>
                 <Slider {...settings}>
-                    {medias.map((media, index) => {
-                        return <div className={styles.slideContainer} key={index}>
-                            {media ? <Card isActive={activeItem && media.id === activeItem.id} media={media}
-                                           onClick={() => onClickItem(media)}
+                    {medias.map((episode, index) => {
+                        return <div className={styles.slideContainer} key={index} ref={_this.references[index]}>
+                            {episode ? <Card isActive={activeItem && episode._id === activeItem._id} media={episode}
+                                           onClick={() => onClickItem(episode, _this.references[index])}
                                            smaller={smallerCards}/> :
                                 <EmptyCard smaller={smallerCards}/>}
                         </div>
@@ -62,9 +67,6 @@ export default class Carousel extends Component {
 }
 
 const Card = ({media, onClick, isActive, smaller}) => {
-    if (!media.image) {
-
-    }
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '190px'} : {}}>
         {

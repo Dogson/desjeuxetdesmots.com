@@ -4,15 +4,12 @@ import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
 import Loader from 'react-loader-spinner';
-import PageLayout from "../../layouts/PageLayout";
 import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
 import {getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
-import {setGamesForMedia} from "../../endpoints/mediasEndpoint";
 import firebase from '../../config/firebase';
-import {connect} from "react-redux";
 import {TrashWidget} from "../trashWidget/trashWidget";
 import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 
@@ -127,14 +124,14 @@ class ActiveMediaBox extends React.Component {
 
     render() {
         const user = firebase.auth().currentUser;
-        const {media, hideDescription, app} = this.props;
+        const {media, hideDescription} = this.props;
         return <div className={styles.activeMediaBoxContainer} ref={this.ref}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
                 </div>
                 <div className={styles.date}>
-                    {media.releaseDate.format('DD/MM/YYYY')}
+                    {moment(media.releaseDate).format('DD/MM/YYYY')}
                 </div>
             </div>
             <div className={styles.bodyContainer}>
@@ -214,7 +211,7 @@ class ActiveMediaBox extends React.Component {
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            {media && media.url ? <MediaPlayer url={media.url} type={app}/> : <LoadingSpinner/>}
+                            {media && media.url ? <MediaPlayer url={media.url} type={media.media.type}/> : <LoadingSpinner/>}
                         </div>
                         {!hideDescription && <div className={styles.description}>
                             {media.description}
@@ -245,6 +242,6 @@ const GameCard = ({game, showDelete, onDelete}) => {
             </div>}
         </div>
     </div>
-}
+};
 
 export default withRouter(ActiveMediaBox);

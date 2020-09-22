@@ -63,3 +63,14 @@ function _parseParams(params) {
     });
     return params;
 }
+
+
+export function findPos(obj) {
+    let curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return curtop;
+    }
+}

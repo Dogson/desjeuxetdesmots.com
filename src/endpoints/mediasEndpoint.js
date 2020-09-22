@@ -100,28 +100,3 @@ export const toggleVerifyMedia = ({mediaType, mediaId, verified}) => {
             console.error(error);
         })
 };
-
-// export async function getZQSD() {
-//     const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-//     const parser = new Parser();
-//     const feed = await parser.parseURL(proxyUrl + 'https://www.youtube.com/feeds/videos.xml?channel_id=UCqJ-Xo29CKyLTjn6z2XwYAw');
-//     const entries = feed.items.map(function (entry) {
-//         let id = entry.guid && entry.guid.substring(entry.guid.indexOf('tracks/') + 1).replace('racks/', '');
-//         // console.log(entry.guid);
-//         return {
-//             id: id,
-//             name: entry.title,
-//             // image: entry.itunes.image,
-//             // description: entry.itunes.summary,
-//             releaseDate: moment(entry.pubDate).format('YYYY-MM-DD'),
-//             url: "api.soundcloud.com/tracks/" + id,
-//             isVerified: false //TODO REMOVE !!!!!
-//         };
-//     });
-//     // return Promise.all(entries.map((episode) => {
-//     //     return db.collection('gamekult').doc(episode.id).set({
-//     //         ...episode
-//     //     }, {merge: true})
-//     // }))
-//
-// }

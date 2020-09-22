@@ -14,7 +14,6 @@ export default (state = {}, action) => {
                 searchInput: action.payload
             };
         case ACTIONS_GAMES.SET_CURRENT_GAME:
-            console.log(action);
             return {
                 ...state,
                 currentGame: action.payload

@@ -3,6 +3,7 @@ import firebase from "../config/firebase";
 import {API_CONFIG, IGDB_API} from "../config/apiConfig";
 import * as axios from "axios";
 import {get} from "../utils";
+import React from "react";
 
 const db = firebase.firestore();
 
@@ -28,6 +29,11 @@ function _mapResultToGame(result) {
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
         return medias.map(med => med.name).indexOf(media.name) === index;
+    });
+    result.episodes = result.episodes.map((episode) => {
+        return {
+            ...episode,
+        }
     });
     return {
         ...result,

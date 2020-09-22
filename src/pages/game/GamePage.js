@@ -1,12 +1,12 @@
 import styles from "./gamePage.module.scss";
-import React, {Component} from 'react';
+import React from 'react';
 import {Helmet} from "react-helmet";
 import cx from "classnames";
 import {getGameById} from "../../endpoints/gamesEndpoint";
 import PageLayout from "../../layouts/PageLayout";
 import moment from "moment";
 import localization from 'moment/locale/fr';
-import {NavLink, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import Carousel from "../../components/carousel/carousel";
 import ActiveMediaBox from "../../components/activeMediaBox/activeMediaBox";
@@ -14,7 +14,8 @@ import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_TYPES} from "../../config/const";
 import {setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
-import {TrashWidget} from "../../components/trashWidget/trashWidget";
+import {ACTIONS_GAMES} from "../../actions/gamesActions";
+import {findPos} from "../../utils";
 
 class GamePage extends React.Component {
 
@@ -31,13 +32,15 @@ class GamePage extends React.Component {
     }
 
     componentDidMount() {
-        this.refreshGame();
+        if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
+            this.refreshGame();
+        }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
-            this.refreshGame();
-        }
+        // if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
+        //     this.refreshGame();
+        // }
     }
 
     refreshGame() {
@@ -49,25 +52,18 @@ class GamePage extends React.Component {
         const gameId = String(this.props.match.params.gameId);
         getGameById(gameId)
             .then((game) => {
-                this.setState({game: game, loading: false});
+                this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+                this.setState({loading: false});
             })
     }
 
-    _handleClickMedia(media) {
-        let mediaActiveType;
-        MEDIA_TYPES.forEach((mediaType) => {
-            mediaType.medias.forEach((newMedia) => {
-                if (newMedia.dataLabel === media.type) {
-                    mediaActiveType = mediaType;
-                }
-            })
-        });
+    _handleClickMedia(episode, ref) {
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: {media: media}
+            payload: {...episode}
         });
         setTimeout(() => {
-            window.scrollTo({top: mediaActiveType.ref.current.offsetParent.offsetTop, behavior: "smooth"})
+            window.scrollTo({top: findPos(ref.current.offsetParent.offsetParent.offsetParent), behavior: 'smooth'})
         }, 200);
     }
 
@@ -124,46 +120,38 @@ class GamePage extends React.Component {
             })
     }
 
-    renderActiveMedia(mediaActive, appType) {
-        return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                               onVerifyMedia={this._handleVerifyMedia} app={appType}
-                               hideDescription={appType === "youtube"}/>
+    renderActiveMedia(mediaActive) {
+        return <ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
+                               onVerifyMedia={this._handleVerifyMedia}
+                               hideDescription={mediaActive.media.type === "video"}/>
     }
 
     renderMediaTypeRow(mediaType) {
         const {mediaActive} = this.props;
-        let appType = "";
-        let mediaActiveType = "";
+        let mediaActiveType;
         if (mediaActive && mediaActive.media) {
-            MEDIA_TYPES.forEach((mediaType) => {
-                mediaType.medias.forEach((media) => {
-                    if (media.dataLabel === mediaActive.media.type) {
-                        appType = media.app;
-                        mediaActiveType = mediaType;
-                    }
-                })
-            });
+            mediaActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === mediaActive.media.type);
         }
-        const medias = this.state.game[mediaType.dataLabel];
-        const activeItem = this.props.mediaActive && this.props.mediaActive.media;
+        const medias = this.props.currentGame.episodes.filter(ep => ep.media.type === mediaType.dataLabel);
+        const activeItem = this.props.mediaActive;
 
         if (medias && medias.length > 0) {
             return <div key={mediaType.dataLabel} ref={mediaType.ref}
-                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel})}>
+                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaActiveType && mediaType.dataLabel === mediaActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
-                        <img className={styles.imageContainer} src={mediaType.logoMin}/>
+                        <img className={styles.imageContainer} src={mediaType.logoMin} alt={mediaType.dataLabel}/>
                         {mediaType.name}
                     </div>
                     <Carousel medias={medias}
-                              onClickItem={(media) => {
-                                  this._handleClickMedia(media, mediaActiveType)
+                              onClickItem={(media, ref) => {
+                                  this._handleClickMedia(media, ref)
                               }}
                               onScreenItems={6}
                               activeItem={activeItem}
                               smallerCards={mediaType.dataLabel === "videos"}/>
                     <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel && this.renderActiveMedia(mediaActive, appType)}
+                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel && this.renderActiveMedia(mediaActive)}
                     </div>
                 </div>
             </div>
@@ -172,21 +160,22 @@ class GamePage extends React.Component {
     }
 
     render() {
-        const {game, loading} = this.state;
+        const {currentGame} = this.props;
+
         return <PageLayout smallHeader>
-            {game && game.name && <Helmet title={`${game.name} - gamer juice`}/>}
-            {loading ? <LoadingSpinner/> :
+            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - gamer juice`}/>}
+            {!currentGame ? <LoadingSpinner/> :
                 <div className={styles.gamePageContainer}>
                     <div className={styles.gameHeader}>
-                        <div className={styles.backImage} style={{backgroundImage: `url(${game.screenshot})`}}/>
+                        <div className={styles.backImage} style={{backgroundImage: `url(${currentGame.screenshot})`}}/>
                         <div className={styles.headerContent}>
-                            <img className={styles.coverImg} src={game.cover}/>
+                            <img className={styles.coverImg} src={currentGame.cover} alt={currentGame.name}/>
                             <div className={styles.gameInfos}>
                                 <div className={styles.gameTitle}>
-                                    {game.name}
+                                    {currentGame.name}
                                 </div>
                                 <div className={styles.gameDate}>
-                                    {moment.unix(game.releaseDate).format('YYYY')}
+                                    {moment(currentGame.releaseDate).format('YYYY')}
                                 </div>
                             </div>
                         </div>
@@ -206,7 +195,8 @@ class GamePage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive
+        mediaActive: state.mediaReducer.mediaActive,
+        currentGame: state.gamesReducer.currentGame
     }
 };
 
