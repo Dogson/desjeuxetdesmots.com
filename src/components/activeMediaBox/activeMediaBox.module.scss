@@ -20,9 +20,9 @@
     }
 
     .date {
-      color: $color-bright-1;
+      color: $color-bright-2;
       font-size: $size-small;
-      font-weight: $weight-regular;
+      font-weight: $weight-light;
       margin-bottom: 5px;
     }
   }
@@ -39,6 +39,22 @@
       padding-right: 30px;
       flex: 0.4;
       position: relative;
+
+      .description {
+        color: $color-bright-1;
+        font-weight: $weight-regular;
+        font-size: $size-small;
+      }
+    }
+
+    .rightRow {
+      flex: 0.5;
+
+      .rightRowContainer {
+        min-height: 320px;
+        @extend .flexColumn;
+        //@extend .flexCenter;
+      }
 
       .saveContainer, .verifyContainer {
         @extend .flexRow;
@@ -95,22 +111,6 @@
 
       .inputWithSuggestionsContainer {
         align-self: flex-start;
-      }
-    }
-
-    .rightRow {
-      flex: 0.5;
-
-      .rightRowContainer {
-        min-height: 320px;
-        @extend .flexColumn;
-        //@extend .flexCenter;
-
-        .description {
-          color: $color-bright-1;
-          font-weight: $weight-regular;
-          font-size: $size-small;
-        }
       }
     }
   }

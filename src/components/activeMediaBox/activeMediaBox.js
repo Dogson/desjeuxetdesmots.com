@@ -136,85 +136,91 @@ class ActiveMediaBox extends React.Component {
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>
-                    {this.state.showSaveBtn && user ?
-                        <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
-                            <div onClick={this._handleOnSaveGames} data-tip="Enregistrer">
-                                {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
-                                    <div style={{padding: '0 5px'}}><Loader
-                                        type="TailSpin"
-                                        color="#FFC857"
-                                        height={15}
-                                        width={15}
-                                    /></div>}
-                            </div>
-                        </div> :
-                        <div className={styles.verifyContainer}>
-                            {media.isVerified || !firebase.auth().currentUser ? null :
-                                <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié">
-                                    {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
-                                        <Loader
-                                            type="TailSpin"
-                                            color="#FFC857"
-                                            height={15}
-                                            width={15}
-                                        />}
-                                </div>
-                            }
-                        </div>
-
-                    }
-                    <ReactTooltip effect="solid" place="left"/>
-                    <div className={styles.gamesContainer}>
-                        {this.state.currentGames.length > 0 ? this.state.currentGames.map((game) => {
-                                return <div key={game.id}>
-                                    <NavLink to={`/game/${game.id}`}>
-                                        <GameCard
-                                            showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
-                                    </NavLink>
-                                </div>
-                            }) :
-                            <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>}
-                    </div>
-                    {user && <div className={styles.inputWithSuggestionsContainer}>
-                        <div
-                            className={cx(styles.inputContainer, styles.small, {[styles.focus]: this.state.inputFocused})}>
-                            <FaSearch className={styles.icon}/>
-                            <DebounceInput
-                                value={this.state.searchInput}
-                                className={styles.input}
-                                minLength={2}
-                                debounceTimeout={300}
-                                onChange={(e) => this._handleChange(e.target.value)}
-                                placeholder="Ajouter un jeu"
-                                onFocus={() => this.setState({inputFocused: true})}
-                                onBlur={() => this.setState({inputFocused: false})}/>
-                        </div>
-                        <div className={styles.suggestionsContainer}>
-                            {this.state.loadingSuggestions ?
-                                <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
-                                </div> : this.state.searchResults.map((result) => {
-                                    return <div className={cx(styles.suggestionItem, {
-                                        [styles.active]: this.state.currentGames.find((game) => {
-                                            return game.id === result.id
-                                        })
-                                    })} key={result.id}
-                                                onClick={() => this._handleClickSuggestion(result)}>
-                                        {result.name} ({
-                                        moment.unix(result.releaseDate).format('YYYY') || "A venir"
-                                    })
-                                    </div>
-                                })}
-                            {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
-                        </div>
+                    {!hideDescription && <div className={styles.description}>
+                        {media.description.split("\n").map((i, key) => {
+                            return <div key={key}>{i}</div>;
+                        })}
                     </div>}
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            {media && media.url ? <MediaPlayer url={media.url} type={media.media.type}/> : <LoadingSpinner/>}
+                            {media && media.url ? <MediaPlayer url={media.url} type={media.media.type}/> :
+                                <LoadingSpinner/>}
                         </div>
-                        {!hideDescription && <div className={styles.description}>
-                            {media.description}
+                    </div>
+                    <div className={styles.rightRowContainer}>
+
+                        {this.state.showSaveBtn && user ?
+                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
+                                <div onClick={this._handleOnSaveGames} data-tip="Enregistrer">
+                                    {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
+                                        <div style={{padding: '0 5px'}}><Loader
+                                            type="TailSpin"
+                                            color="#FFC857"
+                                            height={15}
+                                            width={15}
+                                        /></div>}
+                                </div>
+                            </div> :
+                            <div className={styles.verifyContainer}>
+                                {media.isVerified || !firebase.auth().currentUser ? null :
+                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié">
+                                        {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
+                                            <Loader
+                                                type="TailSpin"
+                                                color="#FFC857"
+                                                height={15}
+                                                width={15}
+                                            />}
+                                    </div>
+                                }
+                            </div>
+
+                        }
+                        <ReactTooltip effect="solid" place="left"/>
+                        <div className={styles.gamesContainer}>
+                            {this.state.currentGames.length > 0 ? this.state.currentGames.map((game) => {
+                                    return <div key={game.id}>
+                                        <NavLink to={`/game/${game.id}`}>
+                                            <GameCard
+                                                showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
+                                        </NavLink>
+                                    </div>
+                                }) :
+                                <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>}
+                        </div>
+                        {user && <div className={styles.inputWithSuggestionsContainer}>
+                            <div
+                                className={cx(styles.inputContainer, styles.small, {[styles.focus]: this.state.inputFocused})}>
+                                <FaSearch className={styles.icon}/>
+                                <DebounceInput
+                                    value={this.state.searchInput}
+                                    className={styles.input}
+                                    minLength={2}
+                                    debounceTimeout={300}
+                                    onChange={(e) => this._handleChange(e.target.value)}
+                                    placeholder="Ajouter un jeu"
+                                    onFocus={() => this.setState({inputFocused: true})}
+                                    onBlur={() => this.setState({inputFocused: false})}/>
+                            </div>
+                            <div className={styles.suggestionsContainer}>
+                                {this.state.loadingSuggestions ?
+                                    <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
+                                    </div> : this.state.searchResults.map((result) => {
+                                        return <div className={cx(styles.suggestionItem, {
+                                            [styles.active]: this.state.currentGames.find((game) => {
+                                                return game.id === result.id
+                                            })
+                                        })} key={result.id}
+                                                    onClick={() => this._handleClickSuggestion(result)}>
+                                            {result.name} ({
+                                            moment.unix(result.releaseDate).format('YYYY') || "A venir"
+                                        })
+                                        </div>
+                                    })}
+                                {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
+                            </div>
                         </div>}
 
                     </div>
