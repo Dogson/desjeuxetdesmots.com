@@ -1,6 +1,7 @@
 import firebase from "../config/firebase";
 import {get} from "../utils";
 import {API_CONFIG} from "../config/apiConfig";
+import React from "react";
 
 const db = firebase.firestore();
 if (window.location.hostname === "localhost") {
@@ -75,6 +76,7 @@ const _sortEpisodesByMedia = (episodes) => {
         } else {
             medias.push({
                 ...episode.media,
+                ref: React.createRef(),
                 episodes: [episode]
             })
         }

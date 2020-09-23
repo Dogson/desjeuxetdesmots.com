@@ -100,8 +100,8 @@ class MediaSection extends React.Component {
         const activeItem = this.props.mediaActive;
 
         if (medias && medias.length > 0) {
-            //removed ref from here :  ref={media.ref}
             return <div key={media.name}
+                        ref={media.ref}
                         className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaActiveType && media.type === mediaActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
@@ -115,7 +115,7 @@ class MediaSection extends React.Component {
                               activeItem={activeItem}
                               smallerCards={media.type === "video"}/>
                     <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && media.type === mediaActiveType.dataLabel && this.renderActiveMedia(mediaActive)}
+                        {mediaActive && mediaActive.media && media.name === mediaActive.media.name && this.renderActiveMedia(mediaActive)}
                     </div>
                 </div>
             </div>
