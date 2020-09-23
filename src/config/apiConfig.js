@@ -7,7 +7,8 @@ export const API_CONFIG = {
     endpoints: {
         GAME: "games",
         MEDIA: "media",
-        GENERATE: "media/generate/"
+        GENERATE: "media/generate/",
+        LOGIN: "login"
     }
 };
 

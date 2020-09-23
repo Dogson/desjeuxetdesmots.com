@@ -1,0 +1,4 @@
+export const ACTIONS_USERS =
+    {
+        SET_AUTHENTICATED_USER: "SET_AUTHENTICATED_USER"
+    };

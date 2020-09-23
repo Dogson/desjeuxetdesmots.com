@@ -76,7 +76,4 @@ export const getGamesFromIGDB = ({search, limit}) => {
                 }
             });
         })
-        .catch(err => {
-            console.error(err);
-        });
 };
