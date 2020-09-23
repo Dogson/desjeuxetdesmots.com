@@ -178,6 +178,7 @@ input {
 }
 
 .inputContainer {
+  z-index: 1;
   padding: 0 20px;
   border: 1px solid $color-bright-1;
   margin: 20px;
@@ -471,6 +472,15 @@ ul {
   li.slick-active {
     div {
       opacity: 1;
+    }
+  }
+}
+
+
+@media #{$media-phone} {
+  .inputContainer {
+    .input {
+      width: auto;
     }
   }
 }

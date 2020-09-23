@@ -30,27 +30,27 @@ class Homepage extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {page: 1}});
+        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        const nextValues = queryString.parse(nextProps.location.search);
-        const currentValues = queryString.parse(this.props.location.search);
-        if (nextValues.q !== currentValues.q) {
-            this.setState({page: 1});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
-        }
+    componentWillUnmount() {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.searchInput !== this.props.searchInput) {
+        const currentValues = queryString.parse(this.props.location.search);
+        const prevValues = queryString.parse(prevProps.location.search);
+        if (prevValues.q !== currentValues.q) {
             this.setState({hasMoreGames: true});
         }
 
         if (this.props.currentGame) {
             this.props.history.push(`/game/${this.props.currentGame._id}`)
+        }
+
+        if (currentValues.q !== prevValues.q) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         }
     }
 
@@ -63,12 +63,13 @@ class Homepage extends Component {
     }
 
     async getMoreGames() {
+        const searchInput = queryString.parse(this.props.location.search).q;
         if (this.state.loading) {
             return;
         }
         this.setState({loading: true});
         const page = this.props.page || 1;
-        const search = this.props.searchInput;
+        const search = searchInput;
         const previousGamesArray = this.props.games || [];
         const games = await getGamesBySearch({name: search, page});
         this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
@@ -93,6 +94,7 @@ class Homepage extends Component {
     };
 
     render() {
+        const searchInput = queryString.parse(this.props.location.search).q;
         return <PageLayout>
             <Helmet>
                 <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'gamer juice for my gamer mouth'}</title>
@@ -101,7 +103,7 @@ class Homepage extends Component {
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
-                    value={this.props.searchInput}
+                    value={searchInput}
                     className={styles.input}
                     minLength={2}
                     debounceTimeout={300}
