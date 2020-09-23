@@ -23,7 +23,7 @@
       .coverImg {
         width: 200px;
         margin-right: 50px;
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: 10px 10px 0 2px $color-bright-2;
       }
 
       .gameInfos {
@@ -32,7 +32,7 @@
         .gameTitle {
           text-transform: uppercase;
           //letter-spacing: 1px;
-          font-size: $size-bigger;
+          font-size: $size-biggest;
           margin: 10px;
           font-weight: $weight-regular;
         }
@@ -46,12 +46,12 @@
     .backImage {
       width: 100%;
       height: 100%;
-      filter: blur(3px);
+      filter: blur(2px);
       object-fit: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      opacity: 0.8;
+      opacity: 0.6;
       position: absolute;
       left: 0;
       top: 0;

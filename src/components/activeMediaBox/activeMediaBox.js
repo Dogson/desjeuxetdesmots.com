@@ -12,6 +12,7 @@ import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import firebase from '../../config/firebase';
 import {TrashWidget} from "../trashWidget/trashWidget";
 import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
+import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -145,8 +146,7 @@ class ActiveMediaBox extends React.Component {
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            {media && media.url ? <MediaPlayer url={media.url} type={media.media.type}/> :
-                                <LoadingSpinner/>}
+                            <PlayPodcast/>
                         </div>
                     </div>
                     <div className={styles.rightRowContainer}>

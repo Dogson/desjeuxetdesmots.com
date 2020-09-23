@@ -32,15 +32,13 @@ class GamePage extends React.Component {
     }
 
     componentDidMount() {
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            payload: {media: null}
+        });
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
         }
-    }
-
-    componentDidUpdate(prevProps) {
-        // if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
-        //     this.refreshGame();
-        // }
     }
 
     refreshGame() {

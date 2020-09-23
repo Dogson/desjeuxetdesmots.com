@@ -7,6 +7,11 @@ export default (state = {}, action) => {
                 ...state,
                 mediaActive: action.payload,
             };
+        case ACTIONS_MEDIAS.SET_PLAYED_MEDIA:
+            return {
+                ...state,
+                mediaPlayed: action.payload,
+            };
         default:
             return {
                 ...state

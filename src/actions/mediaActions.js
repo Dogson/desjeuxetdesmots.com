@@ -1,4 +1,5 @@
 export const ACTIONS_MEDIAS =
     {
-        SET_ACTIVE_MEDIA: "SET_GAMES"
+        SET_ACTIVE_MEDIA: "SET_ACTIVE_MEDIA",
+        SET_PLAYED_MEDIA: "SET_PLAYED_MEDIA"
     };
