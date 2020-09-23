@@ -45,6 +45,24 @@
         font-weight: $weight-regular;
         font-size: $size-small;
       }
+
+      .readMoreBtn {
+        color: $color-bright-2;
+        font-weight: $weight-bold;
+        font-size: $size-smallest;
+        cursor: pointer;
+        text-transform: uppercase;
+        padding: 0 0 10px 0;
+        letter-spacing: 1px;
+        outline: none;
+        background: none;
+        border: none;
+        margin: 0 5px;
+
+        &:after {
+
+        }
+      }
     }
 
     .rightRow {

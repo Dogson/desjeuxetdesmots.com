@@ -29,6 +29,7 @@
     "react-sidebar": "^3.0.2",
     "react-slick": "^0.24.0",
     "react-tooltip": "^3.10.0",
+    "react-truncate-markup": "^5.0.0",
     "react-with-firebase-auth": "^1.0.3",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",

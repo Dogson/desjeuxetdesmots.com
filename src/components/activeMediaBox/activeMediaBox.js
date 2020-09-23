@@ -13,6 +13,7 @@ import firebase from '../../config/firebase';
 import {TrashWidget} from "../trashWidget/trashWidget";
 import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
+import Truncate from 'react-truncate-markup';
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -30,7 +31,8 @@ class ActiveMediaBox extends React.Component {
             showSaveBtn: false,
             loadingSuggestions: false,
             loadingSaveGames: false,
-            noMatch: false
+            noMatch: false,
+            showFullDesc: false
         };
 
         this.ref = React.createRef();
@@ -138,10 +140,32 @@ class ActiveMediaBox extends React.Component {
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>
                     {!hideDescription && <div className={styles.description}>
-                        {media.description.split("\n").map((i, key) => {
-                            return <div key={key}>{i}</div>;
-                        })}
+
+                        {this.state.showFullDesc ?
+                            <div>
+                                {media.description.split("\n").map((i, key) => {
+                                    return <div key={key}>{i}</div>;
+                                })}
+                                <button onClick={() => this.setState({
+                                    showFullDesc: false
+                                })}
+                                        className={cx(styles.readMoreBtn)}>Voir moins
+                                </button>
+                            </div>
+                            :
+                            <Truncate lines={14} ellipsis={<span>... <button onClick={() => this.setState({
+                                showFullDesc: true
+                            })}
+                                                                             className={cx(styles.readMoreBtn)}>Voir plus</button></span>}>
+                                <div>
+                                    {media.description.split("\n").map((i, key) => {
+                                        return <div key={key}>{i}</div>;
+                                    })}
+                                </div>
+                            </Truncate>
+                        }
                     </div>}
+                    }
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>

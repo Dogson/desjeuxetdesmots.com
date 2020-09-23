@@ -32,8 +32,7 @@ class MediaPlayer extends React.Component {
         }
     }
 
-    _handlePlay(audio) {
-        console.log(audio);
+    _handlePlay() {
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_PLAYED_MEDIA,
             payload: {
