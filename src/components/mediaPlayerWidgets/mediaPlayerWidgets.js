@@ -81,7 +81,6 @@ class MediaPlayer extends React.Component {
                     onAudioPlay={this._handlePlay.bind(this)}
                     onAudioPause={this._handlePause.bind(this)}
                     onAudioDownload={this._handleDownload.bind(this)}
-                    toggleMode={false}
                     showProgressLoadBar={false}
 
                 />

@@ -137,6 +137,14 @@
 
 @media #{$media-phone} {
   .activeMediaBoxContainer {
+    margin: 0;
+    padding: 0 20px 30px 20px;
+    box-sizing: border-box;
+
+    .titleContainer {
+      margin-bottom: 20px;
+    }
+
     .bodyContainer {
       flex-direction: column-reverse;
     }

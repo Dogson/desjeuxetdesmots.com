@@ -3,6 +3,7 @@
 .carouselContainer {
   width: calc(100% - 80px);
   max-width: 1600px;
+  align-self: center;
 
   .slideContainer {
     display: flex !important;

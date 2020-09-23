@@ -90,6 +90,7 @@
       }
 
       .mediaRowWrapper  {
+        @extend .flexColumn;
         max-width: 1300px;
         width: 100%;
       }
@@ -109,6 +110,27 @@
         }
       }
 
+    }
+  }
+}
+
+@media #{$media-phone} {
+  .gamePageContainer {
+    .gameHeader {
+      .headerContent {
+        flex-direction: column;
+
+        .coverImg {
+          margin-bottom: 20px;
+          margin-right:0;
+        }
+        .gameInfos {
+          text-align: center;
+          .gameTitle {
+            font-size: $size-bigger;
+          }
+        }
+      }
     }
   }
 }
