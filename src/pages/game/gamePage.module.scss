@@ -73,7 +73,6 @@
         @extend .flexColumn;
         @extend .flexAlignCenter;
         transition: background-color 0.3s ease-in-out, max-height 0.3s ease-in-out;
-        max-height: 300px;
         overflow: hidden;
 
         .activeMediaContainer {
@@ -83,7 +82,6 @@
 
         &.mediaRowContainerActive {
           background-color: $color-dark-2;
-          max-height: 1000px;
 
           .activeMediaContainer {
             opacity: 1;
