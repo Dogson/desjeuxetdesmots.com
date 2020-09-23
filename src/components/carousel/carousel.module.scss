@@ -1,10 +1,11 @@
 @import "../../index";
 
 .carouselContainer {
-  width: 100%;
+  width: calc(100% - 80px);
   max-width: 1600px;
 
   .slideContainer {
+    display: flex !important;
     @extend .flexColumn;
     @extend .flexAlignCenter;
 
@@ -47,7 +48,7 @@
 
 
   .cardContainer {
-    width: 99%;
+    width: 200px;
     height: 260px;
     opacity: 1;
 

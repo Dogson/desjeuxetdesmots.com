@@ -145,7 +145,6 @@ class GamePage extends React.Component {
                               onClickItem={(media, ref) => {
                                   this._handleClickMedia(media, ref)
                               }}
-                              onScreenItems={6}
                               activeItem={activeItem}
                               smallerCards={mediaType.dataLabel === "videos"}/>
                     <div className={styles.activeMediaContainer}>

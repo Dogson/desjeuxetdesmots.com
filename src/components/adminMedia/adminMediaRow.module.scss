@@ -2,7 +2,8 @@
 
 .adminMediaRowContainer {
 
-  width: 1300px;
+  max-width: 1300px;
+  width: 100%;
 
   .title {
     @extend .flexRow;
