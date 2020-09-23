@@ -1,18 +1,35 @@
 import React from "react";
-import {PODCASTS} from "../../config/const";
-import AdminMediaRow from "./adminMediaRow";
+import {getAllMedia} from "../../endpoints/mediasEndpoint";
+import MediaSection from "../mediaSection/mediaSection";
+import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 
 export class AdminMediaSection extends React.Component {
 
-    render() {
-        const {name, constName, logo, medias} = this.props.type;
-        return <div>
-            {
-                medias.map((item) => {
-                    return <AdminMediaRow type={item} key={item.dataLabel} />
-                })
-            }
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            medias: null
+        }
+    }
+
+    componentDidMount() {
+        getAllMedia(this.props.type)
+            .then((medias) => {
+                this.setState({medias})
+            })
+    }
+
+
+    render() {
+
+        const {medias} = this.state;
+        console.log(medias);
+        if (!medias) {
+            return <LoadingSpinner/>
+        }
+        return <div>
+            return <MediaSection medias={medias}/>
         </div>
     }
 }

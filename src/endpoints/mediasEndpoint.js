@@ -1,5 +1,6 @@
-import moment from "moment";
 import firebase from "../config/firebase";
+import {get} from "../utils";
+import {API_CONFIG} from "../config/apiConfig";
 
 const db = firebase.firestore();
 if (window.location.hostname === "localhost") {
@@ -10,8 +11,6 @@ if (window.location.hostname === "localhost") {
 }
 const functions = firebase.functions();
 
-const offset = 6;
-const offsetInit = offset * 2;
 
 export const getNumberOfMedia = ({mediaDataLabel}) => {
     return db.collection("itemsNumber").doc(mediaDataLabel).get()
@@ -22,44 +21,10 @@ export const getNumberOfMedia = ({mediaDataLabel}) => {
         });
 };
 
-export const getAllMedia = ({mediaDataLabel, page}) => {
-    let ref = db.collection(mediaDataLabel).orderBy("isVerified", "asc");
-    if (page) {
-        ref = ref.startAfter(page);
-    }
-    ref = ref.limit(page ? offset : offsetInit);
-    let pageument;
-    return ref.get()
-        .then((snap) => {
-            pageument = snap.docs && snap.docs[snap.docs.length - 1];
-            return {
-                medias: snap.docs.map((doc) => {
-                    return {...doc.data(), id: doc.id};
-                }).map((media) => {
-                    return {
-                        ...media,
-                        releaseDate: media.releaseDate ? moment(media.releaseDate, 'YYYY-MM-DD') : "A venir"
-                    }
-                }),
-            }
-        })
-        .then((result) => {
-            return Promise.all(result.medias.map((media) => {
-                return getMediaGames({media});
-            }))
-        })
-        .then((result) => {
-            return {
-                page: pageument, medias: result.sort((mediaX) => {
-                    return mediaX.isVerified ? 1 : -1;
-                })
-            }
-        })
-
-        .catch((error) => {
-            console.error(error);
-        })
-};
+export async function getAllMedia(mediaDataLabel) {
+    const medias = await get(API_CONFIG.endpoints.MEDIA, {"media.type": mediaDataLabel});
+    return _sortEpisodesByMedia(medias);
+}
 
 export const getMediaGames = ({media}) => {
     let gamesResult = [];
@@ -99,4 +64,20 @@ export const toggleVerifyMedia = ({mediaType, mediaId, verified}) => {
         .catch((error) => {
             console.error(error);
         })
+};
+
+const _sortEpisodesByMedia = (episodes) => {
+    const medias = [];
+    episodes.forEach((episode) => {
+        const index = medias.findIndex((med) => med.name === episode.media.name);
+        if (index > -1) {
+            medias[index].episodes.push(episode);
+        } else {
+            medias.push({
+                ...episode.media,
+                episodes: [episode]
+            })
+        }
+    });
+    return medias;
 };

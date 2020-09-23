@@ -6,8 +6,8 @@ export const IGDB_API = {
 export const API_CONFIG = {
     endpoints: {
         GAME: "games",
-        MEDIA: "media",
-        GENERATE: "media/generate/",
+        MEDIA: "episodes",
+        GENERATE: "episodes/generate/",
         LOGIN: "login"
     }
 };
