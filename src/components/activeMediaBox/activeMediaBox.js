@@ -14,6 +14,7 @@ import {TrashWidget} from "../trashWidget/trashWidget";
 import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
+import {connect} from "react-redux";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class ActiveMediaBox extends React.Component {
 
     componentDidMount() {
         getGamesById(this.state.episodeGames).then((games) => {
-            this.setState({episodeGames: games});
+            this.setState({episodeGames: games.filter((game) => game._id !== this.props.currentGame._id)});
         });
     }
 
@@ -179,6 +180,8 @@ class ActiveMediaBox extends React.Component {
                     </div>
                     <div className={styles.rightRowContainer}>
 
+                        <h2>Ça parle de quoi d'autre ?</h2>
+
                         {this.state.showSaveBtn && user ?
                             <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
                                 <div onClick={this._handleOnSaveGames} data-tip="Enregistrer">
@@ -286,4 +289,10 @@ const GameCard = ({game, showDelete, onDelete}) => {
     </div>
 };
 
-export default withRouter(ActiveMediaBox);
+const mapStateToProps = state => {
+    return {
+        currentGame: state.gamesReducer.currentGame
+    }
+};
+
+export default withRouter( connect(mapStateToProps)(ActiveMediaBox));

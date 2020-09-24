@@ -37,7 +37,8 @@
 
     .leftRow {
       padding-right: 30px;
-      flex: 0.4;
+      flex: 0.5;
+      max-width: 500px;
       position: relative;
 
       .description {
@@ -67,6 +68,8 @@
 
     .rightRow {
       flex: 0.5;
+      align-items: flex-start;
+      margin-left: 30px;
 
       .rightRowContainer {
         min-height: 320px;
@@ -147,6 +150,17 @@
 
     .bodyContainer {
       flex-direction: column-reverse;
+
+      .rightRow {
+        margin-left: 0;
+
+        .rightRowContainer {
+          min-height: 0;
+        }
+      }
+      .leftRow {
+        margin-top: 20px;
+      }
     }
   }
 }
