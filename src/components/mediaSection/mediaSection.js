@@ -20,20 +20,28 @@ class MediaSection extends React.Component {
         this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
     }
 
+    componentDidMount() {
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            payload: null
+        });
+    }
+
     _handleClickMedia(episode, ref) {
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: {...episode}
         });
         setTimeout(() => {
-            window.scrollTo({top: findPos(ref.current.offsetParent.offsetParent.offsetParent), behavior: 'smooth'})
+            window.scrollTo({top: findPos(ref.current) - 10, behavior: 'smooth'})
         }, 200);
     }
 
-    renderActiveMedia(mediaActive) {
-        return <ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
+    renderActiveMedia(mediaActive, ref) {
+        return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
                                onVerifyMedia={this._handleVerifyMedia}
-                               hideDescription={mediaActive.media.type === "video"}/>
+                               hideDescription={mediaActive.media.type === "video"}
+                               /></div>
     }
 
     _handleSaveGames(games) {
@@ -91,17 +99,15 @@ class MediaSection extends React.Component {
 
 
     renderMediaRow(media) {
-        const {mediaActive} = this.props;
+        const {mediaActive, rowAttribute} = this.props;
         let mediaActiveType;
         if (mediaActive && mediaActive.media) {
             mediaActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === mediaActive.media.type);
         }
         const medias = media.episodes;
         const activeItem = this.props.mediaActive;
-
         if (medias && medias.length > 0) {
             return <div key={media.name}
-                        ref={media.ref}
                         className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaActiveType && media.type === mediaActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
@@ -109,13 +115,13 @@ class MediaSection extends React.Component {
                         {media.name}
                     </div>
                     <Carousel medias={medias}
-                              onClickItem={(media, ref) => {
-                                  this._handleClickMedia(media, ref)
+                              onClickItem={(episode) => {
+                                  this._handleClickMedia(episode, media.ref)
                               }}
                               activeItem={activeItem}
                               smallerCards={media.type === "video"}/>
                     <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && media.name === mediaActive.media.name && this.renderActiveMedia(mediaActive)}
+                        {mediaActive && mediaActive.media && media[rowAttribute] === mediaActive.media[rowAttribute] && this.renderActiveMedia(mediaActive, media.ref)}
                     </div>
                 </div>
             </div>

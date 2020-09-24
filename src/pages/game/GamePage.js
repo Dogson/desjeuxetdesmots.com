@@ -8,7 +8,6 @@ import localization from 'moment/locale/fr';
 import {withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import {connect} from "react-redux";
-import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import MediaSection from "../../components/mediaSection/mediaSection";
@@ -19,15 +18,20 @@ class GamePage extends React.Component {
         moment.locale('fr', localization);
         super(props);
         this.state = {
-            game: {}
+            game: {},
+            loading: false
         };
     }
 
     componentDidMount() {
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: {media: null}
-        });
+        if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
+            this.refreshGame();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.state.loading)
+            return;
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
         }
@@ -35,10 +39,6 @@ class GamePage extends React.Component {
 
     refreshGame() {
         this.setState({loading: true});
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: {media: null}
-        });
         const gameId = String(this.props.match.params.gameId);
         getGameById(gameId)
             .then((game) => {
@@ -59,10 +59,11 @@ class GamePage extends React.Component {
 
     render() {
         const {currentGame} = this.props;
+        const {loading} = this.state;
 
         return <PageLayout smallHeader>
             {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - gamer juice`}/>}
-            {!currentGame ? <LoadingSpinner/> :
+            {!currentGame || loading ? <LoadingSpinner/> :
                 <div className={styles.gamePageContainer}>
                     <div className={styles.gameHeader}>
                         <div className={styles.backImage} style={{backgroundImage: `url(${currentGame.screenshot})`}}/>
@@ -78,7 +79,7 @@ class GamePage extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <MediaSection medias={this.sortEpisodesByMediaTypes(currentGame.episodes)}/>
+                    <MediaSection medias={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
                 </div>}
         </PageLayout>
     }

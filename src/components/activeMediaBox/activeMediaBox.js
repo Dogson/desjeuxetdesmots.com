@@ -5,7 +5,7 @@ import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
 import Loader from 'react-loader-spinner';
 import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
-import {getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
+import {getGamesById, getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
@@ -27,31 +27,35 @@ class ActiveMediaBox extends React.Component {
 
         this.state = {
             searchResults: [],
-            currentGames: this.props.media.games,
+            episodeGames: this.props.media.games,
             showSaveBtn: false,
             loadingSuggestions: false,
             loadingSaveGames: false,
             noMatch: false,
             showFullDesc: false
         };
+    }
 
-        this.ref = React.createRef();
+    componentDidMount() {
+        getGamesById(this.state.episodeGames).then((games) => {
+            this.setState({episodeGames: games});
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.currentGames.length !== this.state.currentGames.length) {
-            if (this.state.currentGames.length !== this.props.media.games.length) {
+        if (prevState.episodeGames.length !== this.state.episodeGames.length) {
+            if (this.state.episodeGames.length !== this.props.media.games.length) {
                 this.setState({showSaveBtn: true});
             } else {
-                const currentGamesIds = this.state.currentGames.map((currentGame) => {
+                const episodeGamesIds = this.state.episodeGames.map((currentGame) => {
                     return currentGame.id;
                 }).sort();
                 const gamesIds = this.props.media.games.map((game) => {
                     return game.id;
                 }).sort();
                 let showSaveBtn = false;
-                for (let i = 0; i < currentGamesIds.length; i++) {
-                    if (currentGamesIds[i] !== gamesIds[i]) {
+                for (let i = 0; i < episodeGamesIds.length; i++) {
+                    if (episodeGamesIds[i] !== gamesIds[i]) {
                         showSaveBtn = true;
                         break;
                     }
@@ -60,7 +64,7 @@ class ActiveMediaBox extends React.Component {
             }
         }
         if (prevProps.media.id !== this.props.media.id) {
-            this.setState({currentGames: this.props.media.games, searchInput: "", showSaveBtn: false});
+            this.setState({episodeGames: this.props.media.games, searchInput: "", showSaveBtn: false});
         }
         if (this.state.searchInput !== prevState.searchInput) {
             if (this.state.searchInput.length === 0) {
@@ -84,18 +88,18 @@ class ActiveMediaBox extends React.Component {
         e.stopPropagation();
         if (!firebase.auth().currentUser)
             return;
-        const currentGames = this.state.currentGames.filter((currentGame) => {
+        const episodeGames = this.state.episodeGames.filter((currentGame) => {
             return currentGame.id !== game.id;
         });
-        this.setState({currentGames});
+        this.setState({episodeGames});
     }
 
     _handleClickSuggestion(game) {
-        if (!this.state.currentGames.find((currentGame) => {
+        if (!this.state.episodeGames.find((currentGame) => {
             return game.id === currentGame.id
         })) {
-            const currentGames = this.state.currentGames.concat([game]);
-            this.setState({currentGames})
+            const episodeGames = this.state.episodeGames.concat([game]);
+            this.setState({episodeGames})
         }
     }
 
@@ -108,7 +112,7 @@ class ActiveMediaBox extends React.Component {
             return;
         }
         this.setState({loadingSaveGames: true});
-        return this.props.onSaveGames(this.state.currentGames)
+        return this.props.onSaveGames(this.state.episodeGames)
             .then(() => {
                 this.setState({loadingSaveGames: false, showSaveBtn: false});
             })
@@ -128,7 +132,7 @@ class ActiveMediaBox extends React.Component {
     render() {
         const user = firebase.auth().currentUser;
         const {media, hideDescription} = this.props;
-        return <div className={styles.activeMediaBoxContainer} ref={this.ref}>
+        return <div className={styles.activeMediaBoxContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
@@ -204,15 +208,16 @@ class ActiveMediaBox extends React.Component {
                         }
                         <ReactTooltip effect="solid" place="left"/>
                         <div className={styles.gamesContainer}>
-                            {this.state.currentGames.length > 0 ? this.state.currentGames.map((game) => {
-                                    return <div key={game.id}>
-                                        <NavLink to={`/game/${game.id}`}>
+                            {this.state.episodeGames.length > 0 ? this.state.episodeGames.map((game) => {
+                                    return <div key={game._id}>
+                                        <NavLink to={`/game/${game._id}`}>
                                             <GameCard
                                                 showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
                                         </NavLink>
                                     </div>
                                 }) :
-                                <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>}
+                                <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>
+                            }
                         </div>
                         {user && <div className={styles.inputWithSuggestionsContainer}>
                             <div
@@ -233,7 +238,7 @@ class ActiveMediaBox extends React.Component {
                                     <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
                                     </div> : this.state.searchResults.map((result) => {
                                         return <div className={cx(styles.suggestionItem, {
-                                            [styles.active]: this.state.currentGames.find((game) => {
+                                            [styles.active]: this.state.episodeGames.find((game) => {
                                                 return game.id === result.id
                                             })
                                         })} key={result.id}
@@ -255,8 +260,15 @@ class ActiveMediaBox extends React.Component {
 }
 
 const GameCard = ({game, showDelete, onDelete}) => {
+    const gameNotLoaded = typeof game === "string";
+
+    let style = {backgroundImage: `url(${game.cover})`};
+    if (gameNotLoaded) {
+        style = {backgroundColor: "#2E4052"}
+    }
+
     return <div className={styles.cardContainer}>
-        <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
+        <div className={styles.backImage} style={style}/>
         <div className={styles.hoveredInfo}>
             <div className={styles.backColor}/>
             <div className={styles.title}>

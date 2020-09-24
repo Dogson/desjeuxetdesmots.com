@@ -13,42 +13,10 @@ if (window.location.hostname === "localhost") {
 const functions = firebase.functions();
 
 
-export const getNumberOfMedia = ({mediaDataLabel}) => {
-    return db.collection("itemsNumber").doc(mediaDataLabel).get()
-        .then((doc) => {
-            return doc.exists ? doc.data() : 0;
-        }).catch(function (error) {
-            console.error("Error getting document:", error);
-        });
-};
-
 export async function getAllMedia(mediaDataLabel) {
     const medias = await get(API_CONFIG.endpoints.MEDIA, {"media.type": mediaDataLabel});
     return _sortEpisodesByMedia(medias);
 }
-
-export const getMediaGames = ({media}) => {
-    let gamesResult = [];
-    if (!media.games || !media.games.length) {
-        return {...media, games: []}
-    }
-    return Promise.all(media.games.map((gameRef) => {
-        {
-            return gameRef.get()
-                .then((doc) => {
-                    gamesResult.push(doc.data());
-                }).catch(function (error) {
-                    console.error("Error getting document:", error);
-                });
-        }
-    }))
-        .then(() => {
-            return {...media, games: gamesResult}
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-};
 
 export const setGamesForMedia = ({mediaId, mediaType, games}) => {
         const data = {mediaId: mediaId, mediaType: mediaType, games: games};

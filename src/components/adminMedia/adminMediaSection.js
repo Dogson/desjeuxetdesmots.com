@@ -24,12 +24,11 @@ export class AdminMediaSection extends React.Component {
     render() {
 
         const {medias} = this.state;
-        console.log(medias);
         if (!medias) {
             return <LoadingSpinner/>
         }
         return <div>
-            return <MediaSection medias={medias}/>
+            <MediaSection medias={medias} rowAttribute="name"/>
         </div>
     }
 }

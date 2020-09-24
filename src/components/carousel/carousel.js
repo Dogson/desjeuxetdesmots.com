@@ -14,11 +14,6 @@ export default class Carousel extends Component {
             showPreviousArrow: false,
         };
 
-        this.references = [];
-        this.props.medias.forEach(() => {
-            this.references.push(React.createRef())
-        });
-
         this._handleAfterChange = this._handleAfterChange.bind(this);
     }
 
@@ -28,7 +23,6 @@ export default class Carousel extends Component {
 
     render() {
         const {medias, activeItem, onClickItem, smallerCards} = this.props;
-        const _this = this;
         const settings = {
             dots: true,
             infinite: medias.length > 6,
@@ -93,9 +87,9 @@ export default class Carousel extends Component {
             <div className={styles.carouselContainer}>
                 <Slider {...settings}>
                     {medias.map((episode, index) => {
-                        return <div className={styles.slideContainer} key={index} ref={_this.references[index]}>
+                        return <div className={styles.slideContainer} key={index}>
                             {episode ? <Card isActive={activeItem && episode._id === activeItem._id} media={episode}
-                                             onClick={() => onClickItem(episode, _this.references[index])}
+                                             onClick={() => onClickItem(episode)}
                                              smaller={smallerCards}/> :
                                 <EmptyCard smaller={smallerCards}/>}
                         </div>

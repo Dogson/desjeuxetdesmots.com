@@ -64,6 +64,7 @@ export const MEDIA_TYPES = [
         logoMin: require("../assets/logos/mediaTypes/podcastsMin.png"),
         component: PodcastsAdmin,
         dataLabel: "podcast",
+        ref: React.createRef()
     },
     {
         name: "Vidéos",
@@ -72,5 +73,6 @@ export const MEDIA_TYPES = [
         logoMin: require("../assets/logos/mediaTypes/videosMin.png"),
         component: VideosAdmin,
         dataLabel: "video",
+        ref: React.createRef()
     }
 ];

@@ -2,7 +2,7 @@ import moment from "moment";
 import firebase from "../config/firebase";
 import {API_CONFIG, IGDB_API} from "../config/apiConfig";
 import * as axios from "axios";
-import {get} from "../utils";
+import {asyncForEach, get} from "../utils";
 import React from "react";
 
 const db = firebase.firestore();
@@ -12,6 +12,15 @@ if (window.location.hostname === "localhost") {
         host: "localhost:8080",
         ssl: false
     });
+}
+
+export async function getGamesById(gamesId) {
+    const games = [];
+    await asyncForEach(gamesId, async (gameId) => {
+        games.push(await getGameById(gameId));
+    });
+
+    return games;
 }
 
 export async function getGameById(gameId) {
