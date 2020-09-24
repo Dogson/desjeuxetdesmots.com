@@ -3,7 +3,7 @@ Plateforme web de découverte de média francophone (surtout) et anglophone (aus
 # Credits
 
 ## Development   
-IGDB API, Firebase
+IGDB API, GAMER JUICE API
 
 ## Content 
 

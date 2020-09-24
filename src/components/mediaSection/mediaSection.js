@@ -8,8 +8,8 @@ import Carousel from "../carousel/carousel";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {findPos} from "../../utils";
 import {setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
-import {getGameById} from "../../endpoints/gamesEndpoint";
 import ActiveMediaBox from "../activeMediaBox/activeMediaBox";
+import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 
 class MediaSection extends React.Component {
     constructor(props) {
@@ -25,6 +25,10 @@ class MediaSection extends React.Component {
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: null
         });
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+            payload: this.props.mediasList
+        });
     }
 
     _handleClickMedia(episode, ref) {
@@ -39,64 +43,47 @@ class MediaSection extends React.Component {
 
     renderActiveMedia(mediaActive, ref) {
         return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
-                               onVerifyMedia={this._handleVerifyMedia}
-                               hideDescription={mediaActive.media.type === "video"}
-                               /></div>
+                                              onVerifyMedia={this._handleVerifyMedia}
+                                              hideDescription={mediaActive.media.type === "video"}
+        /></div>
     }
 
     _handleSaveGames(games) {
         return setGamesForMedia({
-            games: games.map((game) => {
-                const mappedGame = {...game};
-                MEDIA_TYPES.forEach((mediaType) => {
-                    mediaType.medias.forEach((media) => {
-                        mappedGame[media.dataLabel] = null;
-                    });
-                    if (isNaN(mappedGame.releaseDate))
-                        mappedGame.releaseDate = null;
-                });
-                return mappedGame;
-            }),
-            mediaType: this.props.mediaActive.media.type,
-            mediaId: this.props.mediaActive.media.id
+            games,
+            episodeId: this.props.mediaActive._id
         })
-            .then(() => {
-                const gameId = String(this.props.match.params.gameId);
-                getGameById(gameId)
-                    .then((game) => {
-                        this.setState({game: game, loading: false});
-                    });
-                return true;
+            .then((result) => {
+                this.saveMedia(result)
             })
     }
 
     _handleVerifyMedia() {
         return toggleVerifyMedia({
             verified: true,
-            mediaType: this.props.mediaActive.mediaType,
-            mediaId: this.props.mediaActive.media.id
+            episodeId: this.props.mediaActive._id
         })
-            .then(() => {
-                this.setState({
-                    medias: this.state.medias.map((media) => {
-                        if (media.id === this.props.mediaActive.media.id) {
-                            return {...media, isVerified: true};
-
-                        }
-                        return media;
-                    })
-                });
-                this.props.dispatch({
-                    type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-                    payload: {
-                        mediaType: this.props.type.dataLabel,
-                        media: {...this.props.mediaActive.media, isVerified: true}
-                    }
-                });
-                return true;
-            })
+            .then((newMedia) => {
+                this.saveMedia(newMedia);
+            });
     }
 
+    saveMedia(newMedia) {
+        const {medias} = this.props;
+        const updatedMedias = medias.map((media) => {
+            media.episodes = media.episodes.map((episode) => {
+                if (episode._id === newMedia._id) {
+                    return {...newMedia, verified: true};
+                }
+                return episode;
+            });
+            return media;
+        });
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+            payload: updatedMedias
+        });
+    }
 
     renderMediaRow(media) {
         const {mediaActive, rowAttribute} = this.props;
@@ -132,9 +119,9 @@ class MediaSection extends React.Component {
     render() {
         return <div className={styles.gameContentWrapper}>
             <div className={styles.mediaRowContainer}>
-                {this.props.medias.map((media) => {
+                {this.props.medias ? this.props.medias.map((media) => {
                     return this.renderMediaRow(media);
-                })}
+                }) : <LoadingSpinner/>}
             </div>
         </div>
     }
@@ -143,6 +130,7 @@ class MediaSection extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        medias: state.mediaReducer.medias,
         mediaActive: state.mediaReducer.mediaActive,
         currentGame: state.gamesReducer.currentGame
     }

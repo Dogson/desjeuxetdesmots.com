@@ -9,9 +9,7 @@ import {getGamesById, getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink, withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
-import firebase from '../../config/firebase';
 import {TrashWidget} from "../trashWidget/trashWidget";
-import {MediaPlayer} from "../mediaPlayerWidgets/mediaPlayerWidgets";
 import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
@@ -25,7 +23,6 @@ class ActiveMediaBox extends React.Component {
         this._handleClickSuggestion = this._handleClickSuggestion.bind(this);
         this._handleOnSaveGames = this._handleOnSaveGames.bind(this);
         this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
-
         this.state = {
             searchResults: [],
             episodeGames: this.props.media.games,
@@ -39,7 +36,7 @@ class ActiveMediaBox extends React.Component {
 
     componentDidMount() {
         getGamesById(this.state.episodeGames).then((games) => {
-            this.setState({episodeGames: games.filter((game) => game._id !== this.props.currentGame._id)});
+            this.setState({episodeGames: games});
         });
     }
 
@@ -49,10 +46,10 @@ class ActiveMediaBox extends React.Component {
                 this.setState({showSaveBtn: true});
             } else {
                 const episodeGamesIds = this.state.episodeGames.map((currentGame) => {
-                    return currentGame.id;
+                    return currentGame.igdbId;
                 }).sort();
                 const gamesIds = this.props.media.games.map((game) => {
-                    return game.id;
+                    return game.igdbId;
                 }).sort();
                 let showSaveBtn = false;
                 for (let i = 0; i < episodeGamesIds.length; i++) {
@@ -64,8 +61,10 @@ class ActiveMediaBox extends React.Component {
                 this.setState({showSaveBtn});
             }
         }
-        if (prevProps.media.id !== this.props.media.id) {
-            this.setState({episodeGames: this.props.media.games, searchInput: "", showSaveBtn: false});
+        if (prevProps.media._id !== this.props.media._id) {
+            getGamesById(this.props.media.games.map(game => game._id)).then((games) => {
+                this.setState({episodeGames: games});
+            });
         }
         if (this.state.searchInput !== prevState.searchInput) {
             if (this.state.searchInput.length === 0) {
@@ -87,18 +86,17 @@ class ActiveMediaBox extends React.Component {
     _handleDeleteGame(e, game) {
         e.preventDefault();
         e.stopPropagation();
-        if (!firebase.auth().currentUser)
+        if (!this.props.authUser)
             return;
         const episodeGames = this.state.episodeGames.filter((currentGame) => {
-            return currentGame.id !== game.id;
+            return currentGame.igdbId !== game.igdbId;
         });
         this.setState({episodeGames});
     }
 
     _handleClickSuggestion(game) {
-        if (!this.state.episodeGames.find((currentGame) => {
-            return game.id === currentGame.id
-        })) {
+        const episodeGameIds = this.state.episodeGames.map((game) => game.igdbId);
+        if (episodeGameIds.indexOf(game.igdbId) === -1) {
             const episodeGames = this.state.episodeGames.concat([game]);
             this.setState({episodeGames})
         }
@@ -109,7 +107,7 @@ class ActiveMediaBox extends React.Component {
     }
 
     _handleOnSaveGames() {
-        if (this.state.loadingSaveGames || !firebase.auth().currentUser) {
+        if (this.state.loadingSaveGames || !this.props.authUser) {
             return;
         }
         this.setState({loadingSaveGames: true});
@@ -120,18 +118,21 @@ class ActiveMediaBox extends React.Component {
     }
 
     _handleVerifyMedia() {
-        if (this.state.loadingSaveGames || !firebase.auth().currentUser) {
+        if (this.state.loadingSaveGames || !this.props.authUser) {
             return;
         }
         this.setState({loadingSaveGames: true});
         return this.props.onVerifyMedia()
             .then(() => {
-                this.setState({loadingSaveGames: false, showSaveBtn: false});
+                this.setState({loadingSaveGames: false, showSaveBtn: false, verified: true});
             })
     }
 
     render() {
-        const user = firebase.auth().currentUser;
+        const user = this.props.authUser;
+        const episodeGames = user ? this.state.episodeGames : this.state.episodeGames.filter((epGame) => {
+            return epGame._id !== this.props.currentGame._id;
+        });
         const {media, hideDescription} = this.props;
         return <div className={styles.activeMediaBoxContainer}>
             <div className={styles.titleContainer}>
@@ -195,7 +196,7 @@ class ActiveMediaBox extends React.Component {
                                 </div>
                             </div> :
                             <div className={styles.verifyContainer}>
-                                {media.isVerified || !firebase.auth().currentUser ? null :
+                                {media.verified || !user || this.state.verified ? null :
                                     <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié">
                                         {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
                                             <Loader
@@ -210,18 +211,22 @@ class ActiveMediaBox extends React.Component {
 
                         }
                         <ReactTooltip effect="solid" place="left"/>
-                        <div className={styles.gamesContainer}>
-                            {this.state.episodeGames.length > 0 ? this.state.episodeGames.map((game) => {
+
+                        {episodeGames.length > 0 ?
+                            <div className={styles.gamesContainer}>
+                                {episodeGames.map((game) => {
                                     return <div key={game._id}>
                                         <NavLink to={`/game/${game._id}`}>
                                             <GameCard
                                                 showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
                                         </NavLink>
                                     </div>
-                                }) :
-                                <div className={styles.noGame}>Aucun jeu n'est défini pour ce média</div>
-                            }
-                        </div>
+
+                                })
+                                }
+                            </div> :
+                            <div className={styles.noGame}>Bah, de rien. C'est déja pas mal. <span role="img" aria-label="shrug">🤷</span></div>
+                        }
                         {user && <div className={styles.inputWithSuggestionsContainer}>
                             <div
                                 className={cx(styles.inputContainer, styles.small, {[styles.focus]: this.state.inputFocused})}>
@@ -242,12 +247,12 @@ class ActiveMediaBox extends React.Component {
                                     </div> : this.state.searchResults.map((result) => {
                                         return <div className={cx(styles.suggestionItem, {
                                             [styles.active]: this.state.episodeGames.find((game) => {
-                                                return game.id === result.id
+                                                return game.igbdId === result.igbdId
                                             })
-                                        })} key={result.id}
+                                        })} key={result.igbdId}
                                                     onClick={() => this._handleClickSuggestion(result)}>
                                             {result.name} ({
-                                            moment.unix(result.releaseDate).format('YYYY') || "A venir"
+                                            moment(result.releaseDate).format('YYYY') || "A venir"
                                         })
                                         </div>
                                     })}
@@ -291,8 +296,9 @@ const GameCard = ({game, showDelete, onDelete}) => {
 
 const mapStateToProps = state => {
     return {
-        currentGame: state.gamesReducer.currentGame
+        currentGame: state.gamesReducer.currentGame,
+        authUser: state.usersReducer.authUser
     }
 };
 
-export default withRouter( connect(mapStateToProps)(ActiveMediaBox));
+export default withRouter(connect(mapStateToProps)(ActiveMediaBox));

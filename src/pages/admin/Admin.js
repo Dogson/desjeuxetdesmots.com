@@ -1,19 +1,13 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import firebase from '../../config/firebase';
-import withFirebaseAuth, {WrappedComponentProps} from 'react-with-firebase-auth';
 
 import PageLayout from "../../layouts/PageLayout";
 
 import styles from "./admin.module.scss";
-import {DebounceInput} from "react-debounce-input";
-import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
-import {MEDIA_TYPES, PODCASTS} from "../../config/const";
-import * as moment from "../homepage/Homepage";
+import {MEDIA_TYPES} from "../../config/const";
 import {NavLink} from "react-router-dom";
 import {login} from "../../endpoints/adminEndpoint";
 import {connect} from "react-redux";
-import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {ACTIONS_USERS} from "../../actions/usersActions";
 
 class Admin extends Component {
@@ -47,7 +41,7 @@ class Admin extends Component {
     _handleSubmit(e) {
         e.preventDefault();
         if (this.state.fields.username.length === 0 || this.state.fields.password.length === 0) {
-            this.setState({errorMessage: "Veuillez remplir les champs ci-dessus"})
+            this.setState({errorMessage: "Veuillez remplir les champs ci-dessus"});
             return;
         }
         this.setState({errorMessage: ""});
@@ -115,7 +109,7 @@ const SectionGrid = ({title, items}) => {
             })}
         </div>
     </div>
-}
+};
 
 const mapStateToProps = state => {
     return {

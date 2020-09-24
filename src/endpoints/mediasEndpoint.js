@@ -1,39 +1,25 @@
-import firebase from "../config/firebase";
-import {get} from "../utils";
+import {get, put} from "../utils";
 import {API_CONFIG} from "../config/apiConfig";
 import React from "react";
-
-const db = firebase.firestore();
-if (window.location.hostname === "localhost") {
-    db.settings({
-        host: "localhost:8080",
-        ssl: false
-    });
-}
-const functions = firebase.functions();
-
 
 export async function getAllMedia(mediaDataLabel) {
     const medias = await get(API_CONFIG.endpoints.MEDIA, {"media.type": mediaDataLabel});
     return _sortEpisodesByMedia(medias);
 }
 
-export const setGamesForMedia = ({mediaId, mediaType, games}) => {
-        const data = {mediaId: mediaId, mediaType: mediaType, games: games};
-        return functions.httpsCallable('setGamesForMedia')(data)
-            .catch((error) => {
-                console.error(error);
-            })
-    }
-;
+export async function setGamesForMedia({episodeId, games}) {
+    const response = await put(`${API_CONFIG.endpoints.MEDIA}/${episodeId}`, {
+        games: games
+    });
+    return response.data;
+}
 
-export const toggleVerifyMedia = ({mediaType, mediaId, verified}) => {
-    const data = {mediaId: mediaId, mediaType: mediaType, verified: verified};
-    return functions.httpsCallable('toggleVerifyMedia')(data)
-        .catch((error) => {
-            console.error(error);
-        })
-};
+export async function toggleVerifyMedia({episodeId, verified}) {
+    const response = await put(`${API_CONFIG.endpoints.MEDIA}/${episodeId}`, {
+        verified: verified
+    });
+    return response.data;
+}
 
 const _sortEpisodesByMedia = (episodes) => {
     const medias = [];

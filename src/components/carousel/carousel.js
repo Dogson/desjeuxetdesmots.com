@@ -4,8 +4,9 @@ import Slider from "react-slick";
 import styles from "./carousel.module.scss";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
+import {connect} from "react-redux";
 
-export default class Carousel extends Component {
+class Carousel extends Component {
     constructor(props) {
         super(props);
 
@@ -90,7 +91,8 @@ export default class Carousel extends Component {
                         return <div className={styles.slideContainer} key={index}>
                             {episode ? <Card isActive={activeItem && episode._id === activeItem._id} media={episode}
                                              onClick={() => onClickItem(episode)}
-                                             smaller={smallerCards}/> :
+                                             smaller={smallerCards}
+                                                hideRibbon={!this.props.authUser}/> :
                                 <EmptyCard smaller={smallerCards}/>}
                         </div>
                     })}
@@ -100,11 +102,20 @@ export default class Carousel extends Component {
     }
 }
 
-const Card = ({media, onClick, isActive, smaller}) => {
+
+const mapStateToProps = state => {
+    return {
+        authUser: state.usersReducer.authUser
+    }
+};
+
+export default connect(mapStateToProps)(Carousel);
+
+const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '190px'} : {}}>
         {
-            !media.isVerified ?
+            !media.verified && !hideRibbon ?
                 <div className={styles.ribbon}/>
                 : null
         }
@@ -115,6 +126,7 @@ const Card = ({media, onClick, isActive, smaller}) => {
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>
 };
+
 
 const EmptyCard = ({smaller}) => {
     return <div className={styles.cardContainer} style={smaller ? {height: '190px'} : {}}>

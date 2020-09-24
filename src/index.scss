@@ -13,6 +13,7 @@ $containerWidth: 1000px;
 $weight-light: 300;
 $weight-regular: normal;
 $weight-bold: 500;
+$weight-bolder: 600;
 
 //text size
 $size-smallest: 9px;
@@ -58,7 +59,7 @@ strong {
 h2 {
   color: $color-bright-2;
   font-weight: $weight-light;
-  font-size: $size-big;
+  font-size: $size-normal;
 }
 
 .logoFont {

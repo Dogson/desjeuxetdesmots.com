@@ -50,7 +50,7 @@
       .readMoreBtn {
         color: $color-bright-2;
         font-weight: $weight-bold;
-        font-size: $size-smallest;
+        font-size: $size-smaller;
         cursor: pointer;
         text-transform: uppercase;
         padding: 0 0 10px 0;
@@ -72,9 +72,8 @@
       margin-left: 30px;
 
       .rightRowContainer {
-        min-height: 320px;
         @extend .flexColumn;
-        //@extend .flexCenter;
+        margin-top: 10px;
       }
 
       .saveContainer, .verifyContainer {
@@ -105,15 +104,6 @@
         flex-wrap: wrap;
         align-self: flex-start;
 
-        .noGame {
-          color: $color-bright-2;
-          text-transform: uppercase;
-          font-size: $size-smaller;
-          font-weight: $weight-regular;
-          letter-spacing: 1px;
-          align-self: center;
-        }
-
         .cardContainer {
           width: 112.5px;
           height: 150px;
@@ -128,6 +118,14 @@
             margin: 0;
           }
         }
+      }
+
+      .noGame {
+        color: $color-bright-2;
+        font-size: $size-smaller;
+        font-weight: $weight-light;
+        letter-spacing: 1px;
+        align-self: center;
       }
 
       .inputWithSuggestionsContainer {

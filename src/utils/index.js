@@ -49,7 +49,8 @@ export async function put(endpoint, data) {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            "X-Requested-With": "XMLHttpRequest"
+            "X-Requested-With": "XMLHttpRequest",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         data
     })
@@ -70,7 +71,7 @@ export function findPos(obj) {
     if (obj.offsetParent) {
         do {
             curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
+        } while (obj === obj.offsetParent);
         return curtop;
     }
 }

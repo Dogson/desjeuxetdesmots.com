@@ -28,7 +28,7 @@ export class AdminMediaSection extends React.Component {
             return <LoadingSpinner/>
         }
         return <div>
-            <MediaSection medias={medias} rowAttribute="name"/>
+            <MediaSection mediasList={medias} rowAttribute="name"/>
         </div>
     }
 }

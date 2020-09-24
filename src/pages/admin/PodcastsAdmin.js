@@ -10,11 +10,6 @@ import {connect} from "react-redux";
 import styles from "./admin.module.scss";
 
 class PodcastsAdmin extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {authUser} = this.props;
         return <PageLayout title="Administration des podcasts">

@@ -79,7 +79,7 @@ class GamePage extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <MediaSection medias={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
+                    <MediaSection mediasList={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
                 </div>}
         </PageLayout>
     }

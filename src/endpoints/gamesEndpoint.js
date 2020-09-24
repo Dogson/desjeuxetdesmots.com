@@ -1,18 +1,7 @@
 import moment from "moment";
-import firebase from "../config/firebase";
-import {API_CONFIG, IGDB_API} from "../config/apiConfig";
+import {API_CONFIG} from "../config/apiConfig";
 import * as axios from "axios";
 import {asyncForEach, get} from "../utils";
-import React from "react";
-
-const db = firebase.firestore();
-
-if (window.location.hostname === "localhost") {
-    db.settings({
-        host: "localhost:8080",
-        ssl: false
-    });
-}
 
 export async function getGamesById(gamesId) {
     const games = [];
@@ -52,10 +41,11 @@ function _mapResultToGame(result) {
 }
 
 export const getGamesFromIGDB = ({search, limit}) => {
-    const proxyUrl = "https://mighty-shelf-65365.herokuapp.com/";
-    let key = IGDB_API.key;
+    const proxyUrl = process.env.REACT_APP_PROXY_URL;
+    let key = process.env.REACT_APP_IGDB_API_KEY;
+    const apiUrl = process.env.REACT_APP_IGDB_API_URL;
     let endpointName = "games";
-    let url = `${proxyUrl}${IGDB_API.url}${endpointName}`;
+    let url = `${proxyUrl}${apiUrl}${endpointName}`;
     limit = limit || 10;
     return axios({
         url: url,
@@ -71,18 +61,21 @@ export const getGamesFromIGDB = ({search, limit}) => {
             return response.data.filter((game) => {
                 return game.cover;
             }).map((game) => {
-                return {
+                const result =  {
                     ...game,
-                    cover: game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
+                    igdbId: game.id.toString(),
+                    cover: game.cover && game.cover.url.replace('/t_thumb/', '/t_cover_big/').replace('//', 'https://'),
                     screenshot: game.screenshots && game.screenshots.length && game.screenshots[game.screenshots.length - 1].url.replace('/t_thumb/', '/t_screenshot_big/').replace('//', 'https://'),
-                    releaseDate: game.release_dates && Math.min(...game.release_dates && game.release_dates.map((release_date) => {
+                    releaseDate: game.release_dates && new Date(Math.min(...game.release_dates && game.release_dates.map((release_date) => {
                             return release_date.date;
                         })
                             .filter((date) => {
                                 return date != null;
                             })
-                    )
-                }
+                    ) * 1000)
+                };
+                delete result.id;
+                return result;
             });
         })
 };
