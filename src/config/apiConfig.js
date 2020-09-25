@@ -3,6 +3,7 @@ export const API_CONFIG = {
         GAME: "games",
         MEDIA: "episodes",
         GENERATE: "episodes/generate/",
-        LOGIN: "login"
+        LOGIN: "login",
+        IGDB: "igdb"
     }
 };

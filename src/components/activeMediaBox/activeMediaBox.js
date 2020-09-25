@@ -73,12 +73,15 @@ class ActiveMediaBox extends React.Component {
             }
             this.setState({loadingSuggestions: true});
             this.setState({noMatch: false});
-            getGamesFromIGDB({search: this.state.searchInput, limit: 5})
+            getGamesFromIGDB({search: this.state.searchInput})
                 .then((result) => {
                     if (result.length === 0) {
                         this.setState({noMatch: true})
                     }
                     this.setState({searchResults: result, loadingSuggestions: false})
+                })
+                .catch(() => {
+                    this.setState({searchGamesError: true, loadingSuggestions: false})
                 })
         }
     }
@@ -103,6 +106,7 @@ class ActiveMediaBox extends React.Component {
     }
 
     _handleChange(value) {
+        this.setState({searchGamesError: false});
         this.setState({searchInput: value});
     }
 
@@ -257,6 +261,7 @@ class ActiveMediaBox extends React.Component {
                                         </div>
                                     })}
                                 {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
+                                {this.state.searchGamesError && <div className={styles.noMatch}>Une erreur est survenue</div>}
                             </div>
                         </div>}
 

@@ -26,7 +26,8 @@ export async function get(endpoint, params) {
         params: params && new URLSearchParams(params),
         headers: {
             'Accept': 'application/json',
-            "X-Requested-With": "XMLHttpRequest"
+            "X-Requested-With": "XMLHttpRequest",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
     });
     return result.data;
