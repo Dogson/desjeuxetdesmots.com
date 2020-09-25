@@ -119,7 +119,7 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
                 <div className={styles.ribbon}/>
                 : null
         }
-        <div className={styles.backImage} style={smaller ? {
+        <div className={cx(styles.backImage, styles.noBlur)} style={smaller ? {
             height: '130px',
             backgroundImage: `url(${media.image})`
         } : {backgroundImage: `url(${media.image})`}}/>

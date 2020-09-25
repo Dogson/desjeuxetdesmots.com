@@ -7,12 +7,14 @@
   transition: all 0.1s ease-in-out;
   position: relative;
   background-color: $color-dark-2;
+  overflow: hidden;
 
   &:hover {
     transform: scale(1.1);
 
     img {
-      opacity: 0.3;
+      opacity: 0.6;
+      filter: blur(1px);
     }
 
     .playIcon {

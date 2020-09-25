@@ -364,6 +364,7 @@ input[type="submit"] {
   opacity: 0.85;
   position: relative;
   transform: scale(0.90);
+  overflow: hidden;
 
   .hoveredInfo {
     transition: all 0.2s ease-in-out;
@@ -390,7 +391,7 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
   .backImage {
@@ -461,14 +462,15 @@ input[type="submit"] {
     .hoveredInfo {
       opacity: 1;
       transition: all 0.2s ease-in-out;
+    }
 
-      .backImage {
-        opacity: 0.5;
-      }
+
+    .noBlur {
+      filter: none !important;
     }
 
     .backImage {
-      filter: blur(0.5px);
+      filter: blur(2px);
     }
   }
 }
