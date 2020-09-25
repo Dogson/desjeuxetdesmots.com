@@ -13,6 +13,7 @@ import {withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
+import ReactTooltip from "react-tooltip";
 
 
 class Homepage extends Component {
@@ -152,7 +153,8 @@ const MediaLogos = ({game}) => {
         {
             game.medias.map((media) => {
                 return <div key={media.name} className={styles.mediaLogo}>
-                    <img src={media.logo} alt={media.name}/>
+                    <ReactTooltip effect="solid" id="mediaLogo" place="bottom"/>
+                    <img src={media.logoMin} alt={media.name} data-tip={media.name} data-for="mediaLogo"/>
                 </div>
             })
         }

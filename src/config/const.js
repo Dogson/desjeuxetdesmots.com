@@ -2,40 +2,28 @@ import PodcastsAdmin from "../pages/admin/PodcastsAdmin";
 import React from 'react';
 import VideosAdmin from "../pages/admin/VideosAdmin";
 
-// const PODCASTS = [
-//     {
-//         dataLabel: "cosyCorner",
-//         name: "Le Cosy Corner",
-//         author: "À L'aise Blaze",
-//         logo: require("../assets/logos/cosyCorner/cosyCornerFull.jpg"),
-//         logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png"),
-//         app: "spotify",
-//     },
-//     {
-//         dataLabel: "silenceOnJoue",
-//         name: "Silence On Joue",
-//         author: "Erwan Cario",
-//         logo: require("../assets/logos/silenceOnJoue/silenceOnJoueFull.jpg"),
-//         logoMin: require("../assets/logos/silenceOnJoue/silenceOnJoueMini.png"),
-//         app: "spotify"
-//     },
-//     {
-//         dataLabel: "zqsd",
-//         name: "ZQSD",
-//         author: "ZQSD",
-//         logo: require("../assets/logos/zqsd/zqsdFull.jpg"),
-//         logoMin: require("../assets/logos/zqsd/zqsdMin.png"),
-//         app: "soundcloud"
-//     },
-//     {
-//         dataLabel: "gamekult",
-//         name: "Gamekult",
-//         author: "Gamekult",
-//         logo: require("../assets/logos/gamekult/gamekultFull.jpg"),
-//         logoMin: require("../assets/logos/gamekult/gamekultMin.png"),
-//         app: "soundcloud"
-//     }
-// ];
+export const MEDIA_LOGOS = [
+    {
+        logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png"),
+        name: "Le Cosy Corner",
+    },
+    {
+        name: "Silence on joue !",
+        logoMin: require("../assets/logos/silenceOnJoue/silenceOnJoueMini.png"),
+    },
+    {
+        name: "ZQSD",
+        logoMin: require("../assets/logos/zqsd/zqsdMin.png"),
+    },
+    {
+        name: "Gamekult",
+        logoMin: require("../assets/logos/gamekult/gamekultMin.png"),
+    },
+    {
+        name: "Fin Du Game",
+        logoMin: require("../assets/logos/finDuGame/finDuGameMin.png"),
+    }
+];
 //
 // const VIDEOS = [
 //     {

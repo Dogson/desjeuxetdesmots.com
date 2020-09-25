@@ -2,6 +2,7 @@ import moment from "moment";
 import {API_CONFIG} from "../config/apiConfig";
 import * as axios from "axios";
 import {asyncForEach, get} from "../utils";
+import {MEDIA_LOGOS} from "../config/const";
 
 export async function getGamesById(gamesId) {
     const games = [];
@@ -27,7 +28,15 @@ function _mapResultToGame(result) {
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
         return medias.map(med => med.name).indexOf(media.name) === index;
-    });
+    })
+        .map((media) => {
+            let mediaLogo = MEDIA_LOGOS.find((medLogo) => medLogo.name === media.name);
+            mediaLogo = mediaLogo && mediaLogo.logoMin;
+            return {
+                ...media,
+                logoMin: mediaLogo
+            }
+        });
     result.episodes = result.episodes.map((episode) => {
         return {
             ...episode,

@@ -427,14 +427,12 @@ input[type="submit"] {
     @extend .flexRow;
     @extend .flexCenter;
     margin-top: 10px;
-    //positio/n: absolute;
-    //bottom: 10px;
 
     .mediaLogo {
       position: relative;
       overflow: hidden;
-      width: 50px;
-      height: 50px;
+      width: 35px;
+      height: 35px;
       padding: 5px;
 
       img {

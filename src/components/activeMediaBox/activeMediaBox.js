@@ -63,7 +63,7 @@ class ActiveMediaBox extends React.Component {
         }
         if (prevProps.media._id !== this.props.media._id) {
             getGamesById(this.props.media.games.map(game => game._id)).then((games) => {
-                this.setState({episodeGames: games});
+                this.setState({episodeGames: games, verified: false});
             });
         }
         if (this.state.searchInput !== prevState.searchInput) {
@@ -113,7 +113,7 @@ class ActiveMediaBox extends React.Component {
         this.setState({loadingSaveGames: true});
         return this.props.onSaveGames(this.state.episodeGames)
             .then(() => {
-                this.setState({loadingSaveGames: false, showSaveBtn: false});
+                this.setState({loadingSaveGames: false, showSaveBtn: false, verified: true});
             })
     }
 
@@ -184,8 +184,8 @@ class ActiveMediaBox extends React.Component {
                         <h2>Ça parle de quoi d'autre ?</h2>
 
                         {this.state.showSaveBtn && user ?
-                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications">
-                                <div onClick={this._handleOnSaveGames} data-tip="Enregistrer">
+                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications" data-for="verifyAndSave">
+                                <div onClick={this._handleOnSaveGames}>
                                     {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
                                         <div style={{padding: '0 5px'}}><Loader
                                             type="TailSpin"
@@ -197,7 +197,7 @@ class ActiveMediaBox extends React.Component {
                             </div> :
                             <div className={styles.verifyContainer}>
                                 {media.verified || !user || this.state.verified ? null :
-                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié">
+                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié" data-for="verifyAndSave">
                                         {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
                                             <Loader
                                                 type="TailSpin"
@@ -210,7 +210,7 @@ class ActiveMediaBox extends React.Component {
                             </div>
 
                         }
-                        <ReactTooltip effect="solid" place="left"/>
+                        <ReactTooltip effect="solid" place="left" id="verifyAndSave"/>
 
                         {episodeGames.length > 0 ?
                             <div className={styles.gamesContainer}>
