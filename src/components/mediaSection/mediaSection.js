@@ -37,8 +37,8 @@ class MediaSection extends React.Component {
             payload: {...episode}
         });
         setTimeout(() => {
-            window.scrollTo({top: findPos(ref.current) - 10, behavior: 'smooth'})
-        }, 200);
+            window.scrollTo({top: findPos(ref.current).top - 10, behavior: 'smooth'})
+        }, 0);
     }
 
     renderActiveMedia(mediaActive, ref) {
