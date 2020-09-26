@@ -17,12 +17,11 @@ class MediaPlayer extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.mediaPlayed) {
-            if (!prevProps.mediaPlayed || this.props.mediaPlayed._id !== prevProps.mediaPlayed._id) {
+            if (this.hasMediaPlayedChanged(prevProps.mediaPlayed, this.props.mediaPlayed)) {
                 this.audioInstance.playNext();
-            }
-            if (prevProps.mediaPlayed && this.props.mediaPlayed._id === prevProps.mediaPlayed._id) {
-                if (this.props.mediaPlayed.isPaused !== prevProps.mediaPlayed.isPaused) {
-                    if (this.props.mediaPlayed.isPaused) {
+            } else {
+                if (this.isAudioContextDifferentFromState(this.props.playState)) {
+                    if (this.props.playState.isPaused) {
                         this.audioInstance.pause();
                     } else {
                         this.audioInstance.play()
@@ -32,22 +31,30 @@ class MediaPlayer extends React.Component {
         }
     }
 
+    isAudioContextDifferentFromState(playState) {
+        return playState.isPaused !== playState.audioContextPaused;
+    }
+
+    hasMediaPlayedChanged(prevMedia, media) {
+        return !prevMedia || prevMedia._id !== media._id
+    };
+
     _handlePlay() {
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_PLAYED_MEDIA,
+            type: ACTIONS_MEDIAS.SET_PLAY_STATE,
             payload: {
-               ...this.props.mediaPlayed,
-                isPaused: false
+                isPaused: false,
+                audioContextPaused: false
             }
         });
     }
 
     _handlePause() {
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_PLAYED_MEDIA,
+            type: ACTIONS_MEDIAS.SET_PLAY_STATE,
             payload: {
-                ...this.props.mediaPlayed,
-                isPaused: true
+                isPaused: true,
+                audioContextPaused: true
             }
         });
     }
@@ -77,12 +84,11 @@ class MediaPlayer extends React.Component {
                     showReload={false}
                     showThemeSwitch={false}
                     showPlayMode={false}
-                    preLoad={false}
                     onAudioPlay={this._handlePlay.bind(this)}
                     onAudioPause={this._handlePause.bind(this)}
                     onAudioDownload={this._handleDownload.bind(this)}
                     showProgressLoadBar={false}
-
+                    responsive={true}
                 />
             </>
         )
@@ -91,7 +97,8 @@ class MediaPlayer extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaPlayed: state.mediaReducer.mediaPlayed
+        mediaPlayed: state.mediaReducer.mediaPlayed,
+        playState: state.mediaReducer.playState
     }
 };
 

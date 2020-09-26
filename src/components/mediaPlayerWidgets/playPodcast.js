@@ -5,7 +5,7 @@ import {FaPlay, FaPause} from "react-icons/fa";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 
 const PlayPodcast = (props) => {
-    const {mediaActive, mediaPlayed} = props;
+    const {mediaActive, mediaPlayed, playState} = props;
     return mediaActive ?
         <div className={styles.playPodcastContainer} onClick={() => {
             props.dispatch({
@@ -16,24 +16,30 @@ const PlayPodcast = (props) => {
                     singer: mediaActive.media.name,
                     cover: mediaActive.image,
                     musicSrc: mediaActive.fileUrl,
-                    isPaused: mediaPlayed && mediaPlayed._id === mediaActive._id && !mediaPlayed.isPaused
+                }
+            });
+            props.dispatch({
+                type: ACTIONS_MEDIAS.SET_PLAY_STATE,
+                payload: {
+                    isPaused: mediaPlayed && mediaPlayed._id === mediaActive._id && !playState.isPaused
                 }
             });
         }}>
             <img src={mediaActive.image} alt={mediaActive.name}/>
-            {mediaPlayed && mediaPlayed._id === mediaActive._id && !mediaPlayed.isPaused ?
+            {mediaPlayed && mediaPlayed._id === mediaActive._id && !playState.isPaused ?
                 <FaPause className={styles.playIcon}/> :
                 <FaPlay className={styles.playIcon}/>
             }
-            </div> :
-            null
-        };
+        </div> :
+        null
+};
 
 const mapStateToProps = state => {
     return {
-    mediaActive: state.mediaReducer.mediaActive,
-    mediaPlayed: state.mediaReducer.mediaPlayed
-}
+        mediaActive: state.mediaReducer.mediaActive,
+        mediaPlayed: state.mediaReducer.mediaPlayed,
+        playState: state.mediaReducer.playState
+    }
 };
 
 export default connect(mapStateToProps)(PlayPodcast);
