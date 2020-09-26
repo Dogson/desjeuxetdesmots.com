@@ -47,3 +47,22 @@
 .adminPageContainer {
   width: 100%;
 }
+
+@media #{$media-phone} {
+  .formContainer {
+    padding: 0;
+    border: none;
+
+    .btn {
+      width: 200px;
+    }
+
+    label {
+      width: 200px;
+
+      input {
+        width: 200px;
+      }
+    }
+  }
+}
