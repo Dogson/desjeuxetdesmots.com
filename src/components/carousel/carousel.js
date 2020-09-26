@@ -12,21 +12,14 @@ class Carousel extends Component {
 
         this.state = {
             showDots: false,
-            showPreviousArrow: false,
         };
-
-        this._handleAfterChange = this._handleAfterChange.bind(this);
-    }
-
-    _handleAfterChange(index) {
-        this.setState({showPreviousArrow: index && index > 0});
     }
 
     render() {
         const {medias, activeItem, onClickItem, smallerCards} = this.props;
         const settings = {
             dots: true,
-            infinite: medias.length > 6,
+            infinite: false,
             speed: 1000,
             draggable: false,
             easing: 'ease-out',
@@ -35,8 +28,7 @@ class Carousel extends Component {
             nextArrow: <NextArrow onMouseEnter={() => this.setState({showDots: true})}
                                   onMouseLeave={() => this.setState({showDots: false})}/>,
             prevArrow: <PrevArrow onMouseEnter={() => this.setState({showDots: true})}
-                                  onMouseLeave={() => this.setState({showDots: false})}
-                                  hidden={!this.state.showPreviousArrow}/>,
+                                  onMouseLeave={() => this.setState({showDots: false})}/>,
             appendDots: (dots) => <AppendDots dots={dots} showDots={this.state.showDots}/>,
             customPaging: () => <CustomPaging/>,
             afterChange: this._handleAfterChange,
@@ -54,7 +46,6 @@ class Carousel extends Component {
                     settings: {
                         slidesToShow: 4,
                         slidesToScroll: 4,
-                        infinite: medias.length > 4,
                     }
                 },
                 {
@@ -62,7 +53,6 @@ class Carousel extends Component {
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 3,
-                        infinite: medias.length > 3,
                     }
                 },
                 {
@@ -70,7 +60,6 @@ class Carousel extends Component {
                     settings: {
                         slidesToShow: 2,
                         slidesToScroll: 2,
-                        infinite: medias.length > 2,
                     }
                 },
                 {
@@ -78,7 +67,6 @@ class Carousel extends Component {
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        infinite: medias.length > 1,
                     }
                 }
             ]
@@ -146,11 +134,8 @@ const CustomPaging = () => {
     return <div className={styles.customPagingContainer}/>;
 };
 
-const PrevArrow = ({onClick, className, onMouseEnter, onMouseLeave, hidden}) => {
+const PrevArrow = ({onClick, className, onMouseEnter, onMouseLeave}) => {
     let classnames = cx(className, styles.arrowContainer, {[styles.slickDisabled]: className.indexOf('slick-disabled') > -1});
-    if (hidden) {
-        return null;
-    }
     return <div className={classnames} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
                 onClick={onClick}><FaChevronLeft className={styles.icon}/></div>
 
