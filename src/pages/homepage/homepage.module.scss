@@ -19,7 +19,7 @@
 
   .cardContainer {
     width: 200px;
-    height: 267px;
+    height: 266px;
     opacity: 1;
   }
 }
@@ -34,5 +34,14 @@
 
   strong {
     color: $color-bright-2;
+  }
+}
+
+@media #{$media-phone} {
+  .gamesGridContainer {
+    .cardContainer {
+      width: 150px;
+      height: 200px;
+    }
   }
 }

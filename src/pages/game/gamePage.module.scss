@@ -71,12 +71,16 @@
 @media #{$media-phone} {
   .gamePageContainer {
     .gameHeader {
+      height: 340px;
       .headerContent {
         flex-direction: column;
 
         .coverImg {
           margin-bottom: 20px;
           margin-right:0;
+          margin-left: 0;
+          width: 150px;
+          height: 200px;
         }
         .gameInfos {
           text-align: center;
