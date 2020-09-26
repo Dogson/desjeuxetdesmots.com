@@ -14,11 +14,11 @@
 
     img {
       opacity: 0.6;
-      filter: blur(1px);
     }
 
     .playIcon {
       opacity: 1;
+      color: $color-bright-2;
     }
   }
 
@@ -34,9 +34,9 @@
     left: 50%;
     width: 50px;
     height: 50px;
-    color: $color-bright-2;
     transform: translate(-50%, -50%);
-    opacity: 0;
+    opacity: 0.9;
+    color:  $color-bright-1;
     transition: all 0.1s ease-in-out;
   }
 
