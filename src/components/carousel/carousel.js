@@ -2,38 +2,36 @@ import React, {Component} from "react";
 import cx from "classnames";
 import Slider from "react-slick";
 import styles from "./carousel.module.scss";
-import {NavLink} from "react-router-dom";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
+import {connect} from "react-redux";
 
-export default class Carousel extends Component {
+class Carousel extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             showDots: false,
-            showPreviousArrow: false
+            showPreviousArrow: false,
         };
 
         this._handleAfterChange = this._handleAfterChange.bind(this);
     }
 
     _handleAfterChange(index) {
-        this.setState({showPreviousArrow: index && index > 0})
-        return this.props.onClickNext()
+        this.setState({showPreviousArrow: index && index > 0});
     }
 
     render() {
-        const {medias, activeItem, onClickItem, onScreenItems, smallerCards} = this.props;
-
+        const {medias, activeItem, onClickItem, smallerCards} = this.props;
         const settings = {
             dots: true,
-            infinite: medias.length > onScreenItems,
+            infinite: medias.length > 6,
             speed: 1000,
             draggable: false,
             easing: 'ease-out',
-            slidesToShow: onScreenItems,
-            slidesToScroll: onScreenItems,
+            slidesToShow: 6,
+            slidesToScroll: 6,
             nextArrow: <NextArrow onMouseEnter={() => this.setState({showDots: true})}
                                   onMouseLeave={() => this.setState({showDots: false})}/>,
             prevArrow: <PrevArrow onMouseEnter={() => this.setState({showDots: true})}
@@ -41,17 +39,60 @@ export default class Carousel extends Component {
                                   hidden={!this.state.showPreviousArrow}/>,
             appendDots: (dots) => <AppendDots dots={dots} showDots={this.state.showDots}/>,
             customPaging: () => <CustomPaging/>,
-            afterChange: this._handleAfterChange
+            afterChange: this._handleAfterChange,
+            responsive: [
+                {
+                    breakpoint: 1250,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 5,
+                        infinite: medias.length > 5,
+                    }
+                },
+                {
+                    breakpoint: 1120,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 4,
+                        infinite: medias.length > 4,
+                    }
+                },
+                {
+                    breakpoint: 850,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: medias.length > 3,
+                    }
+                },
+                {
+                    breakpoint: 670,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        infinite: medias.length > 2,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        infinite: medias.length > 1,
+                    }
+                }
+            ]
         };
 
         return (
             <div className={styles.carouselContainer}>
                 <Slider {...settings}>
-                    {medias.map((media, index) => {
+                    {medias.map((episode, index) => {
                         return <div className={styles.slideContainer} key={index}>
-                            {media ? <Card isActive={activeItem && media.id === activeItem.id} media={media}
-                                           onClick={() => onClickItem(media)}
-                                           smaller={smallerCards}/> :
+                            {episode ? <Card isActive={activeItem && episode._id === activeItem._id} media={episode}
+                                             onClick={() => onClickItem(episode)}
+                                             smaller={smallerCards}
+                                                hideRibbon={!this.props.authUser}/> :
                                 <EmptyCard smaller={smallerCards}/>}
                         </div>
                     })}
@@ -61,18 +102,24 @@ export default class Carousel extends Component {
     }
 }
 
-const Card = ({media, onClick, isActive, smaller}) => {
-    if (!media.image) {
 
+const mapStateToProps = state => {
+    return {
+        authUser: state.usersReducer.authUser
     }
+};
+
+export default connect(mapStateToProps)(Carousel);
+
+const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '190px'} : {}}>
         {
-            !media.isVerified ?
+            !media.verified && !hideRibbon ?
                 <div className={styles.ribbon}/>
                 : null
         }
-        <div className={styles.backImage} style={smaller ? {
+        <div className={cx(styles.backImage, styles.noBlur)} style={smaller ? {
             height: '130px',
             backgroundImage: `url(${media.image})`
         } : {backgroundImage: `url(${media.image})`}}/>
@@ -80,10 +127,11 @@ const Card = ({media, onClick, isActive, smaller}) => {
     </div>
 };
 
+
 const EmptyCard = ({smaller}) => {
-    return <div className={styles.cardContainer} style={smaller ? {height: '190px'}: {}}>
+    return <div className={styles.cardContainer} style={smaller ? {height: '190px'} : {}}>
         <div className={styles.hoveredInfo}>
-            <div className={styles.backImage} style={smaller ? {height: '130px'}: {}}/>
+            <div className={styles.backImage} style={smaller ? {height: '130px'} : {}}/>
         </div>
     </div>
 };

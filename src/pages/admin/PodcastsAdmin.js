@@ -1,32 +1,30 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import firebase from '../../config/firebase';
-import withFirebaseAuth from 'react-with-firebase-auth';
 
 import PageLayout from "../../layouts/PageLayout";
 
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import {Redirect} from "react-router-dom";
 import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
-import {MEDIA_TYPES} from "../../config/const";
-
-const firebaseAppAuth = firebase.auth();
+import {connect} from "react-redux";
+import styles from "./admin.module.scss";
 
 class PodcastsAdmin extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const {user} = this.props;
+        const {authUser} = this.props;
         return <PageLayout title="Administration des podcasts">
             <Helmet title="Panneau d'administration des podcasts - gamer juice"/>
-            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIA_TYPES.find((item) => {return item.name === "Podcasts"})}/> : <Redirect to="/admin"/>}
+            {authUser === undefined ? <LoadingSpinner/> : authUser ?
+                <div className={styles.adminPageContainer}><AdminMediaSection type="podcast"/></div> : <Redirect
+                    to="/admin"/>}
         </PageLayout>
     }
 }
 
-export default withFirebaseAuth({
-    firebaseAppAuth,
-})(PodcastsAdmin);
+const mapStateToProps = state => {
+    return {
+        authUser: state.usersReducer.authUser,
+    }
+};
+
+export default connect(mapStateToProps)(PodcastsAdmin);

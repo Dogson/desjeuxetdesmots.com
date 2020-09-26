@@ -20,9 +20,9 @@
     }
 
     .date {
-      color: $color-bright-1;
+      color: $color-bright-2;
       font-size: $size-small;
-      font-weight: $weight-regular;
+      font-weight: $weight-light;
       margin-bottom: 5px;
     }
   }
@@ -37,8 +37,44 @@
 
     .leftRow {
       padding-right: 30px;
-      flex: 0.4;
+      flex: 0.5;
+      max-width: 500px;
       position: relative;
+
+      .description {
+        color: $color-bright-1;
+        font-weight: $weight-regular;
+        font-size: $size-small;
+      }
+
+      .readMoreBtn {
+        color: $color-bright-2;
+        font-weight: $weight-bold;
+        font-size: $size-smaller;
+        cursor: pointer;
+        text-transform: uppercase;
+        padding: 0 0 10px 0;
+        letter-spacing: 1px;
+        outline: none;
+        background: none;
+        border: none;
+        margin: 0 5px;
+
+        &:after {
+
+        }
+      }
+    }
+
+    .rightRow {
+      flex: 0.5;
+      align-items: flex-start;
+      margin-left: 30px;
+
+      .rightRowContainer {
+        @extend .flexColumn;
+        margin-top: 10px;
+      }
 
       .saveContainer, .verifyContainer {
         @extend .flexRow;
@@ -68,15 +104,6 @@
         flex-wrap: wrap;
         align-self: flex-start;
 
-        .noGame {
-          color: $color-bright-2;
-          text-transform: uppercase;
-          font-size: $size-smaller;
-          font-weight: $weight-regular;
-          letter-spacing: 1px;
-          align-self: center;
-        }
-
         .cardContainer {
           width: 112.5px;
           height: 150px;
@@ -93,26 +120,45 @@
         }
       }
 
+      .noGame {
+        color: $color-bright-2;
+        font-size: $size-smaller;
+        font-weight: $weight-light;
+        letter-spacing: 1px;
+        align-self: center;
+      }
+
       .inputWithSuggestionsContainer {
         align-self: flex-start;
       }
     }
+  }
 
-    .rightRow {
-      flex: 0.5;
+}
 
-      .rightRowContainer {
-        min-height: 320px;
-        @extend .flexColumn;
-        //@extend .flexCenter;
+@media #{$media-phone} {
+  .activeMediaBoxContainer {
+    margin: 0;
+    padding: 0 20px 30px 20px;
+    box-sizing: border-box;
 
-        .description {
-          color: $color-bright-1;
-          font-weight: $weight-regular;
-          font-size: $size-small;
+    .titleContainer {
+      margin-bottom: 20px;
+    }
+
+    .bodyContainer {
+      flex-direction: column-reverse;
+
+      .rightRow {
+        margin-left: 0;
+
+        .rightRowContainer {
+          min-height: 0;
         }
+      }
+      .leftRow {
+        margin-top: 20px;
       }
     }
   }
-
 }

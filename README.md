@@ -3,7 +3,7 @@ Plateforme web de découverte de média francophone (surtout) et anglophone (aus
 # Credits
 
 ## Development   
-IGDB API, Firebase
+IGDB API, GAMER JUICE API
 
 ## Content 
 
@@ -12,7 +12,7 @@ IGDB API, Firebase
 * Cosy Corner 
 * Silence On Joue
 * ZQSD
-* Gamekult l'Emission
+* Gamekult l'Emission   
 * Fin du Game
 
 ### Vidéos

@@ -6,13 +6,18 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 games: action.payload.games,
-                lastDoc: action.payload.lastDoc
+                page: action.payload.page || 1
             };
         case ACTIONS_GAMES.SET_SEARCH_INPUT:
             return {
                 ...state,
                 searchInput: action.payload
-            }
+            };
+        case ACTIONS_GAMES.SET_CURRENT_GAME:
+            return {
+                ...state,
+                currentGame: action.payload
+            };
         default:
             return {
                 ...state

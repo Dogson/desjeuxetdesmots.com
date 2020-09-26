@@ -1,4 +1,5 @@
 @import "../../index";
+@import "../../components/adminMedia/mediaRow.module";
 
 .gamePageContainer {
   width: 100%;
@@ -23,7 +24,8 @@
       .coverImg {
         width: 200px;
         margin-right: 50px;
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        margin-left: 50px;
+        box-shadow: 10px 10px 0 2px $color-bright-2;
       }
 
       .gameInfos {
@@ -32,7 +34,7 @@
         .gameTitle {
           text-transform: uppercase;
           //letter-spacing: 1px;
-          font-size: $size-bigger;
+          font-size: $size-biggest;
           margin: 10px;
           font-weight: $weight-regular;
         }
@@ -46,12 +48,12 @@
     .backImage {
       width: 100%;
       height: 100%;
-      filter: blur(3px);
+      filter: blur(2px);
       object-fit: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      opacity: 0.8;
+      opacity: 0.6;
       position: absolute;
       left: 0;
       top: 0;
@@ -63,53 +65,26 @@
     z-index: 2;
     background-color: $color-dark-1;
 
-    .gameContent {
-      width: 100%;
+  }
+}
 
-      .mediaRowContainer {
-        padding-top: 20px;
-        width: 100%;
-        padding-bottom: 20px;
-        @extend .flexColumn;
-        @extend .flexAlignCenter;
-        transition: background-color 0.3s ease-in-out, max-height 0.3s ease-in-out;
-        max-height: 300px;
-        overflow: hidden;
+@media #{$media-phone} {
+  .gamePageContainer {
+    .gameHeader {
+      .headerContent {
+        flex-direction: column;
 
-        .activeMediaContainer {
-          opacity: 0;
-          transition: all 0.2s ease-in-out 0.2s;
+        .coverImg {
+          margin-bottom: 20px;
+          margin-right:0;
         }
-
-        &.mediaRowContainerActive {
-          background-color: $color-dark-2;
-          max-height: 1000px;
-
-          .activeMediaContainer {
-            opacity: 1;
+        .gameInfos {
+          text-align: center;
+          .gameTitle {
+            font-size: $size-bigger;
           }
         }
       }
-
-      .mediaRowWrapper  {
-        width: 1300px;
-      }
-
-      .title {
-        @extend .flexRow;
-        @extend .flexAlignCenter;
-        text-transform: lowercase;
-        letter-spacing: 1px;
-        color: $color-bright-1;
-        margin: 0 10px 5px;
-
-        .imageContainer {
-          height: 30px;
-          width: 30px;
-          margin-right: 10px;
-        }
-      }
-
     }
   }
 }

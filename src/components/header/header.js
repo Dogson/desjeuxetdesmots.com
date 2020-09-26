@@ -14,10 +14,11 @@ const Header = ({smallHeader}) => (
                 <img src={logo} alt="gamer juice" width="100%"/>
             </div>
         </NavLink>
-        <NavLink className={styles.adminButtonContainer} to={"/admin"} data-tip="panneau d'administration">
+        <NavLink className={styles.adminButtonContainer} to={"/admin"} data-tip="panneau d'administration"
+                 data-for="adminPanel">
             <FaCog/>
         </NavLink>
-        <ReactTooltip effect="solid" />
+        <ReactTooltip effect="solid" id="adminPanel" place="left"/>
     </div>
 );
 

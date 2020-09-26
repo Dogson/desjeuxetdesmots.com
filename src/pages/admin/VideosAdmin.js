@@ -1,32 +1,30 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import firebase from '../../config/firebase';
-import withFirebaseAuth from 'react-with-firebase-auth';
 
 import PageLayout from "../../layouts/PageLayout";
 
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import {Redirect} from "react-router-dom";
 import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
-import {MEDIA_TYPES} from "../../config/const";
+import {connect} from "react-redux";
+import styles from "./admin.module.scss";
 
-const firebaseAppAuth = firebase.auth();
-
-class VideosAdmin extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+class PodcastsAdmin extends Component {
     render() {
-        const {user} = this.props;
-        return <PageLayout title="Administration des vidéos">
-            <Helmet title="Panneau d'administration des vidéos - gamer juice"/>
-            {user === undefined ? <LoadingSpinner/> : user ? <AdminMediaSection type={MEDIA_TYPES.find((item) => {return item.name === "Vidéos"})}/> : <Redirect to="/admin"/>}
+        const {authUser} = this.props;
+        return <PageLayout title="Administration des videos">
+            <Helmet title="Panneau d'administration des videos - gamer juice"/>
+            {authUser === undefined ? <LoadingSpinner/> : authUser ?
+                <div className={styles.adminPageContainer}><AdminMediaSection type="video"/></div> : <Redirect
+                    to="/admin"/>}
         </PageLayout>
     }
 }
 
-export default withFirebaseAuth({
-    firebaseAppAuth,
-})(VideosAdmin);
+const mapStateToProps = state => {
+    return {
+        authUser: state.usersReducer.authUser,
+    }
+};
+
+export default connect(mapStateToProps)(PodcastsAdmin);

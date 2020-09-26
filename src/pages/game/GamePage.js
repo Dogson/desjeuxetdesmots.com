@@ -1,20 +1,16 @@
 import styles from "./gamePage.module.scss";
-import React, {Component} from 'react';
+import React from 'react';
 import {Helmet} from "react-helmet";
-import cx from "classnames";
 import {getGameById} from "../../endpoints/gamesEndpoint";
 import PageLayout from "../../layouts/PageLayout";
 import moment from "moment";
 import localization from 'moment/locale/fr';
-import {NavLink, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
-import Carousel from "../../components/carousel/carousel";
-import ActiveMediaBox from "../../components/activeMediaBox/activeMediaBox";
 import {connect} from "react-redux";
-import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_TYPES} from "../../config/const";
-import {setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
-import {TrashWidget} from "../../components/trashWidget/trashWidget";
+import {ACTIONS_GAMES} from "../../actions/gamesActions";
+import MediaSection from "../../components/mediaSection/mediaSection";
 
 class GamePage extends React.Component {
 
@@ -22,183 +18,68 @@ class GamePage extends React.Component {
         moment.locale('fr', localization);
         super(props);
         this.state = {
-            game: {}
+            game: {},
+            loading: false
         };
-
-        this._handleClickMedia = this._handleClickMedia.bind(this);
-        this._handleSaveGames = this._handleSaveGames.bind(this);
-        this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
     }
 
     componentDidMount() {
-        this.refreshGame();
+        if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
+            this.refreshGame();
+        }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.match.params.gameId !== prevProps.match.params.gameId) {
+        if (this.state.loading)
+            return;
+        if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
         }
     }
 
     refreshGame() {
         this.setState({loading: true});
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: {media: null}
-        });
         const gameId = String(this.props.match.params.gameId);
         getGameById(gameId)
             .then((game) => {
-                this.setState({game: game, loading: false});
+                this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+                this.setState({loading: false});
             })
     }
 
-    _handleClickMedia(media) {
-        let mediaActiveType;
-        MEDIA_TYPES.forEach((mediaType) => {
-            mediaType.medias.forEach((newMedia) => {
-                if (newMedia.dataLabel === media.type) {
-                    mediaActiveType = mediaType;
-                }
-            })
-        });
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: {media: media}
-        });
-        setTimeout(() => {
-            window.scrollTo({top: mediaActiveType.ref.current.offsetParent.offsetTop, behavior: "smooth"})
-        }, 200);
-    }
-
-    _handleSaveGames(games) {
-        return setGamesForMedia({
-            games: games.map((game) => {
-                const mappedGame = {...game};
-                MEDIA_TYPES.forEach((mediaType) => {
-                    mediaType.medias.forEach((media) => {
-                        mappedGame[media.dataLabel] = null;
-                    });
-                    if (isNaN(mappedGame.releaseDate))
-                        mappedGame.releaseDate = null;
-                });
-                return mappedGame;
-            }),
-            mediaType: this.props.mediaActive.media.type,
-            mediaId: this.props.mediaActive.media.id
+    sortEpisodesByMediaTypes(episodes) {
+        return MEDIA_TYPES.map((type) => {
+            return {
+                ...type,
+                type: type.dataLabel,
+                episodes: episodes.filter((episode) => episode.media.type === type.dataLabel)
+            }
         })
-            .then(() => {
-                const gameId = String(this.props.match.params.gameId);
-                getGameById(gameId)
-                    .then((game) => {
-                        this.setState({game: game, loading: false});
-                    });
-                return true;
-            })
-    }
-
-    _handleVerifyMedia() {
-        return toggleVerifyMedia({
-            verified: true,
-            mediaType: this.props.mediaActive.mediaType,
-            mediaId: this.props.mediaActive.media.id
-        })
-            .then(() => {
-                this.setState({
-                    medias: this.state.medias.map((media) => {
-                        if (media.id === this.props.mediaActive.media.id) {
-                            return {...media, isVerified: true};
-
-                        }
-                        return media;
-                    })
-                });
-                this.props.dispatch({
-                    type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-                    payload: {
-                        mediaType: this.props.type.dataLabel,
-                        media: {...this.props.mediaActive.media, isVerified: true}
-                    }
-                });
-                return true;
-            })
-    }
-
-    renderActiveMedia(mediaActive, appType) {
-        return <ActiveMediaBox media={mediaActive.media} onSaveGames={this._handleSaveGames}
-                               onVerifyMedia={this._handleVerifyMedia} app={appType}
-                               hideDescription={appType === "youtube"}/>
-    }
-
-    renderMediaTypeRow(mediaType) {
-        const {mediaActive} = this.props;
-        let appType = "";
-        let mediaActiveType = "";
-        if (mediaActive && mediaActive.media) {
-            MEDIA_TYPES.forEach((mediaType) => {
-                mediaType.medias.forEach((media) => {
-                    if (media.dataLabel === mediaActive.media.type) {
-                        appType = media.app;
-                        mediaActiveType = mediaType;
-                    }
-                })
-            });
-        }
-        const medias = this.state.game[mediaType.dataLabel];
-        const activeItem = this.props.mediaActive && this.props.mediaActive.media;
-
-        if (medias && medias.length > 0) {
-            return <div key={mediaType.dataLabel} ref={mediaType.ref}
-                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel})}>
-                <div className={styles.mediaRowWrapper}>
-                    <div className={styles.title}>
-                        <img className={styles.imageContainer} src={mediaType.logoMin}/>
-                        {mediaType.name}
-                    </div>
-                    <Carousel medias={medias}
-                              onClickItem={(media) => {
-                                  this._handleClickMedia(media, mediaActiveType)
-                              }}
-                              onScreenItems={6}
-                              activeItem={activeItem}
-                              smallerCards={mediaType.dataLabel === "videos"}/>
-                    <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && mediaType.dataLabel === mediaActiveType.dataLabel && this.renderActiveMedia(mediaActive, appType)}
-                    </div>
-                </div>
-            </div>
-        }
-        return null;
     }
 
     render() {
-        const {game, loading} = this.state;
+        const {currentGame} = this.props;
+        const {loading} = this.state;
+
         return <PageLayout smallHeader>
-            {game && game.name && <Helmet title={`${game.name} - gamer juice`}/>}
-            {loading ? <LoadingSpinner/> :
+            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - gamer juice`}/>}
+            {!currentGame || loading ? <LoadingSpinner/> :
                 <div className={styles.gamePageContainer}>
                     <div className={styles.gameHeader}>
-                        <div className={styles.backImage} style={{backgroundImage: `url(${game.screenshot})`}}/>
+                        <div className={styles.backImage} style={{backgroundImage: `url(${currentGame.screenshot})`}}/>
                         <div className={styles.headerContent}>
-                            <img className={styles.coverImg} src={game.cover}/>
+                            <img className={styles.coverImg} src={currentGame.cover} alt={currentGame.name}/>
                             <div className={styles.gameInfos}>
                                 <div className={styles.gameTitle}>
-                                    {game.name}
+                                    {currentGame.name}
                                 </div>
                                 <div className={styles.gameDate}>
-                                    {moment.unix(game.releaseDate).format('YYYY')}
+                                    {moment(currentGame.releaseDate).format('YYYY')}
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div className={styles.gameContentWrapper}>
-                        <div className={styles.gameContent}>
-                            {MEDIA_TYPES.map((mediaType) => {
-                                return this.renderMediaTypeRow(mediaType);
-                            })}
-                        </div>
-                    </div>
+                    <MediaSection mediasList={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
                 </div>}
         </PageLayout>
     }
@@ -206,7 +87,8 @@ class GamePage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive
+        mediaActive: state.mediaReducer.mediaActive,
+        currentGame: state.gamesReducer.currentGame
     }
 };
 

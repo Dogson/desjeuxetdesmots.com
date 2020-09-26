@@ -13,6 +13,7 @@ $containerWidth: 1000px;
 $weight-light: 300;
 $weight-regular: normal;
 $weight-bold: 500;
+$weight-bolder: 600;
 
 //text size
 $size-smallest: 9px;
@@ -21,6 +22,7 @@ $size-small: 15px;
 $size-normal: 18px;
 $size-big: 20px;
 $size-bigger: 24px;
+$size-biggest: 36px;
 
 //colors
 $color-dark-1: #2E4052;
@@ -52,6 +54,12 @@ a {
 
 strong {
   font-weight: $weight-regular;
+}
+
+h2 {
+  color: $color-bright-2;
+  font-weight: $weight-light;
+  font-size: $size-normal;
 }
 
 .logoFont {
@@ -177,6 +185,7 @@ input {
 }
 
 .inputContainer {
+  z-index: 1;
   padding: 0 20px;
   border: 1px solid $color-bright-1;
   margin: 20px;
@@ -295,7 +304,7 @@ input {
     font-size: $size-smaller;
 
     &:after {
-      bottom: 0px;
+      bottom: 0;
     }
   }
 
@@ -355,6 +364,7 @@ input[type="submit"] {
   opacity: 0.85;
   position: relative;
   transform: scale(0.90);
+  overflow: hidden;
 
   .hoveredInfo {
     transition: all 0.2s ease-in-out;
@@ -381,7 +391,7 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
   .backImage {
@@ -417,15 +427,25 @@ input[type="submit"] {
   .mediasLogosContainer {
     @extend .flexRow;
     @extend .flexCenter;
-    position: absolute;
-    bottom: 10px;
+    margin-top: 10px;
 
-    img {
-      width: 31px;
-      height: 31px;
-      opacity: 0.8;
-      padding: 0 3px;
+    .mediaLogo {
+      position: relative;
+      overflow: hidden;
+      width: 35px;
+      height: 35px;
+      padding: 5px;
+
+      img {
+        display: inline;
+        height: 100%;
+        margin: 0 auto;
+        opacity: 1;
+      }
+
     }
+
+
   }
 
   img {
@@ -442,14 +462,15 @@ input[type="submit"] {
     .hoveredInfo {
       opacity: 1;
       transition: all 0.2s ease-in-out;
+    }
 
-      .backImage {
-        opacity: 0.5;
-      }
+
+    .noBlur {
+      filter: none !important;
     }
 
     .backImage {
-      filter: blur(0.5px);
+      filter: blur(2px);
     }
   }
 }
@@ -458,6 +479,15 @@ ul {
   li.slick-active {
     div {
       opacity: 1;
+    }
+  }
+}
+
+
+@media #{$media-phone} {
+  .inputContainer {
+    .input {
+      width: auto;
     }
   }
 }

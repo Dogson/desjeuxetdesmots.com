@@ -9,16 +9,11 @@ import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch} from "react-icons/fa";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
-import {NavLink, Route, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
-
-import logo from "../../assets/logos/gamerJuice/logo.png";
-import logoCosyCorner from "../../assets/logos/cosyCorner/cosyCornerSmall.png";
-import {MEDIA_TYPES} from "../../config/const";
-import GamePage from "../game/GamePage";
-import Admin from "../admin/Admin";
+import ReactTooltip from "react-tooltip";
 
 
 class Homepage extends Component {
@@ -26,26 +21,37 @@ class Homepage extends Component {
         super(props);
 
         this.state = {
-            hasMoreGames: true
+            hasMoreGames: true,
+            loading: false,
         };
 
         this._handleChange = this._handleChange.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
+        this.setCurrentGame = this.setCurrentGame.bind(this);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        const nextValues = queryString.parse(nextProps.location.search);
-        const currentValues = queryString.parse(this.props.location.search);
-        if (nextValues.q !== currentValues.q) {
-            this.setState({lastDoc: null});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_SEARCH_INPUT, payload: nextValues.q || ""});
-            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: []});
-        }
+    componentDidMount() {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+        this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
+    }
+
+    componentWillUnmount() {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.searchInput !== this.props.searchInput) {
+        const currentValues = queryString.parse(this.props.location.search);
+        const prevValues = queryString.parse(prevProps.location.search);
+        if (prevValues.q !== currentValues.q) {
             this.setState({hasMoreGames: true});
+        }
+
+        if (this.props.currentGame) {
+            this.props.history.push(`/game/${this.props.currentGame._id}`)
+        }
+
+        if (currentValues.q !== prevValues.q) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         }
     }
 
@@ -53,17 +59,26 @@ class Homepage extends Component {
         this.props.history.push(`/?q=${value}`);
     }
 
-    getMoreGames() {
-        const lastDoc = this.props.lastDoc;
-        const search = this.props.searchInput;
+    setCurrentGame(game) {
+        this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+    }
+
+    async getMoreGames() {
+        const searchInput = queryString.parse(this.props.location.search).q;
+        if (this.state.loading) {
+            return;
+        }
+        this.setState({loading: true});
+        const page = this.props.page || 1;
+        const search = searchInput;
         const previousGamesArray = this.props.games || [];
-        getGamesBySearch({lastDoc, search}).then((result) => {
-            this.setState({hasMoreGames: result.games.length > 0 && (!search || search.length === 0)});
-            this.props.dispatch({
-                type: ACTIONS_GAMES.SET_GAMES,
-                payload: {games: previousGamesArray.concat(result.games), lastDoc: result.lastDoc}
-            });
+        const games = await getGamesBySearch({name: search, page});
+        this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
+        this.props.dispatch({
+            type: ACTIONS_GAMES.SET_GAMES,
+            payload: {games: previousGamesArray.concat(games), page: page + 1}
         });
+        this.setState({loading: false})
     }
 
 
@@ -71,16 +86,16 @@ class Homepage extends Component {
 
     renderGameGrid() {
         return <InfiniteScroll
-            pageStart={0}
             loadMore={this.getMoreGames}
             hasMore={this.state.hasMoreGames}
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
-            <GameGrid games={this.props.games}/>
+            <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
         </InfiniteScroll>
     };
 
     render() {
+        const searchInput = queryString.parse(this.props.location.search).q;
         return <PageLayout>
             <Helmet>
                 <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'gamer juice for my gamer mouth'}</title>
@@ -89,7 +104,7 @@ class Homepage extends Component {
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
-                    value={this.props.searchInput}
+                    value={searchInput}
                     className={styles.input}
                     minLength={2}
                     debounceTimeout={300}
@@ -103,10 +118,10 @@ class Homepage extends Component {
     }
 }
 
-const GameGrid = ({games}) => {
+const GameGrid = ({games, loading, setCurrentGame}) => {
     if (!games)
         return null;
-    if (games.length === 0) {
+    if (games.length === 0 && !loading) {
         return <div className={styles.noResultContainer}>
             <div><strong>Aucun jeu ne correspond à votre recherche.</strong></div>
             <div>Cela signifie probablement qu'aucun média n'a été encore publié à son sujet.</div>
@@ -115,20 +130,18 @@ const GameGrid = ({games}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={styles.cardContainer} key={game.id}>
-                    <NavLink to= {`/game/${game.id}`}>
-                        <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
-                        <div className={styles.hoveredInfo}>
-                            <div className={styles.backColor}/>
-                            <div className={styles.title}>
-                                {game.name}
-                            </div>
-                            <div className={styles.secondaryInfoContainer}>
-                                {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
-                            </div>
-                            <MediaLogos game={game}/>
+                return <div className={styles.cardContainer} key={game.id} onClick={() => setCurrentGame(game)}>
+                    <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
+                    <div className={styles.hoveredInfo}>
+                        <div className={styles.backColor}/>
+                        <div className={styles.title}>
+                            {game.name}
                         </div>
-                    </NavLink>
+                        <div className={styles.secondaryInfoContainer}>
+                            {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
+                        </div>
+                        <MediaLogos game={game}/>
+                    </div>
                 </div>
             })
         }
@@ -136,17 +149,16 @@ const GameGrid = ({games}) => {
 };
 
 const MediaLogos = ({game}) => {
-    const dataLabels = [];
     return <div className={styles.mediasLogosContainer}>
-        {MEDIA_TYPES.map((mediaType) => {
-            return mediaType.medias.map((media) => {
-                if (game[media.dataLabel] && game[media.dataLabel].length > 0 && dataLabels.indexOf(media.dataLabel) < 0) {
-                    dataLabels.push(media.dataLabel);
-                    return <div key={media.dataLabel}><img src={media.logoMin} alt={media.title}/></div>
-                }
-                return null;
+        {
+            game.medias.map((media) => {
+                return <div key={media.name} className={styles.mediaLogo}>
+                    <ReactTooltip effect="solid" id="mediaLogo" place="bottom"/>
+                    <img src={media.logoMin} alt={media.name} data-tip={media.name} data-for="mediaLogo"/>
+                </div>
             })
-        })}
+        }
+
     </div>
 };
 
@@ -154,7 +166,8 @@ const mapStateToProps = state => {
     return {
         games: state.gamesReducer.games,
         searchInput: state.gamesReducer.searchInput,
-        lastDoc: state.gamesReducer.lastDoc
+        page: state.gamesReducer.page,
+        currentGame: state.gamesReducer.currentGame
     }
 };
 
