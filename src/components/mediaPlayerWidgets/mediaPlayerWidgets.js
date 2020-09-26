@@ -72,6 +72,7 @@ class MediaPlayer extends React.Component {
         if (!this.props.mediaPlayed) {
             return null
         }
+        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
         return (
             <>
                 <ReactJkMusicPlayer
@@ -89,6 +90,9 @@ class MediaPlayer extends React.Component {
                     onAudioDownload={this._handleDownload.bind(this)}
                     showProgressLoadBar={false}
                     responsive={true}
+                    clearPriorAudioLists={true}
+                    defaultPosition={vw <= 600 ? {bottom: 70, right: 0} : {bottom: 90, right: 20}}
+                    bounds={{bottom: 0, top: 0, right: 0, left: 0}}
                 />
             </>
         )
