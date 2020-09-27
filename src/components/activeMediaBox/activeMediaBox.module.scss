@@ -110,6 +110,14 @@
           opacity: 1;
         }
 
+        .emptyCard {
+          background-color: $color-dark-1;
+
+          .backImage {
+            background-color: $color-dark-1;
+          }
+        }
+
         .hoveredInfo {
           @extend .flexCenter;
 
@@ -155,7 +163,13 @@
         .rightRowContainer {
           min-height: 0;
         }
+
+        .noGame {
+          display: none;
+        }
+
       }
+
       .leftRow {
         margin-top: 20px;
       }

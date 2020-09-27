@@ -26,6 +26,7 @@ class ActiveMediaBox extends React.Component {
         this.state = {
             searchResults: [],
             episodeGames: this.props.media.games,
+            loadingGames: false,
             showSaveBtn: false,
             loadingSuggestions: false,
             loadingSaveGames: false,
@@ -35,8 +36,9 @@ class ActiveMediaBox extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({loadingGames: true})
         getGamesById(this.state.episodeGames).then((games) => {
-            this.setState({episodeGames: games});
+            this.setState({episodeGames: games, loadingGames: false});
         });
     }
 
@@ -62,8 +64,9 @@ class ActiveMediaBox extends React.Component {
             }
         }
         if (prevProps.media._id !== this.props.media._id) {
-            getGamesById(this.props.media.games.map(game => game._id)).then((games) => {
-                this.setState({episodeGames: games, verified: false});
+            this.setState({loadingGames: true})
+            getGamesById(this.props.media.games).then((games) => {
+                this.setState({episodeGames: games, verified: false, loadingGames: false});
             });
         }
         if (this.state.searchInput !== prevState.searchInput) {
@@ -134,9 +137,15 @@ class ActiveMediaBox extends React.Component {
 
     render() {
         const user = this.props.authUser;
-        const episodeGames = user ? this.state.episodeGames : this.state.episodeGames.filter((epGame) => {
+        const {loadingGames} = this.state;
+        let episodeGames = user ? this.state.episodeGames : this.state.episodeGames.filter((epGame) => {
             return epGame._id !== this.props.currentGame._id;
         });
+        if (loadingGames) {
+            episodeGames = this.props.media.games.map((game) => {
+                return {_id: game}
+            });
+        }
         const {media, hideDescription} = this.props;
         return <div className={styles.activeMediaBoxContainer}>
             <div className={styles.titleContainer}>
@@ -175,7 +184,6 @@ class ActiveMediaBox extends React.Component {
                             </Truncate>
                         }
                     </div>}
-                    }
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
@@ -188,7 +196,8 @@ class ActiveMediaBox extends React.Component {
                         <h2>Ça parle de quoi d'autre ?</h2>
 
                         {this.state.showSaveBtn && user ?
-                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications" data-for="verifyAndSave">
+                            <div className={styles.saveContainer} data-tip="Enregistrer les modifications"
+                                 data-for="verifyAndSave">
                                 <div onClick={this._handleOnSaveGames}>
                                     {!this.state.loadingSaveGames ? <FaSave className={styles.icon}/> :
                                         <div style={{padding: '0 5px'}}><Loader
@@ -201,7 +210,8 @@ class ActiveMediaBox extends React.Component {
                             </div> :
                             <div className={styles.verifyContainer}>
                                 {media.verified || !user || this.state.verified ? null :
-                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié" data-for="verifyAndSave">
+                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié"
+                                         data-for="verifyAndSave">
                                         {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
                                             <Loader
                                                 type="TailSpin"
@@ -220,16 +230,21 @@ class ActiveMediaBox extends React.Component {
                             <div className={styles.gamesContainer}>
                                 {episodeGames.map((game) => {
                                     return <div key={game._id}>
-                                        <NavLink to={`/game/${game._id}`}>
-                                            <GameCard
-                                                showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
-                                        </NavLink>
+                                        {loadingGames ?
+                                            <GameCard game={game}/> :
+                                            <NavLink to={`/game/${game._id}`}>
+                                                <GameCard
+                                                    showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
+                                            </NavLink>}
+
                                     </div>
 
                                 })
                                 }
                             </div> :
-                            <div className={styles.noGame}>Bah, de rien. C'est déja pas mal. <span role="img" aria-label="shrug">🤷</span></div>
+                            <div className={styles.noGame}>Bah, de rien. C'est déja pas mal. <span role="img"
+                                                                                                   aria-label="shrug">🤷</span>
+                            </div>
                         }
                         {user && <div className={styles.inputWithSuggestionsContainer}>
                             <div
@@ -261,7 +276,8 @@ class ActiveMediaBox extends React.Component {
                                         </div>
                                     })}
                                 {this.state.noMatch && <div className={styles.noMatch}>Aucun résultat</div>}
-                                {this.state.searchGamesError && <div className={styles.noMatch}>Une erreur est survenue</div>}
+                                {this.state.searchGamesError &&
+                                <div className={styles.noMatch}>Une erreur est survenue</div>}
                             </div>
                         </div>}
 
@@ -280,7 +296,7 @@ const GameCard = ({game, showDelete, onDelete}) => {
         style = {backgroundColor: "#2E4052"}
     }
 
-    return <div className={styles.cardContainer}>
+    return <div className={cx(styles.cardContainer, {[styles.emptyCard]: !game.name})}>
         <div className={styles.backImage} style={style}/>
         <div className={styles.hoveredInfo}>
             <div className={styles.backColor}/>
