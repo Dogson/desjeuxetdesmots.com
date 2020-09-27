@@ -47,6 +47,18 @@ class MediaPlayer extends React.Component {
                 audioContextPaused: false
             }
         });
+
+        console.log(navigator);
+        if ("mediaSession" in navigator) {
+            console.log(this.props.mediaPlayed);
+            navigator.mediaSession.metadata = new window.MediaMetadata({
+                title: this.props.mediaPlayed.name,
+                artist: this.props.mediaPlayed.singer,
+                artwork: [
+                    {src: this.props.mediaPlayed.cover, sizes: '256*256', type: 'image/png'},
+                ]
+            });
+        }
     }
 
     _handlePause() {
