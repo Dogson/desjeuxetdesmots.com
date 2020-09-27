@@ -427,7 +427,8 @@ input[type="submit"] {
   .mediasLogosContainer {
     @extend .flexRow;
     @extend .flexCenter;
-    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
 
     .mediaLogo {
       position: relative;
