@@ -138,14 +138,15 @@ class ActiveMediaBox extends React.Component {
     render() {
         const user = this.props.authUser;
         const {loadingGames} = this.state;
-        let episodeGames = user ? this.state.episodeGames : this.state.episodeGames.filter((epGame) => {
-            return epGame._id !== this.props.currentGame._id;
-        });
+        let episodeGames = this.state.episodeGames;
         if (loadingGames) {
             episodeGames = this.props.media.games.map((game) => {
                 return {_id: game}
             });
         }
+        episodeGames = user ? episodeGames : episodeGames.filter((epGame) => {
+            return epGame._id !== this.props.currentGame._id;
+        });
         const {media, hideDescription} = this.props;
         return <div className={styles.activeMediaBoxContainer}>
             <div className={styles.titleContainer}>

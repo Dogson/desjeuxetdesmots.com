@@ -48,9 +48,7 @@ class MediaPlayer extends React.Component {
             }
         });
 
-        console.log(navigator);
         if ("mediaSession" in navigator) {
-            console.log(this.props.mediaPlayed);
             navigator.mediaSession.metadata = new window.MediaMetadata({
                 title: this.props.mediaPlayed.name,
                 artist: this.props.mediaPlayed.singer,
