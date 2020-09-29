@@ -16,7 +16,7 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/zqsd/zqsdMin.png"),
     },
     {
-        name: "Gamekult Jeux Vidéo",
+        name: "Gamekult",
         logoMin: require("../assets/logos/gamekult/gamekultMin.png"),
     },
     {
@@ -24,7 +24,7 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/finDuGame/finDuGameMin.png"),
     },
     {
-        name: "Quick Load, le podcast qui met des tartes graphiques",
+        name: "Quick Load",
         logoMin: require("../assets/logos/quickload/quickloadMin.png"),
     }
 ];
