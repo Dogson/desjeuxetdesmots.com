@@ -14,6 +14,7 @@ import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
 import ReactTooltip from "react-tooltip";
+import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 
 
 class Homepage extends Component {
@@ -23,6 +24,7 @@ class Homepage extends Component {
         this.state = {
             hasMoreGames: true,
             loading: false,
+            error: false
         };
 
         this._handleChange = this._handleChange.bind(this);
@@ -68,16 +70,21 @@ class Homepage extends Component {
         if (this.state.loading) {
             return;
         }
-        this.setState({loading: true});
+        this.setState({loading: true, error: false});
         const page = this.props.page || 1;
         const search = searchInput;
         const previousGamesArray = this.props.games || [];
-        const games = await getGamesBySearch({name: search, page});
-        this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
-        this.props.dispatch({
-            type: ACTIONS_GAMES.SET_GAMES,
-            payload: {games: previousGamesArray.concat(games), page: page + 1}
-        });
+        try {
+            const games = await getGamesBySearch({name: search, page});
+            this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
+            this.props.dispatch({
+                type: ACTIONS_GAMES.SET_GAMES,
+                payload: {games: previousGamesArray.concat(games), page: page + 1}
+            });
+        }
+        catch(err) {
+            this.setState({error: true})
+        }
         this.setState({loading: false})
     }
 
@@ -91,6 +98,7 @@ class Homepage extends Component {
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
             <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
+            {this.state.error && <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage>}
         </InfiniteScroll>
     };
 

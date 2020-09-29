@@ -1,0 +1,16 @@
+@import "src/index";
+
+.errorContainer {
+  @extend .flexColumn;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  color: #ff9933;
+  font-size: $size-big;
+  min-height: 300px;
+  font-weight: normal;
+
+  .icon {
+    font-size: 50px;
+    padding: 20px;
+  }
+}

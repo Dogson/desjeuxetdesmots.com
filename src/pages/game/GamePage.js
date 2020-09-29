@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import MediaSection from "../../components/mediaSection/mediaSection";
+import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 
 class GamePage extends React.Component {
 
@@ -19,7 +20,8 @@ class GamePage extends React.Component {
         super(props);
         this.state = {
             game: {},
-            loading: false
+            loading: false,
+            error: false
         };
     }
 
@@ -30,7 +32,7 @@ class GamePage extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.state.loading)
+        if (this.state.loading || this.state.error)
             return;
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
@@ -38,11 +40,18 @@ class GamePage extends React.Component {
     }
 
     refreshGame() {
-        this.setState({loading: true});
+        this.setState({loading: true, error: false});
         const gameId = String(this.props.match.params.gameId);
         getGameById(gameId)
             .then((game) => {
                 this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+            })
+            .catch((err) => {
+                const is404 = err.toJSON().message.indexOf("404") > -1;
+                this.setState({error: is404 ? "Aucun jeu ne correspond à cette URL." : "Une erreur est survenue lors du chargement des médias"});
+
+            })
+            .then(() => {
                 this.setState({loading: false});
             })
     }
@@ -59,11 +68,15 @@ class GamePage extends React.Component {
 
     render() {
         const {currentGame} = this.props;
-        const {loading} = this.state;
+        const {error} = this.state;
 
         return <PageLayout smallHeader>
             {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - gamer juice`}/>}
-            {!currentGame || loading ? <LoadingSpinner/> :
+            {!currentGame ?
+                error ?
+                    <ErrorMessage>{error}</ErrorMessage> :
+                    <LoadingSpinner/>
+                :
                 <div className={styles.gamePageContainer}>
                     <div className={styles.gameHeader}>
                         <div className={styles.backImage} style={{backgroundImage: `url(${currentGame.screenshot})`}}/>
@@ -79,6 +92,7 @@ class GamePage extends React.Component {
                             </div>
                         </div>
                     </div>
+                    {error && <ErrorMessage>Une erreur est survenue lors du chargement des médias</ErrorMessage>}
                     <MediaSection mediasList={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
                 </div>}
         </PageLayout>

@@ -1,0 +1,14 @@
+@import "../../index";
+
+.noMedia {
+  @extend .flexRow;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  font-size: $size-big;
+  color: $color-bright-2;
+  min-height: 300px;
+
+  .emoji {
+    padding: 0 10px 8px;
+  }
+}
