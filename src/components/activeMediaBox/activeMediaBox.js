@@ -36,10 +36,12 @@ class ActiveMediaBox extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({loadingGames: true})
-        getGamesById(this.state.episodeGames).then((games) => {
-            this.setState({episodeGames: games, loadingGames: false});
-        });
+        if (this.state.episodeGames.length > 0 && typeof this.state.episodeGames[0] === "string") {
+            this.setState({loadingGames: true})
+            getGamesById(this.state.episodeGames).then((games) => {
+                this.setState({episodeGames: games, loadingGames: false});
+            });
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -296,7 +298,6 @@ const GameCard = ({game, showDelete, onDelete}) => {
     if (gameNotLoaded) {
         style = {backgroundColor: "#2E4052"}
     }
-
     return <div className={cx(styles.cardContainer, {[styles.emptyCard]: !game.name})}>
         <div className={styles.backImage} style={style}/>
         <div className={styles.hoveredInfo}>

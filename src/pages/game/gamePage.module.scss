@@ -59,13 +59,6 @@
       top: 0;
     }
   }
-
-  .gameContentWrapper {
-    position: relative;
-    z-index: 2;
-    background-color: $color-dark-1;
-
-  }
 }
 
 @media #{$media-phone} {

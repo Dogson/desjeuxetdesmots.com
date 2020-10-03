@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../pages/game/gamePage.module.scss";
+import styles from "./mediaSection.module.scss";
 import {MEDIA_TYPES} from "../../config/const";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
