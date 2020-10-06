@@ -1,0 +1,48 @@
+@import "../../index";
+
+.logoContainer {
+  position: relative;
+  //height: 100%;
+  //width: 100%;
+  height: 100px;
+  width: 100px;
+  transform: translateY(10px) translateX(-10px);
+
+  .topContainer, .bottomContainer {
+    height: 45px;
+    width: 90px;
+    border-radius: 90px 90px 0 0;
+  }
+
+  .topContainer {
+    transform: rotateZ(-45deg);
+    background-color: $color-bright-2;
+    color: $color-dark-2;
+
+    .icon {
+      transform: rotateZ(45deg);
+      position: absolute;
+      top: 20px;
+      left: 23px;
+      font-size: 50px;
+    }
+  }
+
+  .bottomContainer {
+    background-color: $color-dark-2;
+    color: $color-bright-2;
+    transform: rotateZ(135deg);
+    position: absolute;
+    left: 32px;
+    top: 32px;
+    overflow: hidden;
+
+    .icon {
+      position: absolute;
+      top: 21px;
+      left: 23px;
+      transform: rotateZ(-135deg) rotateY(180deg);
+      font-size:38px;
+    }
+  }
+}

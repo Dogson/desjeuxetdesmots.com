@@ -71,7 +71,7 @@ class GamePage extends React.Component {
         const {error} = this.state;
 
         return <PageLayout smallHeader>
-            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - gamer juice`}/>}
+            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - Des jeux et des mots`}/>}
             {!currentGame ?
                 error ?
                     <ErrorMessage>{error}</ErrorMessage> :

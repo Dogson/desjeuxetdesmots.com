@@ -13,7 +13,7 @@ class PodcastsAdmin extends Component {
     render() {
         const {authUser} = this.props;
         return <PageLayout title="Administration des podcasts">
-            <Helmet title="Panneau d'administration des podcasts - gamer juice"/>
+            <Helmet title="Panneau d'administration des podcasts - Des jeux et des mots"/>
             {authUser === undefined ? <LoadingSpinner/> : authUser ?
                 <div className={styles.adminPageContainer}><AdminMediaSection type="podcast"/></div> : <Redirect
                     to="/admin"/>}

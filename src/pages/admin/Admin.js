@@ -83,7 +83,7 @@ class Admin extends Component {
         const token = localStorage.getItem("token");
         const username = localStorage.getItem("username");
         return <PageLayout title="Panneau d'administration">
-            <Helmet title="Panneau d'administration - gamer juice"/>
+            <Helmet title="Panneau d'administration - Des jeux et des mots"/>
             {token && username ? this.renderAdminSection() : this.renderLoggingForm()}
         </PageLayout>
     }

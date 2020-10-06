@@ -53,4 +53,10 @@
     color: $color-dark-2;
     height: 40px;
   }
+
+  .flipCardFront {
+    .icon {
+      transform: rotateY(180deg);
+    }
+  }
 }

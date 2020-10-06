@@ -142,6 +142,10 @@ input {
 
 .flipCardFront {
   background-color: $color-dark-2;
+
+  .icon {
+    color: $color-bright-2 !important;
+  }
 }
 
 //Forms
