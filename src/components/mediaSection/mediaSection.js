@@ -20,9 +20,6 @@ class MediaSection extends React.Component {
         this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
     }
 
-    componentDidMount() {
-    }
-
     _handleClickMedia(episode, ref) {
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
@@ -36,7 +33,6 @@ class MediaSection extends React.Component {
     renderActiveMedia(mediaActive, ref) {
         return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
                                               onVerifyMedia={this._handleVerifyMedia}
-                                              hideDescription={mediaActive.media.type === "video"}
         /></div>
     }
 

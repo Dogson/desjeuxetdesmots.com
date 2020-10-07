@@ -38,6 +38,7 @@ class ActiveMediaBox extends React.Component {
     componentDidMount() {
         if (this.state.episodeGames.length > 0 && typeof this.state.episodeGames[0] === "string") {
             this.setState({loadingGames: true})
+            console.log("bite");
             getGamesById(this.state.episodeGames).then((games) => {
                 this.setState({episodeGames: games, loadingGames: false});
             });
@@ -67,9 +68,13 @@ class ActiveMediaBox extends React.Component {
         }
         if (prevProps.media._id !== this.props.media._id) {
             this.setState({loadingGames: true})
+            if (this.props.media.games[0] && typeof this.props.media.games[0] === "string")
             getGamesById(this.props.media.games).then((games) => {
                 this.setState({episodeGames: games, verified: false, loadingGames: false});
             });
+            else {
+                this.setState({episodeGames: this.props.media.games, verified: false, loadingGames: false});
+            }
         }
         if (this.state.searchInput !== prevState.searchInput) {
             if (this.state.searchInput.length === 0) {
@@ -149,7 +154,7 @@ class ActiveMediaBox extends React.Component {
         episodeGames = user ? episodeGames : episodeGames.filter((epGame) => {
             return epGame._id !== this.props.currentGame._id;
         });
-        const {media, hideDescription} = this.props;
+        const {media} = this.props;
         return <div className={styles.activeMediaBoxContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
@@ -161,7 +166,7 @@ class ActiveMediaBox extends React.Component {
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>
-                    {!hideDescription && <div className={styles.description}>
+                    <div className={styles.description}>
 
                         {this.state.showFullDesc ?
                             <div>
@@ -186,7 +191,7 @@ class ActiveMediaBox extends React.Component {
                                 </div>
                             </Truncate>
                         }
-                    </div>}
+                    </div>
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
