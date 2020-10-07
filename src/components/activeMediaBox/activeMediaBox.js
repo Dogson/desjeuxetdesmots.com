@@ -13,7 +13,7 @@ import {TrashWidget} from "../trashWidget/trashWidget";
 import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
-import PlayVideo from "../mediaPlayerWidgets/PlayVideo";
+import PlayVideo from "../mediaPlayerWidgets/playVideo";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {

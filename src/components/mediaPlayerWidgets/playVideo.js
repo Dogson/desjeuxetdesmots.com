@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import YouTube from 'react-youtube';
+import styles from "./playVideo.module.scss";
 
 class PlayVideo extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class PlayVideo extends React.Component {
         const beforeId = 'watch?v=';
         const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);
         return mediaActive ?
-            <div style={{height: 390}}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
+            <div className={styles.videoContainer}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
             null
     }
 }
