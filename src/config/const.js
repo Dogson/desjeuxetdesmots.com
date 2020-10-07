@@ -33,7 +33,7 @@ export const MEDIA_LOGOS = [
     },
     {
         name: "Game Next Door",
-        logoMin: require("../assets/logos/exServ/exServMin.jpg")
+        logoMin: require("../assets/logos/gameNextDoor/gameNextDoorMin.png")
     }
 ];
 //

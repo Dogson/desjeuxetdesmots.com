@@ -31,6 +31,10 @@ class GamePage extends React.Component {
             this.refreshGame();
         } else {
             this.props.dispatch({
+                type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+                payload: null
+            });
+            this.props.dispatch({
                 type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
                 payload: this.sortEpisodesByMediaTypes(this.props.currentGame.episodes)
             });
