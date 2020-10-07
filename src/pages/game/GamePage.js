@@ -12,6 +12,7 @@ import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import MediaSection from "../../components/mediaSection/mediaSection";
 import {ErrorMessage} from "../../components/errorMessage/errorMessage";
+import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 
 class GamePage extends React.Component {
 
@@ -28,6 +29,11 @@ class GamePage extends React.Component {
     componentDidMount() {
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
+        } else {
+            this.props.dispatch({
+                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                payload: this.sortEpisodesByMediaTypes(this.props.currentGame.episodes)
+            });
         }
     }
 
@@ -41,10 +47,18 @@ class GamePage extends React.Component {
 
     refreshGame() {
         this.setState({loading: true, error: false});
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            payload: null
+        });
         const gameId = String(this.props.match.params.gameId);
         getGameById(gameId)
             .then((game) => {
                 this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+                this.props.dispatch({
+                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                    payload: this.sortEpisodesByMediaTypes(game.episodes)
+                });
             })
             .catch((err) => {
                 const is404 = err.toJSON().message.indexOf("404") > -1;
@@ -93,7 +107,7 @@ class GamePage extends React.Component {
                         </div>
                     </div>
                     {error && <ErrorMessage>Une erreur est survenue lors du chargement des médias</ErrorMessage>}
-                    <MediaSection mediasList={this.sortEpisodesByMediaTypes(currentGame.episodes)} rowAttribute="type"/>
+                    <MediaSection rowAttribute="type"/>
                 </div>}
         </PageLayout>
     }

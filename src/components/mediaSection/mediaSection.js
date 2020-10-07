@@ -21,14 +21,6 @@ class MediaSection extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
-            payload: null
-        });
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
-            payload: this.props.mediasList
-        });
     }
 
     _handleClickMedia(episode, ref) {

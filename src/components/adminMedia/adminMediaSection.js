@@ -3,39 +3,49 @@ import {getAllMedia} from "../../endpoints/mediasEndpoint";
 import MediaSection from "../mediaSection/mediaSection";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import styles from "./adminMediaSection.module.scss";
+import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
+import {connect} from "react-redux";
 
-export class AdminMediaSection extends React.Component {
+class AdminMediaSection extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            medias: null
-        }
     }
 
     componentDidMount() {
         getAllMedia(this.props.type)
             .then((medias) => {
-                this.setState({medias})
+                this.props.dispatch({
+                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                    payload: medias
+                });
             })
     }
 
 
     render() {
 
-        const {medias} = this.state;
+        const {medias} = this.props;
         if (!medias) {
             return <LoadingSpinner/>
         }
         return <div>
-            <MediaSection mediasList={medias} rowAttribute="name"/>
+            <MediaSection rowAttribute="name"/>
             {
                 medias.length === 0 &&
-            <div className={styles.noMedia}>
-                Tous les médias sont vérifiés ! <span role="img" aria-label="youpiii !" className={styles.emoji}>🙌</span>
-            </div>
+                <div className={styles.noMedia}>
+                    Tous les médias sont vérifiés ! <span role="img" aria-label="youpiii !"
+                                                          className={styles.emoji}>🙌</span>
+                </div>
             }
         </div>
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        medias: state.mediaReducer.medias,
+    }
+};
+
+export default connect(mapStateToProps)(AdminMediaSection);

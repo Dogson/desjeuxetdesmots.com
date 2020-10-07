@@ -5,7 +5,7 @@ import PageLayout from "../../layouts/PageLayout";
 
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 import {Redirect} from "react-router-dom";
-import {AdminMediaSection} from "../../components/adminMedia/adminMediaSection";
+import AdminMediaSection from "../../components/adminMedia/adminMediaSection";
 import {connect} from "react-redux";
 import styles from "./admin.module.scss";
 
