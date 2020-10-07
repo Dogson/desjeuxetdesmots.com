@@ -36,7 +36,7 @@ class PlayVideo extends React.Component {
         const beforeId = 'watch?v=';
         const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);
         return mediaActive ?
-            <YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/> :
+            <div style={{height: 390}}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
             null
     }
 }
