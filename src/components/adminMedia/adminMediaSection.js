@@ -7,11 +7,6 @@ import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {connect} from "react-redux";
 
 class AdminMediaSection extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         getAllMedia(this.props.type)
             .then((medias) => {
@@ -24,7 +19,6 @@ class AdminMediaSection extends React.Component {
 
 
     render() {
-
         const {medias} = this.props;
         if (!medias) {
             return <LoadingSpinner/>
