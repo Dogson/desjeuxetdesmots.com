@@ -26,6 +26,14 @@ export const MEDIA_LOGOS = [
     {
         name: "Quick Load",
         logoMin: require("../assets/logos/quickload/quickloadMin.png"),
+    },
+    {
+        name: "Ex Serv",
+        logoMin: require("../assets/logos/exServ/exServMin.jpg")
+    },
+    {
+        name: "Game Next Door",
+        logoMin: require("../assets/logos/exServ/exServMin.jpg")
     }
 ];
 //

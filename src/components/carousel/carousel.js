@@ -101,14 +101,14 @@ export default connect(mapStateToProps)(Carousel);
 
 const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
-                style={smaller ? {height: '190px'} : {}}>
+                style={smaller ? {height: '180px'} : {}}>
         {
             !media.verified && !hideRibbon ?
                 <div className={styles.ribbon}/>
                 : null
         }
         <div className={cx(styles.backImage, styles.noBlur)} style={smaller ? {
-            height: '130px',
+            height: '115px',
             backgroundImage: `url(${media.image})`
         } : {backgroundImage: `url(${media.image})`}}/>
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
@@ -117,9 +117,9 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
 
 
 const EmptyCard = ({smaller}) => {
-    return <div className={styles.cardContainer} style={smaller ? {height: '190px'} : {}}>
+    return <div className={styles.cardContainer} style={smaller ? {height: '180px'} : {}}>
         <div className={styles.hoveredInfo}>
-            <div className={styles.backImage} style={smaller ? {height: '130px'} : {}}/>
+            <div className={styles.backImage} style={smaller ? {height: '115px'} : {}}/>
         </div>
     </div>
 };

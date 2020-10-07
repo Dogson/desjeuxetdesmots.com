@@ -13,6 +13,7 @@ import {TrashWidget} from "../trashWidget/trashWidget";
 import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
+import PlayVideo from "../mediaPlayerWidgets/PlayVideo";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -38,7 +39,6 @@ class ActiveMediaBox extends React.Component {
     componentDidMount() {
         if (this.state.episodeGames.length > 0 && typeof this.state.episodeGames[0] === "string") {
             this.setState({loadingGames: true})
-            console.log("bite");
             getGamesById(this.state.episodeGames).then((games) => {
                 this.setState({episodeGames: games, loadingGames: false});
             });
@@ -171,7 +171,7 @@ class ActiveMediaBox extends React.Component {
                         {this.state.showFullDesc ?
                             <div>
                                 {media.description.split("\n").map((i, key) => {
-                                    return <div key={key}>{i}</div>;
+                                    return <div style={{minHeight: 10}} key={key}>{i}</div>;
                                 })}
                                 <button onClick={() => this.setState({
                                     showFullDesc: false
@@ -186,7 +186,7 @@ class ActiveMediaBox extends React.Component {
                                                                              className={cx(styles.readMoreBtn)}>Voir plus</button></span>}>
                                 <div>
                                     {media.description.split("\n").map((i, key) => {
-                                        return <div key={key}>{i}</div>;
+                                        return <div style={{minHeight: 10}} key={key}>{i}</div>;
                                     })}
                                 </div>
                             </Truncate>
@@ -196,7 +196,9 @@ class ActiveMediaBox extends React.Component {
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            <PlayPodcast/>
+                            {media.media.type === "podcast" ?
+                                <PlayPodcast/> :
+                            <PlayVideo/>}
                         </div>
                     </div>
                     <div className={styles.rightRowContainer}>
