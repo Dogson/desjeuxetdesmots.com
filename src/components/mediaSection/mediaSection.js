@@ -30,19 +30,13 @@ class MediaSection extends React.Component {
         }, 0);
     }
 
-    renderActiveMedia(mediaActive, ref) {
-        return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
-                                              onVerifyMedia={this._handleVerifyMedia}
-        /></div>
-    }
-
     _handleSaveGames(games) {
         return setGamesForMedia({
             games,
             episodeId: this.props.mediaActive._id
         })
             .then((result) => {
-                this.saveMedia(result)
+                this.saveMedia(result);
             })
     }
 
@@ -54,6 +48,24 @@ class MediaSection extends React.Component {
             .then((newMedia) => {
                 this.saveMedia(newMedia);
             });
+    }
+
+    goToNextMedia() {
+        let episodes = [];
+        this.props.medias.forEach((media) => {
+            if (media.name === this.props.mediaActive.media.name) {
+               episodes = media.episodes;
+            }
+        })
+        const mappedMedia = episodes.map(media => media.name);
+        const currentMediaIndex = mappedMedia.findIndex((media) => {
+            return media === this.props.mediaActive.name
+        });
+        const nextMedia = episodes[currentMediaIndex + 1];
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            payload: nextMedia
+        });
     }
 
     saveMedia(newMedia) {
@@ -71,6 +83,13 @@ class MediaSection extends React.Component {
             type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
             payload: updatedMedias
         });
+        this.goToNextMedia();
+    }
+
+    renderActiveMedia(mediaActive, ref) {
+        return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
+                                              onVerifyMedia={this._handleVerifyMedia}
+        /></div>
     }
 
     renderMediaRow(media) {

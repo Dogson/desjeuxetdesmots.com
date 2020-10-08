@@ -70,10 +70,10 @@ class ActiveMediaBox extends React.Component {
             this.setState({loadingGames: true})
             if (this.props.media.games[0] && typeof this.props.media.games[0] === "string")
             getGamesById(this.props.media.games).then((games) => {
-                this.setState({episodeGames: games, verified: false, loadingGames: false});
+                this.setState({episodeGames: games, loadingGames: false});
             });
             else {
-                this.setState({episodeGames: this.props.media.games, verified: false, loadingGames: false});
+                this.setState({episodeGames: this.props.media.games, loadingGames: false});
             }
         }
         if (this.state.searchInput !== prevState.searchInput) {
@@ -127,7 +127,7 @@ class ActiveMediaBox extends React.Component {
         this.setState({loadingSaveGames: true});
         return this.props.onSaveGames(this.state.episodeGames)
             .then(() => {
-                this.setState({loadingSaveGames: false, showSaveBtn: false, verified: true});
+                this.setState({loadingSaveGames: false, showSaveBtn: false});
             })
     }
 
@@ -138,7 +138,7 @@ class ActiveMediaBox extends React.Component {
         this.setState({loadingSaveGames: true});
         return this.props.onVerifyMedia()
             .then(() => {
-                this.setState({loadingSaveGames: false, showSaveBtn: false, verified: true});
+                this.setState({loadingSaveGames: false, showSaveBtn: false});
             })
     }
 
@@ -219,7 +219,7 @@ class ActiveMediaBox extends React.Component {
                                 </div>
                             </div> :
                             <div className={styles.verifyContainer}>
-                                {media.verified || !user || this.state.verified ? null :
+                                {media.verified || !user ? null :
                                     <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié"
                                          data-for="verifyAndSave">
                                         {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
