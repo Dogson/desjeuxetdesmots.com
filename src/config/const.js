@@ -3,37 +3,43 @@ import React from 'react';
 import VideosAdmin from "../pages/admin/VideosAdmin";
 
 export const MEDIA_LOGOS = [
+    //PODCASTS
     {
-        logoMin: require("../assets/logos/cosyCorner/cosyCornerSmall.png"),
+        logoMin: require("../assets/logos/medias/cosyCorner.png"),
         name: "Le Cosy Corner",
     },
     {
         name: "Silence on joue !",
-        logoMin: require("../assets/logos/silenceOnJoue/silenceOnJoueMini.png"),
+        logoMin: require("../assets/logos/medias/silenceOnJoue.png"),
     },
     {
         name: "ZQSD",
-        logoMin: require("../assets/logos/zqsd/zqsdMin.png"),
+        logoMin: require("../assets/logos/medias/zqsd.png"),
     },
     {
         name: "Gamekult",
-        logoMin: require("../assets/logos/gamekult/gamekultMin.png"),
+        logoMin: require("../assets/logos/medias/gamekult.png"),
     },
     {
         name: "Fin Du Game",
-        logoMin: require("../assets/logos/finDuGame/finDuGameMin.png"),
+        logoMin: require("../assets/logos/medias/finDuGame.png"),
     },
     {
         name: "Quick Load",
-        logoMin: require("../assets/logos/quickload/quickloadMin.png"),
+        logoMin: require("../assets/logos/medias/quickload.png"),
     },
+    //VIDEOS
     {
         name: "Ex Serv",
-        logoMin: require("../assets/logos/exServ/exServMin.jpg")
+        logoMin: require("../assets/logos/medias/exServ.jpg")
     },
     {
         name: "Game Next Door",
-        logoMin: require("../assets/logos/gameNextDoor/gameNextDoorMin.png")
+        logoMin: require("../assets/logos/medias/gameNextDoor.png")
+    },
+    {
+        name: "GK Live",
+        logoMin: require("../assets/logos/medias/gkLive.png")
     }
 ];
 //
