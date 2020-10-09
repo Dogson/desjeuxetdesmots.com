@@ -7,6 +7,7 @@ import {Checkbox} from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
 import cx from "classnames";
 import {MEDIA_LOGOS, MEDIA_TYPES} from "../../config/const";
+import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -14,11 +15,13 @@ class Settings extends React.Component {
 
         this.state = {
             isOpen: false,
-            settings: this.props.settings
+            filters: this.props.settings.filters,
+            remember: this.props.settings.remember
         }
 
         this._handleTogglePopover = this._handleTogglePopover.bind(this);
         this._handleChangeFilter = this._handleChangeFilter.bind(this);
+        this._handleChangeRemember = this._handleChangeRemember.bind(this);
         this._handleSaveSettings = this._handleSaveSettings.bind(this);
 
     }
@@ -33,18 +36,34 @@ class Settings extends React.Component {
     }
 
     _handleChangeFilter(data, property) {
-        const settings = {...this.state.settings};
-        settings.filters[property][data] = !settings.filters[property][data];
-        this.setState({settings});
+        const {filters} = this.state;
+        filters[property][data] = !filters[property][data];
+        this.setState({filters});
     }
 
     _handleSaveSettings() {
-
+        this.props.dispatch({
+            type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
+            payload: this.state.filters
+        })
+        this.props.dispatch({
+            type: ACTIONS_SETTINGS.SET_REMEMBER,
+            payload: this.state.remember
+        })
+        debugger;
+        if (this.state.remember) {
+            localStorage.setItem("filteredMedias", JSON.stringify(this.state.filters.medias));
+            localStorage.setItem("filteredTypes", JSON.stringify(this.state.filters.types));
+        }
+        this.setState({isOpen: false})
     }
 
+    _handleChangeRemember() {
+        this.setState({remember: !this.state.remember});
+    }
 
     renderPopoverContent() {
-        const {settings} = this.state;
+        const {filters, remember} = this.state;
         return <div className={styles.settingsPopoverContainer}>
             <div className={styles.blockTitle}>
                 <FaFilter className={styles.icon}/>
@@ -56,10 +75,10 @@ class Settings extends React.Component {
                         Types de média
                     </div>
                     {
-                        MEDIA_TYPES.map(type =>
+                        MEDIA_TYPES.sort((x, y) => x.dataLabel < y.dataLabel ? - 1 : 1).map(type =>
                             <div className={styles.filterRow}>
                                 <Checkbox shape="curve" color="#FFC857"
-                                          checked={settings.filters.types[type.dataLabel]}
+                                          checked={filters.types[type.dataLabel]}
                                           onChange={() => this._handleChangeFilter(type.dataLabel, "types")}
                                 >
                                     <span className={styles.filterName}>{type.name}</span>
@@ -74,10 +93,10 @@ class Settings extends React.Component {
                         Médias
                     </div>
                     {
-                        MEDIA_LOGOS.map(media =>
+                        MEDIA_LOGOS.sort((x, y) => x.name < y.name ? - 1 : 1).map(media =>
                             <div className={styles.filterRow}>
                                 <Checkbox shape="curve"
-                                          checked={settings.filters.medias[media.name]}
+                                          checked={filters.medias[media.name]}
                                           onChange={() => this._handleChangeFilter(media.name, "medias")}>
                                     <span className={styles.filterName}>{media.name}</span>
                                 </Checkbox>
@@ -89,7 +108,15 @@ class Settings extends React.Component {
 
 
             </div>
-            <button className={styles.btn} onClick={this._handleSaveSettings}>Appliquer</button>
+            <div className={styles.settingsFooter}>
+                <Checkbox shape="curve"
+                          checked={remember}
+                          onChange={this._handleChangeRemember}>
+                    Garder ces paramètres en mémoire à chaque visite
+                </Checkbox>
+                <button className={styles.btn} onClick={this._handleSaveSettings}>Appliquer</button>
+            </div>
+
         </div>
     }
 

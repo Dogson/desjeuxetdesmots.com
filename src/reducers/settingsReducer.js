@@ -3,7 +3,7 @@ import {MEDIA_LOGOS, MEDIA_TYPES} from "../config/const";
 
 const getDefaultMediaFilter = () => {
     const res = {}
-    MEDIA_LOGOS.sort((x, y) => x.name < y.name ? - 1 : 1).forEach(media => {
+    MEDIA_LOGOS.forEach(media => {
         res[media.name] = true;
     });
     return res;
@@ -11,7 +11,7 @@ const getDefaultMediaFilter = () => {
 
 const getDefaultMediaTypeFilter = () => {
     const res = {}
-    MEDIA_TYPES.sort((x, y) => x.dataLabel < y.dataLabel ? - 1 : 1).forEach(type => {
+    MEDIA_TYPES.forEach(type => {
         res[type.dataLabel] = true;
     });
     return res;
@@ -24,30 +24,25 @@ const defaultFilters = {
 
 export default (state = {
     settings: {
-        filters: defaultFilters
+        filters: defaultFilters,
+        remember: false
     }
 }, action) => {
     switch (action.type) {
-        case ACTIONS_SETTINGS.SET_FILTERED_MEDIA_SETTING:
+        case ACTIONS_SETTINGS.SET_FILTERED_VALUES:
             return {
                 ...state,
                 settings: {
                     ...state.settings,
-                    filters: {
-                        ...state.settings.filter,
-                        medias: action.payload
-                    }
+                    filters: action.payload
                 }
             };
-        case ACTIONS_SETTINGS.SET_FILTERED_TYPES_SETTING:
+        case ACTIONS_SETTINGS.SET_REMEMBER:
             return {
                 ...state,
                 settings: {
                     ...state.settings,
-                    filters: {
-                        ...state.settings.filter,
-                        types: action.payload
-                    }
+                    remember: action.payload
                 }
             };
         default:
