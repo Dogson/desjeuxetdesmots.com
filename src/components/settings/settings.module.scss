@@ -6,8 +6,11 @@
     @extend .flexAlignCenter;
     @extend .flexCenter;
 
+    padding: 10px;
+    background-color: $color-dark-1;
     cursor: pointer;
     position: absolute;
+    border-radius: 50%;
     right: 30px;
     top: 30px;
     height: 20px;
@@ -15,10 +18,60 @@
     color: $color-bright-1;
     transition: all 0.2s ease-in-out;
 
-    &:hover {
+    &:hover, &.active {
       color: $color-bright-2;
       transition: all 0.3s ease-in-out;
       transform: rotate(-180deg);
     }
   }
+}
+
+.settingsPopoverContainer {
+  padding: 30px 40px;
+  @extend .flexColumn;
+  background-color: $color-dark-2;
+  border-radius: 10px;
+
+  .blockTitle {
+    color: $color-bright-2;
+    font-weight: $weight-regular;
+    margin-bottom: 15px;
+    font-size: $size-big;
+
+    .icon {
+      margin-right: 10px;
+      font-size: $size-small;
+    }
+  }
+
+  .settingsBlock {
+    @extend .flexRow;
+
+    .subBlock {
+      @extend .flexColumn;
+      margin-bottom: 30px;
+      margin-right: 30px;
+
+      &:last-child {
+        margin-right: 0 !important;
+      }
+
+      .subBlockTitle {
+        color: $color-bright-2;
+        font-size: $size-normal;
+        margin-bottom: 5px;
+      }
+    }
+
+    .filterRow {
+      font-size: $size-small;
+      margin: 5px 0;
+
+      .filterName {
+        color: $color-bright-1;
+        padding-left: 5px;
+      }
+    }
+  }
+
 }
