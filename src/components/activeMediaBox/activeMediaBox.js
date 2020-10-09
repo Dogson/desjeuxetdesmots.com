@@ -14,6 +14,7 @@ import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
 import PlayVideo from "../mediaPlayerWidgets/playVideo";
+import {isValidUrl} from "../../utils";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -69,9 +70,9 @@ class ActiveMediaBox extends React.Component {
         if (prevProps.media._id !== this.props.media._id) {
             this.setState({loadingGames: true})
             if (this.props.media.games[0] && typeof this.props.media.games[0] === "string")
-            getGamesById(this.props.media.games).then((games) => {
-                this.setState({episodeGames: games, loadingGames: false});
-            });
+                getGamesById(this.props.media.games).then((games) => {
+                    this.setState({episodeGames: games, loadingGames: false});
+                });
             else {
                 this.setState({episodeGames: this.props.media.games, loadingGames: false});
             }
@@ -142,6 +143,16 @@ class ActiveMediaBox extends React.Component {
             })
     }
 
+    renderDescriptionLine(str) {
+        let array = str.split(' ');
+        return array.map((string) => {
+            if (isValidUrl(string)) {
+                return <a className={styles.link} href={string}>{string} </a>
+            }
+            return string + " ";
+        });
+    }
+
     render() {
         const user = this.props.authUser;
         const {loadingGames} = this.state;
@@ -170,8 +181,9 @@ class ActiveMediaBox extends React.Component {
 
                         {this.state.showFullDesc ?
                             <div>
-                                {media.description.split("\n").map((i, key) => {
-                                    return <div style={{minHeight: 10}} key={key}>{i}</div>;
+                                {media.description.split("\n").map((line, key) => {
+                                    return <div style={{minHeight: 10}}
+                                                key={key}>{this.renderDescriptionLine(line)}</div>;
                                 })}
                                 <button onClick={() => this.setState({
                                     showFullDesc: false
@@ -185,8 +197,9 @@ class ActiveMediaBox extends React.Component {
                             })}
                                                                              className={cx(styles.readMoreBtn)}>Voir plus</button></span>}>
                                 <div>
-                                    {media.description.split("\n").map((i, key) => {
-                                        return <div style={{minHeight: 10}} key={key}>{i}</div>;
+                                    {media.description.split("\n").map((line, key) => {
+                                        return <div style={{minHeight: 10}}
+                                                    key={key}>{this.renderDescriptionLine(line)}</div>;
                                     })}
                                 </div>
                             </Truncate>
@@ -198,7 +211,7 @@ class ActiveMediaBox extends React.Component {
                         <div className={styles.mediaPlayerContainer}>
                             {media.media.type === "podcast" ?
                                 <PlayPodcast/> :
-                            <PlayVideo/>}
+                                <PlayVideo/>}
                         </div>
                     </div>
                     <div className={styles.rightRowContainer}>

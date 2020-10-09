@@ -45,6 +45,15 @@
         color: $color-bright-1;
         font-weight: $weight-regular;
         font-size: $size-small;
+
+        .link {
+          max-width: 250px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
 
       .readMoreBtn {

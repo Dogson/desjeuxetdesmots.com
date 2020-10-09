@@ -40,6 +40,10 @@ export const MEDIA_LOGOS = [
     {
         name: "GK Live",
         logoMin: require("../assets/logos/medias/gkLive.png")
+    },
+    {
+        name: "Osmosis",
+        logoMin: require("../assets/logos/medias/osmosis.jpg")
     }
 ];
 //
