@@ -5,6 +5,7 @@ import styles from "./carousel.module.scss";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
 import {connect} from "react-redux";
+import {MEDIA_LOGOS} from "../../config/const";
 
 class Carousel extends Component {
     constructor(props) {
@@ -77,7 +78,8 @@ class Carousel extends Component {
                 <Slider {...settings}>
                     {medias.map((episode, index) => {
                         return <div className={styles.slideContainer} key={index}>
-                            {episode ? <Card isActive={activeItem && episode._id === activeItem._id} media={episode}
+                            {episode ? <Card isActive={activeItem && episode._id === activeItem._id}
+                                             media={episode}
                                              onClick={() => onClickItem(episode)}
                                              smaller={smallerCards}
                                                 hideRibbon={!this.props.authUser}/> :
@@ -111,6 +113,9 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
             height: '115px',
             backgroundImage: `url(${media.image})`
         } : {backgroundImage: `url(${media.image})`}}/>
+        <div className={styles.badge}>
+            <img src={MEDIA_LOGOS.find(med => media.media.name === med.name).logoMin} alt={media.media.name}/>
+        </div>
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>
 };

@@ -15,6 +15,7 @@ import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
 import PlayVideo from "../mediaPlayerWidgets/playVideo";
 import {isValidUrl} from "../../utils";
+import {MEDIA_LOGOS} from "../../config/const";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -153,6 +154,22 @@ class ActiveMediaBox extends React.Component {
         });
     }
 
+    renderMediaAuthorAndDate() {
+        const {media} = this.props;
+        const name = media.media.name;
+        const logo = MEDIA_LOGOS.find(med => med.name === name).logoMin;
+
+        return <div className={styles.authorAndDateContainer}>
+            <img src={logo} alt={name}/>
+            <div>
+                <div className={styles.author}>{name}</div>
+                <div className={styles.date}>
+                {moment(media.releaseDate).format('DD/MM/YYYY')}
+            </div>
+            </div>
+        </div>
+    }
+
     render() {
         const user = this.props.authUser;
         const {loadingGames} = this.state;
@@ -171,9 +188,7 @@ class ActiveMediaBox extends React.Component {
                 <div className={styles.title}>
                     {media.name}
                 </div>
-                <div className={styles.date}>
-                    {moment(media.releaseDate).format('DD/MM/YYYY')}
-                </div>
+                {this.renderMediaAuthorAndDate()}
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>

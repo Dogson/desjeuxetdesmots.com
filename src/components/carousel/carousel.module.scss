@@ -80,6 +80,24 @@
         transition: all 0.2s ease-in-out;
       }
     }
+
+    .badge {
+      position: absolute;
+      height: 35px;
+      width: 35px;
+      opacity: 1;
+      top: 5px;
+      left: 5px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+
+        box-shadow: 2px 2px 0 0 #FFC857
+      }
+    }
+
     .ribbon {
       content: "";
       border-top: 40px solid $color-bright-2;
