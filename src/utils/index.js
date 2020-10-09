@@ -70,15 +70,18 @@ function _parseParams(params) {
 export function findPos(el) {
     let _x = 0;
     let _y = 0;
-    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
         _x += el.offsetLeft - el.scrollLeft;
         _y += el.offsetTop - el.scrollTop;
         el = el.offsetParent;
     }
-    return { top: _y, left: _x };
+    return {top: _y, left: _x};
 }
 
 export function isValidUrl(str) {
-        const res = str.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
-        return (res !== null)
+    if (str.indexOf("http") === -1) {
+        return false
+    }
+    const res = str.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
+    return (res !== null)
 }
