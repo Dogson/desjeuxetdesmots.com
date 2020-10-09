@@ -432,6 +432,8 @@ input[type="submit"] {
   .mediasLogosContainer {
     @extend .flexRow;
     @extend .flexCenter;
+    width: 100%;
+    flex-wrap: wrap;
     position: absolute;
     bottom: 20px;
 
