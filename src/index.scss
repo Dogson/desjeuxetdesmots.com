@@ -31,7 +31,7 @@ $color-bright-1: #BDD9BF;
 $color-bright-2: #FFC857;
 
 //media sizes
-$media-tablet: "screen and (max-width : 1020px)";
+$media-tablet: "screen and (max-width : 1260px)";
 $media-phone: "screen and (max-width : 600px)";
 
 body {
@@ -290,46 +290,19 @@ input {
 
 // Buttons
 .btn {
-  @extend .flexRow;
-  @extend .flexCenter;
   color: $color-bright-1;
   background-color: transparent;
-  border-radius: 5px;
+  border-radius: 10px;
   font-weight: $weight-regular;
   font-size: $size-small;
   cursor: pointer;
-  text-transform: uppercase;
-  position: relative;
-  border: none;
-  padding: 0 0 10px 0;
+  border: 1px solid $color-bright-1;
+  padding: 10px 10px;
   letter-spacing: 1px;
-  outline: none;
 
-  &.small {
-    font-size: $size-smaller;
-
-    &:after {
-      bottom: 0;
-    }
-  }
-
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -4px;
-    height: 1px;
-    width: 20px;
-    border-bottom: 1px solid $color-bright-1;
-    transition: all 0.3s ease-in-out;
-  }
-
-  &:hover {
+  &:hover, &:active {
+    border: 1px solid $color-bright-2;
     color: $color-bright-2;
-
-    &:after {
-      width: 100%;
-      border-bottom: 1px solid $color-bright-2;
-    }
   }
 
   &:focus {

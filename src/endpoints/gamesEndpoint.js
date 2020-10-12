@@ -2,6 +2,7 @@ import moment from "moment";
 import {API_CONFIG} from "../config/apiConfig";
 import {asyncForEach, get} from "../utils";
 import {MEDIA_LOGOS} from "../config/const";
+import store from "../store";
 
 export async function getGamesById(gamesId) {
     const games = [];
@@ -18,12 +19,22 @@ export async function getGameById(gameId) {
 }
 
 export async function getGamesBySearch(params) {
+    const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
+    params.filters = JSON.stringify({
+        "media.name": _mapFilter(filters.medias),
+        "media.type": _mapFilter(filters.types)
+    });
     const games = await get(API_CONFIG.endpoints.GAME, params);
     return games.map(_mapResultToGame);
 }
 
 function _mapResultToGame(result) {
+    const filters = store.getState().settingsReducer.settings.filters;
+    result.episodes = result.episodes.filter((episode) => {
+        return filters.medias[episode.media.name] && filters.types[episode.media.type];
+    });
+
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
         return medias.map(med => med.name).indexOf(media.name) === index;
@@ -36,11 +47,6 @@ function _mapResultToGame(result) {
                 logoMin: mediaLogo
             }
         });
-    result.episodes = result.episodes.map((episode) => {
-        return {
-            ...episode,
-        }
-    });
     return {
         ...result,
         medias,
@@ -49,9 +55,19 @@ function _mapResultToGame(result) {
 }
 
 export async function getGamesFromIGDB({search, limit}) {
-        const params = {
-            search,
-            limit
-        };
-        return await get(API_CONFIG.endpoints.IGDB, params);
+    const params = {
+        search,
+        limit
+    };
+    return await get(API_CONFIG.endpoints.IGDB, params);
+}
+
+function _mapFilter(filter) {
+    const res = [];
+    Object.keys(filter).forEach((key) => {
+        if (filter[key]) {
+            res.push(key)
+        }
+    });
+    return {$in: res};
 }

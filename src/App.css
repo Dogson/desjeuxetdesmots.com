@@ -35,3 +35,12 @@
 .slick-disabled {
     opacity: 0 !important;
 }
+
+.Popover {
+    z-index: 2;
+}
+
+
+.pretty.p-default input:checked ~ .state label:after {
+    background-color: #FFC857 !important;
+}
