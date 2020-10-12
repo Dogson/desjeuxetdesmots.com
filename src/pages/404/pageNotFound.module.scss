@@ -1,0 +1,25 @@
+@import "../../index";
+
+.notFoundContainer {
+  @extend .flexColumn;
+  @extend .flexAlignCenter;
+  @extend .flexCenter;
+  flex: 1;
+
+  .title {
+    font-size: 70px;
+    color: $color-bright-2;
+    margin-bottom: 50px;
+    font-weight: $weight-regular;
+  }
+
+  .subtitle {
+    font-size: $size-big;
+    color: $color-bright-2;
+    font-weight: $weight-light;
+  }
+
+  .btn {
+    margin-top: 40px;
+  }
+}
