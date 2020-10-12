@@ -30,6 +30,11 @@ export async function getGamesBySearch(params) {
 }
 
 function _mapResultToGame(result) {
+    const filters = store.getState().settingsReducer.settings.filters;
+    result.episodes = result.episodes.filter((episode) => {
+        return filters.medias[episode.media.name] && filters.types[episode.media.type];
+    });
+
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
         return medias.map(med => med.name).indexOf(media.name) === index;
@@ -42,11 +47,6 @@ function _mapResultToGame(result) {
                 logoMin: mediaLogo
             }
         });
-    result.episodes = result.episodes.map((episode) => {
-        return {
-            ...episode,
-        }
-    });
     return {
         ...result,
         medias,
