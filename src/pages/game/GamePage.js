@@ -13,6 +13,7 @@ import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import MediaSection from "../../components/mediaSection/mediaSection";
 import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
+import {isEqual} from "lodash";
 
 class GamePage extends React.Component {
 
@@ -46,6 +47,9 @@ class GamePage extends React.Component {
             return;
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
+        }
+        if (!isEqual(this.props.settings.filters.medias, prevProps.settings.filters.medias) ||!isEqual(this.props.settings.filters.types, prevProps.settings.filters.types)) {
+            this.refreshGame()
         }
     }
 
@@ -120,7 +124,8 @@ class GamePage extends React.Component {
 const mapStateToProps = state => {
     return {
         mediaActive: state.mediaReducer.mediaActive,
-        currentGame: state.gamesReducer.currentGame
+        currentGame: state.gamesReducer.currentGame,
+        settings: state.settingsReducer.settings,
     }
 };
 
