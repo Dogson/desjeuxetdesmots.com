@@ -67,7 +67,7 @@ class Homepage extends Component {
 
     async getMoreGames() {
         const searchInput = queryString.parse(this.props.location.search).q;
-        if (this.state.loading) {
+        if (this.state.loading || this.state.error) {
             return;
         }
         this.setState({loading: true, error: false});
