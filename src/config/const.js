@@ -11,10 +11,6 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/silenceOnJoue.png"),
     },
     {
-        name: "ZQSD",
-        logoMin: require("../assets/logos/medias/zqsd.png"),
-    },
-    {
         name: "Gamekult",
         logoMin: require("../assets/logos/medias/gamekult.png"),
     },
