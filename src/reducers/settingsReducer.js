@@ -34,7 +34,10 @@ export default (state = {
                 ...state,
                 settings: {
                     ...state.settings,
-                    filters: action.payload
+                    filters: {
+                        medias: {...action.payload.medias},
+                        types: {...action.payload.types}
+                    },
                 }
             };
         case ACTIONS_SETTINGS.SET_REMEMBER:

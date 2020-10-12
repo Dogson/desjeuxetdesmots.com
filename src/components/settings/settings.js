@@ -15,12 +15,14 @@ class Settings extends React.Component {
 
         this.state = {
             isOpen: false,
-            filters: this.props.settings.filters,
+            mediasFilter: {...this.props.settings.filters.medias},
+            typesFilter: {...this.props.settings.filters.types},
             remember: this.props.settings.remember
         }
 
         this._handleTogglePopover = this._handleTogglePopover.bind(this);
-        this._handleChangeFilter = this._handleChangeFilter.bind(this);
+        this._handleChangeMediasFilter = this._handleChangeMediasFilter.bind(this);
+        this._handleChangeTypesFilter = this._handleChangeTypesFilter.bind(this);
         this._handleChangeRemember = this._handleChangeRemember.bind(this);
         this._handleSaveSettings = this._handleSaveSettings.bind(this);
 
@@ -35,25 +37,33 @@ class Settings extends React.Component {
         })
     }
 
-    _handleChangeFilter(data, property) {
-        const {filters} = this.state;
-        filters[property][data] = !filters[property][data];
-        this.setState({filters});
+    _handleChangeMediasFilter(data) {
+        const {mediasFilter} = {...this.state};
+        mediasFilter[data] = !mediasFilter[data];
+        this.setState({mediasFilter});
+    }
+
+    _handleChangeTypesFilter(data) {
+        const {typesFilter} = {...this.state};
+        typesFilter[data] = !typesFilter[data];
+        this.setState({typesFilter});
     }
 
     _handleSaveSettings() {
         this.props.dispatch({
             type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
-            payload: this.state.filters
+            payload: {
+                medias: this.state.mediasFilter,
+                types: this.state.typesFilter
+            }
         })
         this.props.dispatch({
             type: ACTIONS_SETTINGS.SET_REMEMBER,
             payload: this.state.remember
         })
-        debugger;
         if (this.state.remember) {
-            localStorage.setItem("filteredMedias", JSON.stringify(this.state.filters.medias));
-            localStorage.setItem("filteredTypes", JSON.stringify(this.state.filters.types));
+            localStorage.setItem("filteredMedias", JSON.stringify(this.state.mediasFilter));
+            localStorage.setItem("filteredTypes", JSON.stringify(this.state.typesFilter));
         }
         this.setState({isOpen: false})
     }
@@ -63,7 +73,7 @@ class Settings extends React.Component {
     }
 
     renderPopoverContent() {
-        const {filters, remember} = this.state;
+        const {mediasFilter, typesFilter, remember} = this.state;
         return <div className={styles.settingsPopoverContainer}>
             <div className={styles.blockTitle}>
                 <FaFilter className={styles.icon}/>
@@ -75,11 +85,11 @@ class Settings extends React.Component {
                         Types de média
                     </div>
                     {
-                        MEDIA_TYPES.sort((x, y) => x.dataLabel < y.dataLabel ? - 1 : 1).map(type =>
+                        MEDIA_TYPES.sort((x, y) => x.dataLabel < y.dataLabel ? -1 : 1).map(type =>
                             <div className={styles.filterRow}>
                                 <Checkbox shape="curve" color="#FFC857"
-                                          checked={filters.types[type.dataLabel]}
-                                          onChange={() => this._handleChangeFilter(type.dataLabel, "types")}
+                                          checked={typesFilter[type.dataLabel]}
+                                          onChange={() => this._handleChangeTypesFilter(type.dataLabel)}
                                 >
                                     <span className={styles.filterName}>{type.name}</span>
                                 </Checkbox>
@@ -93,11 +103,11 @@ class Settings extends React.Component {
                         Médias
                     </div>
                     {
-                        MEDIA_LOGOS.sort((x, y) => x.name < y.name ? - 1 : 1).map(media =>
+                        MEDIA_LOGOS.sort((x, y) => x.name < y.name ? -1 : 1).map(media =>
                             <div className={styles.filterRow}>
                                 <Checkbox shape="curve"
-                                          checked={filters.medias[media.name]}
-                                          onChange={() => this._handleChangeFilter(media.name, "medias")}>
+                                          checked={mediasFilter[media.name]}
+                                          onChange={() => this._handleChangeMediasFilter(media.name)}>
                                     <span className={styles.filterName}>{media.name}</span>
                                 </Checkbox>
 

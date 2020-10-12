@@ -15,6 +15,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
 import ReactTooltip from "react-tooltip";
 import {ErrorMessage} from "../../components/errorMessage/errorMessage";
+import {isEqual} from "lodash";
 
 
 class Homepage extends Component {
@@ -55,6 +56,15 @@ class Homepage extends Component {
         if (currentValues.q !== prevValues.q) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         }
+
+        const {filters} = this.props.settings;
+        const prevFilters = prevProps.settings.filters;
+
+        if (!isEqual(filters.medias, prevFilters.medias) ||!isEqual(filters.types, prevFilters.types)) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+            this.setState({hasMoreGames: true})
+        }
+
     }
 
     _handleChange(value) {
@@ -175,7 +185,8 @@ const mapStateToProps = state => {
         games: state.gamesReducer.games,
         searchInput: state.gamesReducer.searchInput,
         page: state.gamesReducer.page,
-        currentGame: state.gamesReducer.currentGame
+        currentGame: state.gamesReducer.currentGame,
+        settings: state.settingsReducer.settings
     }
 };
 
