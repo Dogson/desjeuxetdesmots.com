@@ -3,8 +3,8 @@ import {API_CONFIG} from "../config/apiConfig";
 import React from "react";
 import {MEDIA_LOGOS} from "../config/const";
 
-export async function getAllMedia(mediaDataLabel) {
-    const medias = await get(API_CONFIG.endpoints.MEDIA, {"media.type": mediaDataLabel, "verified": false});
+export async function getAllMedia() {
+    const medias = await get(API_CONFIG.endpoints.MEDIA, {"verified": false});
     return _sortEpisodesByMedia(medias);
 }
 

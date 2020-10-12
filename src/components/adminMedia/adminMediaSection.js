@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 
 class AdminMediaSection extends React.Component {
     componentDidMount() {
-        getAllMedia(this.props.type)
+        getAllMedia()
             .then((medias) => {
                 this.props.dispatch({
                     type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,

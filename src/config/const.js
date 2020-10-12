@@ -1,6 +1,4 @@
-import PodcastsAdmin from "../pages/admin/PodcastsAdmin";
 import React from 'react';
-import VideosAdmin from "../pages/admin/VideosAdmin";
 
 export const MEDIA_LOGOS = [
     //PODCASTS
@@ -72,7 +70,6 @@ export const MEDIA_TYPES = [
         route: "/admin/podcasts",
         logo: require("../assets/logos/mediaTypes/podcasts.jpg"),
         logoMin: require("../assets/logos/mediaTypes/podcastsMin.png"),
-        component: PodcastsAdmin,
         dataLabel: "podcast",
         ref: React.createRef()
     },
@@ -81,7 +78,6 @@ export const MEDIA_TYPES = [
         route: "/admin/videos",
         logo: require("../assets/logos/mediaTypes/videos.jpg"),
         logoMin: require("../assets/logos/mediaTypes/videosMin.png"),
-        component: VideosAdmin,
         dataLabel: "video",
         ref: React.createRef()
     }

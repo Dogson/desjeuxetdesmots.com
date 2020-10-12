@@ -4,11 +4,10 @@ import {Helmet} from "react-helmet";
 import PageLayout from "../../layouts/PageLayout";
 
 import styles from "./admin.module.scss";
-import {MEDIA_TYPES} from "../../config/const";
-import {NavLink} from "react-router-dom";
 import {login} from "../../endpoints/adminEndpoint";
 import {connect} from "react-redux";
 import {ACTIONS_USERS} from "../../actions/usersActions";
+import AdminMediaSection from "../../components/adminMedia/adminMediaSection";
 
 class Admin extends Component {
     constructor(props) {
@@ -76,7 +75,7 @@ class Admin extends Component {
     }
 
     renderAdminSection() {
-        return <SectionGrid title="Medias" items={MEDIA_TYPES}/>;
+        return <div className={styles.adminPageContainer}><AdminMediaSection/></div>
     }
 
     render() {
@@ -88,28 +87,6 @@ class Admin extends Component {
         </PageLayout>
     }
 }
-
-const SectionGrid = ({title, items}) => {
-    return <div className={styles.sectionGridContainer}>
-        <div className={styles.sectionTitle}>{title}</div>
-        <div className={styles.sectionGrid}>
-            {items.map((item) => {
-                return <NavLink className={styles.cardContainer} key={item.name} to={item.route}>
-                    <div className={styles.backImage} style={{backgroundImage: `url(${item.logo})`}}/>
-                    <div className={styles.hoveredInfo}>
-                        <div className={styles.backColor}/>
-                        <div className={styles.title}>
-                            {item.name}
-                        </div>
-                        <div className={styles.secondaryInfoContainer}>
-                            {item.author}
-                        </div>
-                    </div>
-                </NavLink>
-            })}
-        </div>
-    </div>
-};
 
 const mapStateToProps = state => {
     return {
