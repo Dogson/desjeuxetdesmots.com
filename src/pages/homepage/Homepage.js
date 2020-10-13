@@ -60,7 +60,7 @@ class Homepage extends Component {
         const {filters} = this.props.settings;
         const prevFilters = prevProps.settings.filters;
 
-        if (!isEqual(filters.medias, prevFilters.medias) ||!isEqual(filters.types, prevFilters.types)) {
+        if (!isEqual(filters.medias, prevFilters.medias) || !isEqual(filters.types, prevFilters.types)) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
             this.setState({hasMoreGames: true})
         }
@@ -91,8 +91,7 @@ class Homepage extends Component {
                 type: ACTIONS_GAMES.SET_GAMES,
                 payload: {games: previousGamesArray.concat(games), page: page + 1}
             });
-        }
-        catch(err) {
+        } catch (err) {
             this.setState({error: true})
         }
         this.setState({loading: false})
@@ -102,13 +101,18 @@ class Homepage extends Component {
     //render functions
 
     renderGameGrid() {
+        console.log(this.state);
         return <InfiniteScroll
             loadMore={this.getMoreGames}
-            hasMore={this.state.hasMoreGames}
+            hasMore={this.state.hasMoreGames && !this.state.error}
             loader={<div className={styles.loaderContainer} key={0}><LoadingSpinner/></div>}
         >
-            <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
-            {this.state.error && <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage>}
+
+            {this.state.error ?
+                <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage> :
+                <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
+
+            }
         </InfiniteScroll>
     };
 
@@ -118,7 +122,9 @@ class Homepage extends Component {
             <Helmet>
                 <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'Des jeux et des mots'}</title>
             </Helmet>
-            <div className={styles.subtitle}>Prendre le temps d'écouter celles et ceux qui prennent le temps d'analyser vos jeux favoris.</div>
+            <div className={styles.subtitle}>Prendre le temps d'écouter celles et ceux qui prennent le temps d'analyser
+                vos jeux favoris.
+            </div>
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
