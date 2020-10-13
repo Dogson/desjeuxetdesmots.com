@@ -11,7 +11,7 @@ const Header = ({smallHeader}) => (
             <div className={styles.logo}>
                 <Logo/>
             </div>
-            <span>Des jeux et des mots</span>
+            <span className={styles.title}>Des jeux et des mots</span>
         </NavLink>
         <Settings/>
     </div>

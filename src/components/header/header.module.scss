@@ -44,4 +44,17 @@
     }
 
   }
+
+  .title {
+
+  }
+}
+
+@media #{$media-phone} {
+  .headerContainer {
+    .title {
+      font-size: 30px;
+    }
+  }
+
 }

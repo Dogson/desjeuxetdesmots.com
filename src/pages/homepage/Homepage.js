@@ -101,7 +101,6 @@ class Homepage extends Component {
     //render functions
 
     renderGameGrid() {
-        console.log(this.state);
         return <InfiniteScroll
             loadMore={this.getMoreGames}
             hasMore={this.state.hasMoreGames && !this.state.error}

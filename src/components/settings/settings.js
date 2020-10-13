@@ -8,6 +8,8 @@ import '@djthoms/pretty-checkbox';
 import cx from "classnames";
 import {MEDIA_LOGOS, MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
+import {withGetScreen} from 'react-getscreen'
+import {compose} from "redux";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -195,7 +197,7 @@ class Settings extends React.Component {
                 <Checkbox shape="curve"
                           checked={remember}
                           onChange={this._handleChangeRemember}>
-                    Garder ces paramètres en mémoire à chaque visite
+                    <span className={styles.longLabel}>Garder ces paramètres en mémoire à chaque visite</span>
                 </Checkbox>
                 <button className={styles.btn} onClick={this._handleSaveSettings}>Appliquer</button>
             </div>
@@ -206,15 +208,16 @@ class Settings extends React.Component {
     render() {
         const {isOpen} = this.state;
         return <div className={styles.settingsContainer}>
-            <Popover
-                isOpen={isOpen}
-                onOuterAction={this._handleTogglePopover}
-                place="left"
-                body={this.renderPopoverContent()}
-            >
-                <FaCog className={cx(styles.adminButton, isOpen && styles.active)}
-                       onClick={this._handleTogglePopover}/>
-            </Popover>
+                <Popover
+                    isOpen={isOpen}
+                    onOuterAction={this._handleTogglePopover}
+                    place={this.props.isTablet() || this.props.isMobile() ? "below": "left"}
+                    body={this.renderPopoverContent()}
+                >
+                    <FaCog className={cx(styles.adminButton, isOpen && styles.active)}
+                           onClick={this._handleTogglePopover}/>
+                </Popover>
+
         </div>
     }
 }
@@ -225,4 +228,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps)(Settings);
+export default compose(withGetScreen, connect(mapStateToProps))(Settings);
