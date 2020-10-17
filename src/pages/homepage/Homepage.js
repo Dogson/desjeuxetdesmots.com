@@ -34,12 +34,7 @@ class Homepage extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
-    }
-
-    componentWillUnmount() {
-        this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
     }
 
     componentDidUpdate(prevProps) {
