@@ -38,7 +38,12 @@ export const MEDIA_LOGOS = [
     {
         name: "Osmosis",
         logoMin: require("../assets/logos/medias/osmosis.jpg")
-    }
+    },
+    {
+        name: "ZQSD",
+        logoMin: require("../assets/logos/medias/zqsd.jpg")
+    },
+
 ];
 //
 // const VIDEOS = [
