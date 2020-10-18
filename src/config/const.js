@@ -46,6 +46,10 @@ export const MEDIA_LOGOS = [
     {
         name: "Doc Geraud",
         logoMin: require("../assets/logos/medias/docGeraud.jpg")
+    },
+    {
+        name: "Olbius",
+        logoMin: require("../assets/logos/medias/olbius.jpg")
     }
 
 ];
