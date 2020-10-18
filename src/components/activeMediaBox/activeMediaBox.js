@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./activeMediaBox.module.scss";
 import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
+import {unescape} from "lodash";
 import cx from "classnames";
 import Loader from 'react-loader-spinner';
 import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
@@ -150,7 +151,7 @@ class ActiveMediaBox extends React.Component {
             if (isValidUrl(string)) {
                 return <a className={styles.link} href={string}>{string} </a>
             }
-            return string + " ";
+            return unescape(string) + " ";
         });
     }
 
