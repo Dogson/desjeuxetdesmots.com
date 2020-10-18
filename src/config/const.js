@@ -22,6 +22,10 @@ export const MEDIA_LOGOS = [
         name: "Quick Load",
         logoMin: require("../assets/logos/medias/quickload.png"),
     },
+    {
+        name: "ZQSD",
+        logoMin: require("../assets/logos/medias/zqsd.jpg")
+    },
     //VIDEOS
     {
         name: "Ex Serv",
@@ -40,9 +44,9 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/osmosis.jpg")
     },
     {
-        name: "ZQSD",
-        logoMin: require("../assets/logos/medias/zqsd.jpg")
-    },
+        name: "Doc Geraud",
+        logoMin: require("../assets/logos/medias/docGeraud.jpg")
+    }
 
 ];
 //
