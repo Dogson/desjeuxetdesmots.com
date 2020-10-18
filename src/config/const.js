@@ -26,6 +26,10 @@ export const MEDIA_LOGOS = [
         name: "ZQSD",
         logoMin: require("../assets/logos/medias/zqsd.jpg")
     },
+    {
+        name: "After Hate",
+        logoMin: require("../assets/logos/medias/afterHate.jpg")
+    },
     //VIDEOS
     {
         name: "Ex Serv",
