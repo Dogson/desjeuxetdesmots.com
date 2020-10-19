@@ -1,5 +1,5 @@
 import {ACTIONS_SETTINGS} from "../actions/settingsActions";
-import {MEDIA_LOGOS, MEDIA_TYPES} from "../config/const";
+import {MEDIA_LOGOS} from "../config/const";
 
 const getDefaultMediaFilter = () => {
     const res = {}
@@ -9,17 +9,8 @@ const getDefaultMediaFilter = () => {
     return res;
 }
 
-const getDefaultMediaTypeFilter = () => {
-    const res = {}
-    MEDIA_TYPES.forEach(type => {
-        res[type.dataLabel] = true;
-    });
-    return res;
-}
-
 const defaultFilters = {
     medias: localStorage.getItem('filteredMedias') ? JSON.parse(localStorage.getItem('filteredMedias')) : getDefaultMediaFilter(),
-    types: localStorage.getItem('filteredTypes') ? JSON.parse(localStorage.getItem('filteredTypes')) : getDefaultMediaTypeFilter(),
 }
 
 export default (state = {
@@ -36,7 +27,6 @@ export default (state = {
                     ...state.settings,
                     filters: {
                         medias: {...action.payload.medias},
-                        types: {...action.payload.types}
                     },
                 }
             };

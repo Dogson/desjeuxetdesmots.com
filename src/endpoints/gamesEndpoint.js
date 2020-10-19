@@ -23,7 +23,6 @@ export async function getGamesBySearch(params) {
     params.limit = params.limit || 28;
     params.filters = JSON.stringify({
         "media.name": _mapFilter(filters.medias),
-        "media.type": _mapFilter(filters.types)
     });
     const games = await get(API_CONFIG.endpoints.GAME, params);
     return games.map(_mapResultToGame);
@@ -32,7 +31,7 @@ export async function getGamesBySearch(params) {
 function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
     result.episodes = result.episodes.filter((episode) => {
-        return filters.medias[episode.media.name] && filters.types[episode.media.type];
+        return filters.medias[episode.media.name];
     });
 
     let medias = result.episodes.map(episode => episode.media);

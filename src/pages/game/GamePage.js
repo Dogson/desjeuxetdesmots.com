@@ -49,8 +49,9 @@ class GamePage extends React.Component {
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
         }
-        if (!isEqual(this.props.settings.filters.medias, prevProps.settings.filters.medias) || !isEqual(this.props.settings.filters.types, prevProps.settings.filters.types)) {
-            this.refreshGame()
+        if (!isEqual(this.props.settings.filters.medias, prevProps.settings.filters.medias)) {
+            this.refreshGame();
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
         }
     }
 

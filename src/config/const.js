@@ -5,55 +5,68 @@ export const MEDIA_LOGOS = [
     {
         logoMin: require("../assets/logos/medias/cosyCorner.png"),
         name: "Le Cosy Corner",
+        type: "podcast"
     },
     {
         name: "Silence on joue !",
         logoMin: require("../assets/logos/medias/silenceOnJoue.png"),
+        type: "podcast"
     },
     {
         name: "Gamekult",
         logoMin: require("../assets/logos/medias/gamekult.png"),
+        type: "podcast"
     },
     {
         name: "Fin Du Game",
         logoMin: require("../assets/logos/medias/finDuGame.png"),
+        type: "podcast"
     },
     {
         name: "Quick Load",
         logoMin: require("../assets/logos/medias/quickload.png"),
+        type: "podcast"
     },
     {
         name: "ZQSD",
-        logoMin: require("../assets/logos/medias/zqsd.jpg")
+        logoMin: require("../assets/logos/medias/zqsd.jpg"),
+        type: "podcast"
     },
     {
         name: "After Hate",
-        logoMin: require("../assets/logos/medias/afterHate.jpg")
+        logoMin: require("../assets/logos/medias/afterHate.jpg"),
+        type: "podcast"
     },
     //VIDEOS
     {
         name: "Ex Serv",
-        logoMin: require("../assets/logos/medias/exServ.jpg")
+        logoMin: require("../assets/logos/medias/exServ.jpg"),
+        type: "video"
     },
     {
         name: "Game Next Door",
-        logoMin: require("../assets/logos/medias/gameNextDoor.png")
+        logoMin: require("../assets/logos/medias/gameNextDoor.png"),
+        type: "video"
     },
     {
         name: "GK Live",
-        logoMin: require("../assets/logos/medias/gkLive.png")
+        logoMin: require("../assets/logos/medias/gkLive.png"),
+        type: "video"
     },
     {
         name: "Osmosis",
-        logoMin: require("../assets/logos/medias/osmosis.jpg")
+        logoMin: require("../assets/logos/medias/osmosis.jpg"),
+        type: "video"
     },
     {
         name: "Doc Geraud",
-        logoMin: require("../assets/logos/medias/docGeraud.jpg")
+        logoMin: require("../assets/logos/medias/docGeraud.jpg"),
+        type: "video"
     },
     {
         name: "Olbius",
-        logoMin: require("../assets/logos/medias/olbius.jpg")
+        logoMin: require("../assets/logos/medias/olbius.jpg"),
+        type: "video"
     }
 
 ];

@@ -18,44 +18,39 @@ class Settings extends React.Component {
         this.state = {
             isOpen: false,
             mediasFilter: {...this.props.settings.filters.medias},
-            typesFilter: {...this.props.settings.filters.types},
             remember: this.props.settings.remember,
-            shouldCheckAllTypes: true,
-            shouldCheckAllMedias: true
+            shouldCheckAllVideos: true,
+            shouldCheckAllPodcasts: true
         }
 
 
         this._handleTogglePopover = this._handleTogglePopover.bind(this);
         this._handleChangeMediasFilter = this._handleChangeMediasFilter.bind(this);
-        this._handleChangeTypesFilter = this._handleChangeTypesFilter.bind(this);
         this._handleChangeRemember = this._handleChangeRemember.bind(this);
         this._handleSaveSettings = this._handleSaveSettings.bind(this);
     }
 
     componentDidMount() {
         this.setState({
-            shouldCheckAllTypes: this.getShouldCheckAllTypes(this.state.typesFilter),
-            shouldCheckAllMedias: this.getShouldCheckAllMedias(this.state.mediasFilter)
+            shouldCheckAllVideos: this.getShouldCheckAll(this.state.mediasFilter, "video"),
+            shouldCheckAllPodcasts: this.getShouldCheckAll(this.state.mediasFilter, "podcast")
         })
     }
 
-    getShouldCheckAllTypes(typesFilter) {
-        let shouldCheckAll = false;
-        Object.keys(typesFilter).forEach((type) => {
-            if (!typesFilter[type]) {
-                shouldCheckAll = true;
-            }
-        })
-        return shouldCheckAll;
-    }
 
-    getShouldCheckAllMedias(mediasFilter) {
+    getShouldCheckAll(mediasFilter, type) {
         let shouldCheckAll = false;
-        Object.keys(mediasFilter).forEach((media) => {
+        Object.keys(mediasFilter)
+            .filter((mediaName) => {
+                const media = MEDIA_LOGOS.find((media) => {
+                    return media.name === mediaName;
+                });
+                return media.type === type
+            }).forEach((media) => {
             if (!mediasFilter[media]) {
                 shouldCheckAll = true;
             }
-        })
+        });
         return shouldCheckAll;
     }
 
@@ -68,50 +63,53 @@ class Settings extends React.Component {
         })
     }
 
-    _handleChangeMediasFilter(data) {
+    _handleChangeMediasFilter(data, type) {
         const {mediasFilter} = {...this.state};
-        mediasFilter[data] = !mediasFilter[data];
-        this.setState({
-            mediasFilter,
-            shouldCheckAllMedias: this.getShouldCheckAllMedias(mediasFilter)
+        const media = MEDIA_LOGOS.find((media) => {
+            return media.name === data;
         });
+        if (media.type === type) {
+            mediasFilter[data] = !mediasFilter[data];
+
+            if (type === "podcast") {
+                this.setState({
+                    mediasFilter,
+                    shouldCheckAllPodcasts: this.getShouldCheckAll(mediasFilter, type)
+                });
+            } else {
+                this.setState({
+                    mediasFilter,
+                    shouldCheckAllVideos: this.getShouldCheckAll(mediasFilter, type)
+                });
+            }
+        }
     }
 
-    _handleChangeTypesFilter(data) {
-        const {typesFilter} = {...this.state};
-        typesFilter[data] = !typesFilter[data];
-        this.setState({
-            typesFilter,
-            shouldCheckAllTypes: this.getShouldCheckAllTypes(typesFilter),
-        });
-    }
-
-    _handleSelectAllType() {
-        const {typesFilter} = {...this.state};
-
-        const newTypesFilter = {};
-        Object.keys(typesFilter).forEach((key) => {
-            newTypesFilter[key] = this.state.shouldCheckAllTypes;
-        })
-
-        this.setState({
-            typesFilter: newTypesFilter,
-            shouldCheckAllTypes: this.getShouldCheckAllTypes(newTypesFilter)
-        });
-    }
-
-    _handleSelectAllMedia() {
+    _handleSelectAll(type) {
         const {mediasFilter} = {...this.state};
 
-        const newMediasFilter = {};
+        const newMediasFilter = {...mediasFilter};
         Object.keys(mediasFilter).forEach((key) => {
-            newMediasFilter[key] = this.state.shouldCheckAllMedias;
+            const media = MEDIA_LOGOS.find((media) => {
+                return media.name === key;
+            });
+            if (media.type === type) {
+                newMediasFilter[key] = type === "podcast" ? this.state.shouldCheckAllPodcasts : this.state.shouldCheckAllVideos;
+            }
         })
 
-        this.setState({
-            mediasFilter: newMediasFilter,
-            shouldCheckAllMedias: this.getShouldCheckAllMedias(newMediasFilter)
-        });
+
+        if (type === "podcast") {
+            this.setState({
+                mediasFilter: newMediasFilter,
+                shouldCheckAllPodcasts: this.getShouldCheckAll(newMediasFilter, type)
+            });
+        } else {
+            this.setState({
+                mediasFilter: newMediasFilter,
+                shouldCheckAllVideos: this.getShouldCheckAll(newMediasFilter, type)
+            });
+        }
     }
 
     _handleSaveSettings() {
@@ -119,7 +117,6 @@ class Settings extends React.Component {
             type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
             payload: {
                 medias: this.state.mediasFilter,
-                types: this.state.typesFilter
             }
         })
         this.props.dispatch({
@@ -128,7 +125,6 @@ class Settings extends React.Component {
         })
         if (this.state.remember) {
             localStorage.setItem("filteredMedias", JSON.stringify(this.state.mediasFilter));
-            localStorage.setItem("filteredTypes", JSON.stringify(this.state.typesFilter));
         }
         this.setState({isOpen: false})
     }
@@ -137,60 +133,52 @@ class Settings extends React.Component {
         this.setState({remember: !this.state.remember});
     }
 
+    renderMediaTypeFilters(mediaType) {
+        const {mediasFilter} = this.state;
+        const type = mediaType.dataLabel;
+        const checkAll = type === "podcast" ? this.state.shouldCheckAllPodcasts : this.state.shouldCheckAllVideos;
+        return <div className={styles.subBlock}>
+            <div className={styles.subBlockTitle}>
+                <Checkbox shape="curve" color="#FFC857"
+                          checked={!checkAll}
+                          onChange={() => this._handleSelectAll(type)}
+                >
+                    <span>{mediaType.name}</span>
+                </Checkbox>
+            </div>
+            {
+                MEDIA_LOGOS
+                    .filter((mediaLogo) => {
+                        return mediaLogo.type === type
+                    })
+                    .sort((x, y) => x.name < y.name ? -1 : 1)
+                    .map(media =>
+                        <div className={styles.filterRow}>
+                            <Checkbox shape="curve"
+                                      checked={mediasFilter[media.name]}
+                                      onChange={() => this._handleChangeMediasFilter(media.name, type)}>
+                                <span className={styles.filterName}>{media.name}</span>
+                            </Checkbox>
+
+                        </div>
+                    )
+            }
+        </div>
+    }
+
     renderPopoverContent() {
-        const {mediasFilter, typesFilter, remember} = this.state;
+        const {remember} = this.state;
         return <div className={styles.settingsPopoverContainer}>
             <div className={styles.blockTitle}>
                 <FaFilter className={styles.icon}/>
                 <span>Filtres</span>
             </div>
             <div className={styles.settingsBlock}>
-                <div className={styles.subBlock}>
-                    <div className={styles.subBlockTitle}>
-                        <Checkbox shape="curve" color="#FFC857"
-                                  checked={!this.state.shouldCheckAllTypes}
-                                  onChange={() => this._handleSelectAllType()}
-                        >
-                            <span>Types de média</span>
-                        </Checkbox>
-                    </div>
-                    {
-                        MEDIA_TYPES.sort((x, y) => x.dataLabel < y.dataLabel ? -1 : 1).map(type =>
-                            <div className={styles.filterRow}>
-                                <Checkbox shape="curve" color="#FFC857"
-                                          checked={typesFilter[type.dataLabel]}
-                                          onChange={() => this._handleChangeTypesFilter(type.dataLabel)}
-                                >
-                                    <span className={styles.filterName}>{type.name}</span>
-                                </Checkbox>
-
-                            </div>
-                        )
-                    }
-                </div>
-                <div className={styles.subBlock}>
-                    <div className={styles.subBlockTitle}>
-                        <Checkbox shape="curve" color="#FFC857"
-                                  checked={!this.state.shouldCheckAllMedias}
-                                  onChange={() => this._handleSelectAllMedia()}
-                        >
-                            <span>Média</span>
-                        </Checkbox>
-                    </div>
-                    {
-                        MEDIA_LOGOS.sort((x, y) => x.name < y.name ? -1 : 1).map(media =>
-                            <div className={styles.filterRow}>
-                                <Checkbox shape="curve"
-                                          checked={mediasFilter[media.name]}
-                                          onChange={() => this._handleChangeMediasFilter(media.name)}>
-                                    <span className={styles.filterName}>{media.name}</span>
-                                </Checkbox>
-
-                            </div>
-                        )
-                    }
-                </div>
-
+                {
+                    MEDIA_TYPES.map((mediaType) => {
+                        return this.renderMediaTypeFilters(mediaType)
+                    })
+                }
 
             </div>
             <div className={styles.settingsFooter}>
@@ -208,15 +196,15 @@ class Settings extends React.Component {
     render() {
         const {isOpen} = this.state;
         return <div className={styles.settingsContainer}>
-                <Popover
-                    isOpen={isOpen}
-                    onOuterAction={this._handleTogglePopover}
-                    place={this.props.isTablet() || this.props.isMobile() ? "below": "left"}
-                    body={this.renderPopoverContent()}
-                >
-                    <FaCog className={cx(styles.adminButton, isOpen && styles.active)}
-                           onClick={this._handleTogglePopover}/>
-                </Popover>
+            <Popover
+                isOpen={isOpen}
+                onOuterAction={this._handleTogglePopover}
+                place={this.props.isTablet() || this.props.isMobile() ? "below" : "left"}
+                body={this.renderPopoverContent()}
+            >
+                <FaCog className={cx(styles.adminButton, isOpen && styles.active)}
+                       onClick={this._handleTogglePopover}/>
+            </Popover>
 
         </div>
     }
@@ -224,7 +212,7 @@ class Settings extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        settings: state.settingsReducer.settings,
+        settings: state.settingsReducer.settings
     }
 };
 

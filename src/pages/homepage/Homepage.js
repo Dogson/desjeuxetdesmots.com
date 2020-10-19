@@ -55,7 +55,7 @@ class Homepage extends Component {
         const {filters} = this.props.settings;
         const prevFilters = prevProps.settings.filters;
 
-        if (!isEqual(filters.medias, prevFilters.medias) || !isEqual(filters.types, prevFilters.types)) {
+        if (!isEqual(filters.medias, prevFilters.medias)) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
             this.setState({hasMoreGames: true})
         }
