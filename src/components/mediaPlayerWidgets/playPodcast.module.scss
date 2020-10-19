@@ -17,7 +17,6 @@
     }
 
     .playIcon {
-      opacity: 1;
       color: $color-bright-2;
     }
   }
@@ -35,7 +34,6 @@
     width: 50px;
     height: 50px;
     transform: translate(-50%, -50%);
-    opacity: 0.9;
     color:  $color-bright-1;
     transition: all 0.1s ease-in-out;
   }

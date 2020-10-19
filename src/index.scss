@@ -313,6 +313,11 @@ input {
     border: 0 !important;
   }
 
+  &.small {
+    font-size: $size-smaller;
+    padding: 6px 6px;
+  }
+
 }
 
 input[type="submit"] {

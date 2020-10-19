@@ -45,6 +45,10 @@
         box-shadow: 2px 2px 0 0 #FFC857;
       }
     }
+
+    .subscribeBtn {
+      display: none;
+    }
   }
 
   .bodyContainer {
@@ -173,7 +177,7 @@
 
 }
 
-@media #{$media-tablet} {
+@media #{$media-phone} {
   .activeMediaBoxContainer {
     margin: 0;
     padding: 0 20px 30px 20px;
@@ -181,6 +185,12 @@
 
     .titleContainer {
       margin-bottom: 20px;
+
+
+      .subscribeBtn {
+        margin-top: 15px;
+        display: flex;
+      }
     }
 
     .bodyContainer {

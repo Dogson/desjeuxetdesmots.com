@@ -165,8 +165,8 @@ class ActiveMediaBox extends React.Component {
             <div>
                 <div className={styles.author}>{name}</div>
                 <div className={styles.date}>
-                {moment(media.releaseDate).format('DD/MM/YYYY')}
-            </div>
+                    {moment(media.releaseDate).format('DD/MM/YYYY')}
+                </div>
             </div>
         </div>
     }
@@ -190,6 +190,10 @@ class ActiveMediaBox extends React.Component {
                     {media.name}
                 </div>
                 {this.renderMediaAuthorAndDate()}
+                {media.media.type === "podcast" &&
+                <div className={styles.subscribeBtn}><a className={cx(styles.btn)}
+                                                        href={media.media.feedUrl}>S'abonner avec votre app de
+                    podcasts</a></div>}
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.leftRow}>
