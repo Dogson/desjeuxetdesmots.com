@@ -248,6 +248,15 @@ input {
 .inputWithSuggestionsContainer {
   @extend .flexColumn;
 
+  .alternativeSearch {
+    color: $color-bright-1;
+    font-size: $size-smaller;
+
+    span {
+      margin-left: 5px;
+    }
+  }
+
   .suggestionsContainer {
     width: 300px;
 

@@ -53,10 +53,11 @@ function _mapResultToGame(result) {
     }
 }
 
-export async function getGamesFromIGDB({search, limit}) {
+export async function getGamesFromIGDB({search, limit, alternativeSearch}) {
     const params = {
         search,
-        limit
+        limit,
+        noFilter: alternativeSearch
     };
     return await get(API_CONFIG.endpoints.IGDB, params);
 }

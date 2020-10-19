@@ -17,6 +17,7 @@ import PlayVideo from "../mediaPlayerWidgets/playVideo";
 import {isValidUrl} from "../../utils";
 import {MEDIA_LOGOS} from "../../config/const";
 import decode from "entity-decode/browser"
+import {Checkbox} from "pretty-checkbox-react";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -35,7 +36,8 @@ class ActiveMediaBox extends React.Component {
             loadingSuggestions: false,
             loadingSaveGames: false,
             noMatch: false,
-            showFullDesc: false
+            showFullDesc: false,
+            alternativeSearch: false
         };
     }
 
@@ -86,7 +88,7 @@ class ActiveMediaBox extends React.Component {
             }
             this.setState({loadingSuggestions: true});
             this.setState({noMatch: false});
-            getGamesFromIGDB({search: this.state.searchInput})
+            getGamesFromIGDB({search: this.state.searchInput, alternativeSearch: this.state.alternativeSearch})
                 .then((result) => {
                     if (result.length === 0) {
                         this.setState({noMatch: true})
@@ -174,7 +176,7 @@ class ActiveMediaBox extends React.Component {
     render() {
         const user = this.props.authUser;
         const {loadingGames} = this.state;
-        let episodeGames = this.state.episodeGames;
+        let {episodeGames, alternativeSearch} = this.state;
         if (loadingGames) {
             episodeGames = this.props.media.games.map((game) => {
                 return {_id: game}
@@ -192,7 +194,8 @@ class ActiveMediaBox extends React.Component {
                 {this.renderMediaAuthorAndDate()}
                 {media.media.type === "podcast" &&
                 <div className={styles.subscribeBtn}><a className={cx(styles.btn)}
-                                                        href={`podcast://${media.media.feedUrl}`}>S'abonner avec votre app de
+                                                        href={`podcast://${media.media.feedUrl}`}>S'abonner avec votre
+                    app de
                     podcasts</a></div>}
             </div>
             <div className={styles.bodyContainer}>
@@ -302,6 +305,13 @@ class ActiveMediaBox extends React.Component {
                                     placeholder="Ajouter un jeu"
                                     onFocus={() => this.setState({inputFocused: true})}
                                     onBlur={() => this.setState({inputFocused: false})}/>
+                            </div>
+                            <div className={styles.alternativeSearch}>
+                                <Checkbox shape="curve" color="#FFC857"
+                                          checked={alternativeSearch}
+                                          onChange={() => this.setState({alternativeSearch: !alternativeSearch})}>
+                                    <span>Recherche alternative</span>
+                                </Checkbox>
                             </div>
                             <div className={styles.suggestionsContainer}>
                                 {this.state.loadingSuggestions ?
