@@ -37,6 +37,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/afterHate.jpg"),
         type: "podcast"
     },
+    {
+        name: "Third Editions",
+        logoMin: require("../assets/logos/medias/thirdEditions.jpg"),
+        type: "podcast"
+    },
     //VIDEOS
     {
         name: "Ex Serv",
