@@ -192,7 +192,7 @@ class ActiveMediaBox extends React.Component {
                 {this.renderMediaAuthorAndDate()}
                 {media.media.type === "podcast" &&
                 <div className={styles.subscribeBtn}><a className={cx(styles.btn)}
-                                                        href={media.media.feedUrl}>S'abonner avec votre app de
+                                                        href={`podcast://${media.media.feedUrl}`}>S'abonner avec votre app de
                     podcasts</a></div>}
             </div>
             <div className={styles.bodyContainer}>
