@@ -171,12 +171,11 @@ const MediaLogos = ({game}) => {
         {
             game.medias.map((media) => {
                 return <div key={media.name} className={styles.mediaLogo}>
-                    <ReactTooltip effect="solid" id="mediaLogo" place="top"/>
-                    <img src={media.logoMin} alt={media.name} data-tip={media.name} data-for="mediaLogo"/>
+                    <img src={media.logoMin} alt={media.name}/>
                 </div>
             })
         }
-
+        {/*<ReactTooltip effect="solid" id="mediaLogo" place="top"/>*/}
     </div>
 };
 
