@@ -13,7 +13,7 @@ import {withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
-import ReactTooltip from "react-tooltip";
+// import ReactTooltip from "react-tooltip";
 import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 import {isEqual} from "lodash";
 
