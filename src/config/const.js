@@ -72,7 +72,12 @@ export const MEDIA_LOGOS = [
         name: "Olbius",
         logoMin: require("../assets/logos/medias/olbius.jpg"),
         type: "video"
-    }
+    },
+    {
+        name: "Canard PC",
+        logoMin: require("../assets/logos/medias/canardPC.jpg"),
+        type: "video"
+    },
 
 ];
 //
