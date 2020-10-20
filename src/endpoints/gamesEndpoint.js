@@ -31,7 +31,7 @@ export async function getGamesBySearch(params) {
 function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
     result.episodes = result.episodes.filter((episode) => {
-        return filters.medias[episode.media.name];
+        return filters.medias[episode.media.name] && episode.verified;
     });
 
     let medias = result.episodes.map(episode => episode.media);
