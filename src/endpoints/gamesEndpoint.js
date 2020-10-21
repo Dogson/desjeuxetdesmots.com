@@ -1,6 +1,6 @@
 import moment from "moment";
 import {API_CONFIG} from "../config/apiConfig";
-import {asyncForEach, get} from "../utils";
+import {asyncForEach, get, shuffleArray} from "../utils";
 import {MEDIA_LOGOS} from "../config/const";
 import store from "../store";
 
@@ -30,9 +30,9 @@ export async function getGamesBySearch(params) {
 
 function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
-    result.episodes = result.episodes.filter((episode) => {
+    result.episodes = shuffleArray(result.episodes.filter((episode) => {
         return filters.medias[episode.media.name] && episode.verified;
-    });
+    }));
 
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
