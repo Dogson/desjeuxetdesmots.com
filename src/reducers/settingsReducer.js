@@ -10,7 +10,7 @@ const getDefaultMediaFilter = () => {
 }
 
 const defaultFilters = {
-    medias: localStorage.getItem('filteredMedias') ? JSON.parse(localStorage.getItem('filteredMedias')) : getDefaultMediaFilter(),
+    medias: getDefaultMediaFilter(),
 }
 
 export default (state = {
