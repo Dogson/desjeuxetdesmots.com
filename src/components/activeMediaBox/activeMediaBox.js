@@ -18,6 +18,7 @@ import {isValidUrl} from "../../utils";
 import {MEDIA_LOGOS} from "../../config/const";
 import decode from "entity-decode/browser"
 import {Checkbox} from "pretty-checkbox-react";
+import {ACTIONS_USERS} from "../../actions/usersActions";
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -95,7 +96,12 @@ class ActiveMediaBox extends React.Component {
                     }
                     this.setState({searchResults: result, loadingSuggestions: false})
                 })
-                .catch(() => {
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.code === 403) {
+                        this.props.dispatch({
+                            type: ACTIONS_USERS.LOGOUT
+                        })
+                    }
                     this.setState({searchGamesError: true, loadingSuggestions: false})
                 })
         }
@@ -133,6 +139,13 @@ class ActiveMediaBox extends React.Component {
         return this.props.onSaveGames(this.state.episodeGames)
             .then(() => {
                 this.setState({loadingSaveGames: false, showSaveBtn: false});
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.code === 403) {
+                    this.props.dispatch({
+                        type: ACTIONS_USERS.LOGOUT
+                    })
+                }
             })
     }
 

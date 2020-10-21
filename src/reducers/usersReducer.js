@@ -12,6 +12,13 @@ export default (state = {
                 ...state,
                 authUser: action.payload,
             };
+        case ACTIONS_USERS.LOGOUT:
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            return {
+                ...state,
+                authUser: null
+            }
         default:
             return {
                 ...state
