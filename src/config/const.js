@@ -42,6 +42,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/thirdEditions.jpg"),
         type: "podcast"
     },
+    {
+        name: "La Playade",
+        logoMin: require("../assets/logos/medias/laPlayade.jpg"),
+        type: "podcast"
+    },
     //VIDEOS
     {
         name: "Ex Serv",
