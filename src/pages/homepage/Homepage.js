@@ -167,13 +167,22 @@ const GameGrid = ({games, loading, setCurrentGame}) => {
 };
 
 const MediaLogos = ({game}) => {
+    const tooMuchLogos = game.medias.length > 8;
+    const medias = tooMuchLogos ? game.medias.slice(0, 7) : game.medias;
+    const nbMoreLogos = game.medias.length - medias.length;
     return <div className={styles.mediasLogosContainer}>
         {
-            game.medias.map((media) => {
+            medias.map((media) => {
                 return <div key={media.name} className={styles.mediaLogo}>
                     <img src={media.logoMin} alt={media.name}/>
                 </div>
             })
+        }
+        {
+            tooMuchLogos &&
+            <div className={styles.mediaLogo}>
+                <div className={styles.moreLogos}><span>+ {nbMoreLogos}</span></div>
+            </div>
         }
         {/*<ReactTooltip effect="solid" id="mediaLogo" place="top"/>*/}
     </div>
