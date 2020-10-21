@@ -97,7 +97,12 @@ export const MEDIA_LOGOS = [
         name: "Ludology",
         logoMin: require("../assets/logos/medias/ludology.jpg"),
         type: "video"
-    }
+    },
+    {
+        name: "Beyond Games",
+        logoMin: require("../assets/logos/medias/beyondGames.jpg"),
+        type: "video"
+    },
 
 ];
 //
