@@ -181,7 +181,7 @@ const MediaLogos = ({game}) => {
         {
             tooMuchLogos &&
             <div className={styles.mediaLogo}>
-                <div className={styles.moreLogos}><span>+ {nbMoreLogos}</span></div>
+                <div className={styles.moreLogos}>+{nbMoreLogos}</div>
             </div>
         }
         {/*<ReactTooltip effect="solid" id="mediaLogo" place="top"/>*/}
