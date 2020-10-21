@@ -87,6 +87,11 @@ export const MEDIA_LOGOS = [
         name: "un bot pourrait faire ça",
         logoMin: require("../assets/logos/medias/unBotPourraitFaireCa.png"),
         type: "video"
+    },
+    {
+        name: "Lys Sombreciel",
+        logoMin: require("../assets/logos/medias/lysSombreciel.jpg"),
+        type: "video"
     }
 
 ];
