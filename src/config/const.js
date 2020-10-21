@@ -92,6 +92,11 @@ export const MEDIA_LOGOS = [
         name: "Lys Sombreciel",
         logoMin: require("../assets/logos/medias/lysSombreciel.jpg"),
         type: "video"
+    },
+    {
+        name: "Ludology",
+        logoMin: require("../assets/logos/medias/ludology.jpg"),
+        type: "video"
     }
 
 ];
