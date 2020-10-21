@@ -167,7 +167,7 @@ class Settings extends React.Component {
     }
 
     renderPopoverContent() {
-        const {remember} = this.state;
+        // const {remember} = this.state;
         return <div className={styles.settingsPopoverContainer}>
             <div className={styles.blockTitle}>
                 <FaFilter className={styles.icon}/>
@@ -182,11 +182,11 @@ class Settings extends React.Component {
 
             </div>
             <div className={styles.settingsFooter}>
-                <Checkbox shape="curve"
-                          checked={remember}
-                          onChange={this._handleChangeRemember}>
-                    <span className={styles.longLabel}>Garder ces paramètres en mémoire à chaque visite</span>
-                </Checkbox>
+                {/*<Checkbox shape="curve"*/}
+                {/*          checked={remember}*/}
+                {/*          onChange={this._handleChangeRemember}>*/}
+                {/*    <span className={styles.longLabel}>Garder ces paramètres en mémoire à chaque visite</span>*/}
+                {/*</Checkbox>*/}
                 <button className={styles.btn} onClick={this._handleSaveSettings}>Appliquer</button>
             </div>
 
