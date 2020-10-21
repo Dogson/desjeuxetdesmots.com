@@ -78,6 +78,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/canardPC.jpg"),
         type: "video"
     },
+    {
+        name: "un bot pourrait faire ça",
+        logoMin: require("../assets/logos/medias/unBotPourraitFaireCa.png"),
+        type: "video"
+    }
 
 ];
 //
