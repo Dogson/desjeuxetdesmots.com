@@ -111,6 +111,11 @@ class GamePage extends React.Component {
                                 <div className={styles.gameTitle}>
                                     {currentGame.name}
                                 </div>
+                                <div className={styles.gameDevelopers}>
+                                    {currentGame.companies.map((comp, index) => {
+                                        return <span>{comp.name}{index < currentGame.companies.length - 1 && ", "}</span>
+                                    })}
+                                </div>
                                 <div className={styles.gameDate}>
                                     {moment(currentGame.releaseDate).format('YYYY')}
                                 </div>
