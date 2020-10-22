@@ -52,6 +52,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/artefact.jpg"),
         type: "podcast"
     },
+    {
+        name: "Super Gamerside",
+        logoMin: require("../assets/logos/medias/superGameside.jpg"),
+        type: "podcast"
+    },
     //VIDEOS
     {
         name: "Ex Serv",
