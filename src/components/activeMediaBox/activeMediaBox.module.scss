@@ -177,21 +177,11 @@
 
 }
 
-@media #{$media-phone} {
+@media #{$media-tablet} {
   .activeMediaBoxContainer {
     margin: 0;
     padding: 0 20px 30px 20px;
     box-sizing: border-box;
-
-    .titleContainer {
-      margin-bottom: 20px;
-
-
-      .subscribeBtn {
-        margin-top: 15px;
-        display: flex;
-      }
-    }
 
     .bodyContainer {
       flex-direction: column-reverse;
@@ -211,6 +201,19 @@
 
       .leftRow {
         margin-top: 20px;
+      }
+    }
+  }
+}
+
+@media #{$media-phone} {
+  .activeMediaBoxContainer {
+
+    .titleContainer {
+
+      .subscribeBtn {
+        margin-top: 15px;
+        display: flex;
       }
     }
   }
