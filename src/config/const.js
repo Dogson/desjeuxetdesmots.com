@@ -118,6 +118,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/beyondGames.jpg"),
         type: "video"
     },
+    {
+        name: "Toujours Thomas",
+        logoMin: require("../assets/logos/medias/toujoursThomas.jpg"),
+        type: "video"
+    },
 
 ];
 //
