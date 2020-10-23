@@ -123,6 +123,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/toujoursThomas.jpg"),
         type: "video"
     },
+    {
+        name: "JV lemag",
+        logoMin: require("../assets/logos/medias/jvlemag.jpg"),
+        type: "video"
+    },
 
 ];
 //
