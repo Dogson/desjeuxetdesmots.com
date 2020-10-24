@@ -139,6 +139,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/damastès.jpg"),
         type: "video"
     },
+    {
+        name: "Esteban Grine",
+        logoMin: require("../assets/logos/medias/estebanGrine.jpg"),
+        type: "video"
+    }
 ];
 //
 // const VIDEOS = [
