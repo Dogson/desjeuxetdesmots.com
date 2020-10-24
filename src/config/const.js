@@ -68,6 +68,11 @@ export const MEDIA_LOGOS = [
         type: "podcast",
         overrideThumbnail: require("../assets/logos/overrideMedias/laDevTeam.jpg")
     },
+    {
+        name: "Games4you",
+        logoMin: require("../assets/logos/medias/games4you.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
