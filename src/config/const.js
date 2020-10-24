@@ -73,6 +73,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/games4you.jpg"),
         type: "podcast",
     },
+    {
+        name: "Radiolibrius",
+        logoMin: require("../assets/logos/medias/radiolibrius.jpeg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
