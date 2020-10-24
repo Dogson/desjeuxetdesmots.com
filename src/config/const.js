@@ -133,7 +133,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/jvlemag.jpg"),
         type: "video"
     },
-
+    {
+        name: "Damastès",
+        logoMin: require("../assets/logos/medias/damastès.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
