@@ -65,7 +65,8 @@ export const MEDIA_LOGOS = [
     {
         name: "La Dev Team",
         logoMin: require("../assets/logos/medias/laDevTeam.jpg"),
-        type: "podcast"
+        type: "podcast",
+        overrideThumbnail: require("../assets/logos/overrideMedias/laDevTeam.jpg")
     },
     //VIDEOS
     {

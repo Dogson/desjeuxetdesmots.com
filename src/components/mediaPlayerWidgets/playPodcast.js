@@ -3,9 +3,12 @@ import {connect} from "react-redux";
 import styles from "./playPodcast.module.scss"
 import {FaPlay, FaPause} from "react-icons/fa";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
+import {MEDIA_LOGOS} from "../../config/const";
 
 const PlayPodcast = (props) => {
     const {mediaActive, mediaPlayed, playState} = props;
+    const thumbnail = mediaActive && (MEDIA_LOGOS.find(med => mediaActive.media.name === med.name).overrideThumbnail || mediaActive.image);
+
     return mediaActive ?
         <div className={styles.playPodcastContainer} onClick={() => {
             props.dispatch({
@@ -14,7 +17,7 @@ const PlayPodcast = (props) => {
                     _id: mediaActive._id,
                     name: mediaActive.name,
                     singer: mediaActive.media.name,
-                    cover: mediaActive.image,
+                    cover: thumbnail,
                     musicSrc: mediaActive.fileUrl,
                 }
             });
@@ -25,7 +28,7 @@ const PlayPodcast = (props) => {
                 }
             });
         }}>
-            <img src={mediaActive.image} alt={mediaActive.name}/>
+            <img src={thumbnail} alt={mediaActive.name}/>
             {mediaPlayed && mediaPlayed._id === mediaActive._id && !playState.isPaused ?
                 <FaPause className={styles.playIcon}/> :
                 <FaPlay className={styles.playIcon}/>
