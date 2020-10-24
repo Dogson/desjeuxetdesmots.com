@@ -62,6 +62,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/laCartouche.jpg"),
         type: "podcast"
     },
+    {
+        name: "La Dev Team",
+        logoMin: require("../assets/logos/medias/laDevTeam.jpg"),
+        type: "podcast"
+    },
     //VIDEOS
     {
         name: "Ex Serv",
