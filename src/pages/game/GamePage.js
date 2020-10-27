@@ -65,6 +65,10 @@ class GamePage extends React.Component {
 
         if (this.props.location.game) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: this.props.location.game});
+            this.props.dispatch({
+                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                payload: this.sortEpisodesByMediaTypes(this.props.location.game.episodes)
+            });
         } else {
             this.setState({loading: true, error: false});
             getGameById(gameId)
