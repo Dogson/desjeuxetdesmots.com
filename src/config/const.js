@@ -78,6 +78,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/radiolibrius.jpeg"),
         type: "podcast",
     },
+    {
+        name: "Coop et Canap'",
+        logoMin: require("../assets/logos/medias/coopEtCanap.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
