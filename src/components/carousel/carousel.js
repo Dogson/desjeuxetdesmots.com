@@ -103,7 +103,7 @@ export default connect(mapStateToProps)(Carousel);
 
 const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
     const mediaLogo = MEDIA_LOGOS.find(med => media.media.name === med.name)
-    const thumbnail = mediaLogo && mediaLogo.overrideThumbnail || media.image;
+    const thumbnail = (mediaLogo && mediaLogo.overrideThumbnail) || media.image;
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '180px'} : {}}>
         {

@@ -8,7 +8,7 @@ import {MEDIA_LOGOS} from "../../config/const";
 const PlayPodcast = (props) => {
     const {mediaActive, mediaPlayed, playState} = props;
     const mediaLogo = MEDIA_LOGOS.find(med => mediaActive.media.name === med.name)
-    const thumbnail = mediaActive && (mediaLogo && mediaLogo.overrideThumbnail || mediaActive.image);
+    const thumbnail = mediaActive && ((mediaLogo && mediaLogo.overrideThumbnail) || mediaActive.image);
 
     return mediaActive ?
         <div className={styles.playPodcastContainer} onClick={() => {
