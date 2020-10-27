@@ -102,7 +102,8 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(Carousel);
 
 const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
-    const thumbnail = MEDIA_LOGOS.find(med => media.media.name === med.name).overrideThumbnail || media.image;
+    const mediaLogo = MEDIA_LOGOS.find(med => media.media.name === med.name)
+    const thumbnail = mediaLogo && mediaLogo.overrideThumbnail || media.image;
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '180px'} : {}}>
         {
@@ -115,7 +116,7 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
             backgroundImage: `url(${thumbnail})`
         } : {backgroundImage: `url(${thumbnail})`}}/>
         <div className={styles.badge}>
-            <img src={MEDIA_LOGOS.find(med => media.media.name === med.name).logoMin} alt={media.media.name}/>
+            <img src={mediaLogo && mediaLogo.logoMin} alt={media.media.name}/>
         </div>
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>

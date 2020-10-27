@@ -173,7 +173,8 @@ class ActiveMediaBox extends React.Component {
     renderMediaAuthorAndDate() {
         const {media} = this.props;
         const name = media.media.name;
-        const logo = MEDIA_LOGOS.find(med => med.name === name).logoMin;
+        const mediaLogo = MEDIA_LOGOS.find(med => med.name === name)
+        const logo = mediaLogo && mediaLogo.logoMin;
 
         return <div className={styles.authorAndDateContainer}>
             <img src={logo} alt={name}/>
