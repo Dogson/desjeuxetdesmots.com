@@ -158,7 +158,12 @@ export const MEDIA_LOGOS = [
         name: "Esteban Grine",
         logoMin: require("../assets/logos/medias/estebanGrine.jpg"),
         type: "video"
-    }
+    },
+    {
+        name: "Plein Les Pixels",
+        logoMin: require("../assets/logos/medias/pleinLesPixels.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
