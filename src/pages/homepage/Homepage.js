@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {FaSearch} from "react-icons/fa";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
-import {withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
 import * as moment from "moment/moment";
@@ -30,7 +30,6 @@ class Homepage extends Component {
 
         this._handleChange = this._handleChange.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
-        this.setCurrentGame = this.setCurrentGame.bind(this);
     }
 
     componentDidMount() {
@@ -64,10 +63,6 @@ class Homepage extends Component {
 
     _handleChange(value) {
         this.props.history.push(`/?q=${value}`);
-    }
-
-    setCurrentGame(game) {
-        this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
     }
 
     async getMoreGames() {
@@ -104,7 +99,7 @@ class Homepage extends Component {
 
             {this.state.error ?
                 <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage> :
-                <GameGrid games={this.props.games} loading={this.state.loading} setCurrentGame={this.setCurrentGame}/>
+                <GameGrid games={this.props.games} loading={this.state.loading}/>
 
             }
         </InfiniteScroll>
@@ -136,7 +131,7 @@ class Homepage extends Component {
     }
 }
 
-const GameGrid = ({games, loading, setCurrentGame}) => {
+const GameGrid = ({games, loading}) => {
     if (!games)
         return null;
     if (games.length === 0 && !loading) {
@@ -148,7 +143,12 @@ const GameGrid = ({games, loading, setCurrentGame}) => {
     return <div className={styles.gamesGridContainer}>
         {
             games.map((game) => {
-                return <div className={styles.cardContainer} key={game.id} onClick={() => setCurrentGame(game)}>
+                return <NavLink to={{
+                    pathname: `/game/${game._id}`,
+                    game
+                }}
+                                className={styles.cardContainer}
+                                key={game._id}>
                     <div className={styles.backImage} style={{backgroundImage: `url(${game.cover})`}}/>
                     <div className={styles.hoveredInfo}>
                         <div className={styles.backColor}/>
@@ -160,7 +160,7 @@ const GameGrid = ({games, loading, setCurrentGame}) => {
                         </div>
                         <MediaLogos game={game}/>
                     </div>
-                </div>
+                </NavLink>
             })
         }
     </div>

@@ -57,28 +57,33 @@ class GamePage extends React.Component {
 
     refreshGame() {
         window.scrollTo({top: 0, behavior: 'auto'});
-        this.setState({loading: true, error: false});
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
             payload: null
         });
         const gameId = String(this.props.match.params.gameId);
-        getGameById(gameId)
-            .then((game) => {
-                this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
-                this.props.dispatch({
-                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
-                    payload: this.sortEpisodesByMediaTypes(game.episodes)
-                });
-            })
-            .catch((err) => {
-                const is404 = err.toJSON().message.indexOf("404") > -1;
-                this.setState({error: is404 ? "Aucun jeu ne correspond à cette URL." : "Une erreur est survenue lors du chargement des médias"});
 
-            })
-            .then(() => {
-                this.setState({loading: false});
-            })
+        if (this.props.location.game) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: this.props.location.game});
+        } else {
+            this.setState({loading: true, error: false});
+            getGameById(gameId)
+                .then((game) => {
+                    this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
+                    this.props.dispatch({
+                        type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                        payload: this.sortEpisodesByMediaTypes(game.episodes)
+                    });
+                })
+                .catch((err) => {
+                    const is404 = err.toJSON().message.indexOf("404") > -1;
+                    this.setState({error: is404 ? "Aucun jeu ne correspond à cette URL." : "Une erreur est survenue lors du chargement des médias"});
+
+                })
+                .then(() => {
+                    this.setState({loading: false});
+                })
+        }
     }
 
     sortEpisodesByMediaTypes(episodes) {
