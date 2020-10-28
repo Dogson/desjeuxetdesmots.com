@@ -164,6 +164,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/pleinLesPixels.jpg"),
         type: "video"
     },
+    {
+        name: "Excursions Virtuelles",
+        logoMin: require("../assets/logos/medias/excursionsVirtuelles.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
