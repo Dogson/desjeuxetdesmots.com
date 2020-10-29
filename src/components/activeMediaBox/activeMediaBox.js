@@ -82,7 +82,7 @@ class ActiveMediaBox extends React.Component {
                 this.setState({episodeGames: this.props.media.games, loadingGames: false});
             }
         }
-        if (this.state.searchInput !== prevState.searchInput) {
+        if (this.state.searchInput !== prevState.searchInput || this.state.alternativeSearch !== prevState.alternativeSearch) {
             if (this.state.searchInput.length === 0) {
                 this.setState({searchResults: []});
                 return;
