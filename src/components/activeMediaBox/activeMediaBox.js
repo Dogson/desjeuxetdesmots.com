@@ -220,7 +220,7 @@ class ActiveMediaBox extends React.Component {
                             <div>
                                 {media.description.split("\n").map((line, key) => {
                                     return <div style={{minHeight: 10}}
-                                                key={key}>{this.renderDescriptionLine(line)}</div>;
+                                                key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
                                 })}
                                 <button onClick={() => this.setState({
                                     showFullDesc: false
@@ -236,7 +236,7 @@ class ActiveMediaBox extends React.Component {
                                 <div>
                                     {media.description.split("\n").map((line, key) => {
                                         return <div style={{minHeight: 10}}
-                                                    key={key}>{this.renderDescriptionLine(line)}</div>;
+                                                    key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
                                     })}
                                 </div>
                             </Truncate>
