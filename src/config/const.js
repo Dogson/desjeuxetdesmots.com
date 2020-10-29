@@ -88,6 +88,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/tomberryMusical.jpg"),
         type: "podcast",
     },
+    {
+        name: "Beside Games",
+        logoMin: require("../assets/logos/medias/besideGames.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
