@@ -174,6 +174,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/excursionsVirtuelles.jpg"),
         type: "video"
     },
+    {
+        name: "Pier -re",
+        logoMin: require("../assets/logos/medias/pierre.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
