@@ -184,6 +184,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/pierre.jpg"),
         type: "video"
     },
+    {
+        name: "Kago HyperBrother",
+        logoMin: require("../assets/logos/medias/kagoHyperbrother.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
