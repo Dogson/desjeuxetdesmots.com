@@ -93,6 +93,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/besideGames.jpg"),
         type: "podcast",
     },
+    {
+        name: "La Caz' Retro",
+        logoMin: require("../assets/logos/medias/laCazRetro.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
