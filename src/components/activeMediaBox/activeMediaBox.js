@@ -242,6 +242,7 @@ class ActiveMediaBox extends React.Component {
                             </Truncate>
                         }
                     </div>
+                    {user && <div className={styles.description}>{media.keywords}</div>}
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
