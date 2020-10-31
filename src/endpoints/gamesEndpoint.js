@@ -1,6 +1,6 @@
 import moment from "moment";
 import {API_CONFIG} from "../config/apiConfig";
-import {asyncForEach, get, shuffleArray} from "../utils";
+import {asyncForEach, get} from "../utils";
 import {MEDIA_LOGOS} from "../config/const";
 import store from "../store";
 
@@ -30,9 +30,32 @@ export async function getGamesBySearch(params) {
 
 function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
-    result.episodes = shuffleArray(result.episodes.filter((episode) => {
-        return filters.medias[episode.media.name] && episode.verified;
-    }));
+    result.episodes = result.episodes
+        .filter((episode) => {
+            return filters.medias[episode.media.name] && episode.verified;
+        })
+        .sort((epX, epY) => {
+            return epX.releaseDate > epY.releaseDate ? -1 : 1;
+        })
+        .reduce((tot, ep) => {
+            const epIndex = tot.findIndex((med => med.name === ep.media.name));
+            if (epIndex > -1) {
+                tot[epIndex].episodes.push(ep);
+            } else {
+                tot.push({
+                    episodes: [ep],
+                    name: ep.media.name,
+                    logoMin: MEDIA_LOGOS.find((med => med.name === ep.media.name)).logoMin || null
+                });
+            }
+            return tot;
+        }, [])
+        .reduce((tot, med) => {
+            med.episodes.forEach((ep) => {
+                tot.push(ep);
+            })
+            return tot;
+        }, [])
 
     let medias = result.episodes.map(episode => episode.media);
     medias = medias.filter((media, index) => {
