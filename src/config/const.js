@@ -194,6 +194,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/kagoHyperbrother.jpg"),
         type: "video"
     },
+    {
+        name: "La Playade Interviews",
+        logoMin: require("../assets/logos/medias/laPlayade.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
