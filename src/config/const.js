@@ -108,6 +108,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
         type: "podcast",
     },
+    {
+        name: "Ryo Va Vous Causer !",
+        logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
