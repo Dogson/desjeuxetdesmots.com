@@ -204,6 +204,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/laPlayade.jpg"),
         type: "video"
     },
+    {
+        name: "Red Marmotte",
+        logoMin: require("../assets/logos/medias/redMarmotte.jpg"),
+        type: "video"
+    },
 ];
 //
 // const VIDEOS = [
