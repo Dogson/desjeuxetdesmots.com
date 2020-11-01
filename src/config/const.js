@@ -103,6 +103,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/chezBibouEtBibounette.jpg"),
         type: "podcast",
     },
+    {
+        name: "Jeu vidéo et synapseries",
+        logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
@@ -207,6 +212,11 @@ export const MEDIA_LOGOS = [
     {
         name: "Red Marmotte",
         logoMin: require("../assets/logos/medias/redMarmotte.jpg"),
+        type: "video"
+    },
+    {
+        name: "Les Jeux du Passé",
+        logoMin: require("../assets/logos/medias/lesJeuxDuPasse.jpg"),
         type: "video"
     },
 ];
