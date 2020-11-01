@@ -12,8 +12,6 @@ import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner"
 import {NavLink, withRouter} from 'react-router-dom'
 import queryString from "query-string/index";
 import InfiniteScroll from 'react-infinite-scroller';
-import * as moment from "moment/moment";
-// import ReactTooltip from "react-tooltip";
 import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 import {isEqual} from "lodash";
 
@@ -156,7 +154,7 @@ const GameGrid = ({games, loading}) => {
                             {game.name}
                         </div>
                         <div className={styles.secondaryInfoContainer}>
-                            {moment.isMoment(game.releaseDate) ? game.releaseDate.format('YYYY') : "A venir"}
+                            {game.formattedDate}
                         </div>
                         <MediaLogos game={game}/>
                     </div>

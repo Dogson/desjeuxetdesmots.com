@@ -72,7 +72,7 @@ function _mapResultToGame(result) {
     return {
         ...result,
         medias,
-        releaseDate: moment(result.releaseDate)
+        formattedDate: moment(result.releaseDate).format("YYYY") !== "2077" ? moment(result.releaseDate).format("YYYY") : "À venir"
     }
 }
 
@@ -82,7 +82,14 @@ export async function getGamesFromIGDB({search, limit = 100, alternativeSearch})
         limit,
         noFilter: alternativeSearch
     };
-    return await get(API_CONFIG.endpoints.IGDB, params);
+    const result = await get(API_CONFIG.endpoints.IGDB, params)
+    return result.map((game) => {
+        console.log(game);
+        return {
+            ...game,
+            formattedDate: moment(game.releaseDate).format("YYYY") !== "2077" ? moment(game.releaseDate).format("YYYY") : "À venir",
+        };
+    })
 }
 
 function _mapFilter(filter) {

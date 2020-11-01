@@ -126,7 +126,7 @@ class GamePage extends React.Component {
                                     })}
                                 </div>
                                 <div className={styles.gameDate}>
-                                    {moment(currentGame.releaseDate).format('YYYY')}
+                                    {currentGame.formattedDate}
                                 </div>
                             </div>
                         </div>

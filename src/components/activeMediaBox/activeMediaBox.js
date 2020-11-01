@@ -339,7 +339,7 @@ class ActiveMediaBox extends React.Component {
                                         })} key={result.igbdId}
                                                     onClick={() => this._handleClickSuggestion(result)}>
                                             {result.name} ({
-                                            moment(result.releaseDate).format('YYYY') || "A venir"
+                                            result.formattedDate
                                         })
                                         </div>
                                     })}
