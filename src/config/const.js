@@ -98,6 +98,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/laCazRetro.jpg"),
         type: "podcast",
     },
+    {
+        name: "Chez Bibou et Bibounette",
+        logoMin: require("../assets/logos/medias/chezBibouEtBibounette.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
