@@ -109,8 +109,8 @@ export const MEDIA_LOGOS = [
         type: "podcast",
     },
     {
-        name: "Ryo Va Vous Causer !",
-        logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
+        name: "Pragmastick",
+        logoMin: require("../assets/logos/medias/pragmastick.jpg"),
         type: "podcast",
     },
     //VIDEOS
@@ -223,6 +223,11 @@ export const MEDIA_LOGOS = [
         name: "Les Jeux du Passé",
         logoMin: require("../assets/logos/medias/lesJeuxDuPasse.jpg"),
         type: "video"
+    },
+    {
+        name: "Ryo Va Vous Causer !",
+        logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
+        type: "podcast",
     },
 ];
 //
