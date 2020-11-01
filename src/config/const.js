@@ -113,6 +113,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/pragmastick.jpg"),
         type: "podcast",
     },
+    {
+        name: "octopaddle le podcast",
+        logoMin: require("../assets/logos/medias/octopaddle.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
