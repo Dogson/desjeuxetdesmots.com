@@ -81,13 +81,37 @@
       }
     }
 
-    .badge {
+    .gradient {
+      background: $color-dark-1;
+      background: linear-gradient($color-dark-2 0%, rgba($color-dark-1, 0) 35%);
       position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .cardHeader {
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 1;
+      padding: 5px;
+    }
+
+    .mediaName {
+      color: $color-bright-1;
+      margin-left: 8px;
+      font-size: $size-small;
+    }
+
+    .badge {
       height: 35px;
       width: 35px;
-      opacity: 1;
-      top: 5px;
-      left: 5px;
+
 
       img {
         width: 100%;

@@ -82,7 +82,7 @@ class Carousel extends Component {
                                              media={episode}
                                              onClick={() => onClickItem(episode)}
                                              smaller={smallerCards}
-                                                hideRibbon={!this.props.authUser}/> :
+                                             hideRibbon={!this.props.authUser}/> :
                                 <EmptyCard smaller={smallerCards}/>}
                         </div>
                     })}
@@ -115,8 +115,12 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
             height: '115px',
             backgroundImage: `url(${thumbnail})`
         } : {backgroundImage: `url(${thumbnail})`}}/>
-        <div className={styles.badge}>
-            <img src={mediaLogo && mediaLogo.logoMin} alt={media.media.name}/>
+        <div className={styles.gradient}/>
+        <div className={styles.cardHeader}>
+            <div className={styles.badge}>
+                <img src={mediaLogo && mediaLogo.logoMin} alt=""/>
+            </div>
+            <div className={styles.mediaName}>{media.media.name}</div>
         </div>
         <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
     </div>
