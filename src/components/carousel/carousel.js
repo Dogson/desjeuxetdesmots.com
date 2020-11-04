@@ -115,7 +115,7 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
             height: '115px',
             backgroundImage: `url(${thumbnail})`
         } : {backgroundImage: `url(${thumbnail})`}}/>
-        <div className={styles.gradient}/>
+        <div className={styles.gradient} style={smaller ? {height: '115px'} : {}}/>
         <div className={styles.cardHeader}>
             <div className={styles.badge}>
                 <img src={mediaLogo && mediaLogo.logoMin} alt=""/>
