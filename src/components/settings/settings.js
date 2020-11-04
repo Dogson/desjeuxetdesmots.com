@@ -199,7 +199,7 @@ class Settings extends React.Component {
             <Popover
                 isOpen={isOpen}
                 onOuterAction={this._handleTogglePopover}
-                place={this.props.isTablet() || this.props.isMobile() ? "below" : "left"}
+                place={"below"}
                 body={this.renderPopoverContent()}
             >
                 <FaCog className={cx(styles.adminButton, isOpen && styles.active)}
