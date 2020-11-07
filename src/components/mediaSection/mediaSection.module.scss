@@ -13,7 +13,7 @@
     transition: background-color 0.3s ease-in-out, max-height 0.3s ease-in-out;
     overflow: hidden;
 
-    .activeMediaContainer {
+    .activeEpisodeContainer {
       opacity: 0;
       transition: all 0.2s ease-in-out 0.2s;
     }
@@ -21,7 +21,7 @@
     &.mediaRowContainerActive {
       background-color: $color-dark-2;
 
-      .activeMediaContainer {
+      .activeEpisodeContainer {
         opacity: 1;
       }
     }

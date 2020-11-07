@@ -7,7 +7,7 @@ export default (state = {
     }
 }, action) => {
     switch (action.type) {
-        case ACTIONS_MEDIAS.SET_MEDIAS_LIST:
+        case ACTIONS_MEDIAS.SET_EPISODES_LIST:
             return {
                 ...state,
                 medias: action.payload,
@@ -17,10 +17,10 @@ export default (state = {
                 ...state,
                 episodeActive: action.payload,
             };
-        case ACTIONS_MEDIAS.SET_PLAYED_MEDIA:
+        case ACTIONS_MEDIAS.SET_PLAYED_EPISODE:
             return {
                 ...state,
-                mediaPlayed: action.payload,
+                episodePlayed: action.payload,
             };
         case ACTIONS_MEDIAS.SET_PLAY_STATE:
             return {

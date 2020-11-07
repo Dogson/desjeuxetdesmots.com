@@ -45,7 +45,7 @@ class PlayVideo extends React.Component {
 const mapStateToProps = state => {
     return {
         episodeActive: state.mediaReducer.episodeActive,
-        mediaPlayed: state.mediaReducer.mediaPlayed,
+        episodePlayed: state.mediaReducer.episodePlayed,
         playState: state.mediaReducer.playState
     }
 };

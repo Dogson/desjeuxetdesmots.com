@@ -6,14 +6,14 @@ import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_LOGOS} from "../../config/const";
 
 const PlayPodcast = (props) => {
-    const {episodeActive, mediaPlayed, playState} = props;
+    const {episodeActive, episodePlayed, playState} = props;
     const mediaLogo = MEDIA_LOGOS.find(med => episodeActive.media.name === med.name)
     const thumbnail = episodeActive && ((mediaLogo && mediaLogo.overrideThumbnail) || episodeActive.image);
 
     return episodeActive ?
         <div className={styles.playPodcastContainer} onClick={() => {
             props.dispatch({
-                type: ACTIONS_MEDIAS.SET_PLAYED_MEDIA,
+                type: ACTIONS_MEDIAS.SET_PLAYED_EPISODE,
                 payload: {
                     _id: episodeActive._id,
                     name: episodeActive.name,
@@ -25,12 +25,12 @@ const PlayPodcast = (props) => {
             props.dispatch({
                 type: ACTIONS_MEDIAS.SET_PLAY_STATE,
                 payload: {
-                    isPaused: mediaPlayed && mediaPlayed._id === episodeActive._id && !playState.isPaused
+                    isPaused: episodePlayed && episodePlayed._id === episodeActive._id && !playState.isPaused
                 }
             });
         }}>
             <img src={thumbnail} alt={episodeActive.name}/>
-            {mediaPlayed && mediaPlayed._id === episodeActive._id && !playState.isPaused ?
+            {episodePlayed && episodePlayed._id === episodeActive._id && !playState.isPaused ?
                 <FaPause className={styles.playIcon}/> :
                 <FaPlay className={styles.playIcon}/>
             }
@@ -41,7 +41,7 @@ const PlayPodcast = (props) => {
 const mapStateToProps = state => {
     return {
         episodeActive: state.mediaReducer.episodeActive,
-        mediaPlayed: state.mediaReducer.mediaPlayed,
+        episodePlayed: state.mediaReducer.episodePlayed,
         playState: state.mediaReducer.playState
     }
 };

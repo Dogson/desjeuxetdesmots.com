@@ -8,7 +8,7 @@ import Carousel from "../carousel/carousel";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {findPos} from "../../utils";
 import {setGamesForMedia, toggleVerifyMedia} from "../../endpoints/mediasEndpoint";
-import ActiveMediaBox from "../activeMediaBox/activeMediaBox";
+import ActiveMediaBox from "../activeEpisodeBox/activeEpisodeBox";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 
 class MediaSection extends React.Component {
@@ -80,7 +80,7 @@ class MediaSection extends React.Component {
             return media;
         });
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+            type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
             payload: updatedMedias
         });
         this.goToNextMedia();
@@ -114,7 +114,7 @@ class MediaSection extends React.Component {
                               }}
                               activeItem={activeItem}
                               smallerCards={media.type === "video"}/>
-                    <div className={styles.activeMediaContainer}>
+                    <div className={styles.activeEpisodeContainer}>
                         {episodeActive && episodeActive.media && media[rowAttribute] === episodeActive.media[rowAttribute] && this.renderActiveMedia(episodeActive, media.ref)}
                     </div>
                 </div>

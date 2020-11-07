@@ -16,8 +16,8 @@ class MediaPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.mediaPlayed) {
-            if (this.hasMediaPlayedChanged(prevProps.mediaPlayed, this.props.mediaPlayed)) {
+        if (this.props.episodePlayed) {
+            if (this.hasMediaPlayedChanged(prevProps.episodePlayed, this.props.episodePlayed)) {
                 this.audioInstance.playNext();
             } else {
                 if (this.isAudioContextDifferentFromState(this.props.playState)) {
@@ -50,10 +50,10 @@ class MediaPlayer extends React.Component {
 
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new window.MediaMetadata({
-                title: this.props.mediaPlayed.name,
-                artist: this.props.mediaPlayed.singer,
+                title: this.props.episodePlayed.name,
+                artist: this.props.episodePlayed.singer,
                 artwork: [
-                    {src: this.props.mediaPlayed.cover, sizes: '256*256', type: 'image/png'},
+                    {src: this.props.episodePlayed.cover, sizes: '256*256', type: 'image/png'},
                 ]
             });
         }
@@ -71,22 +71,22 @@ class MediaPlayer extends React.Component {
 
     _handleDownload() {
         const link = document.createElement("a");
-        link.download = this.props.mediaPlayed.musicSrc;
-        link.href = this.props.mediaPlayed.musicSrc;
+        link.download = this.props.episodePlayed.musicSrc;
+        link.href = this.props.episodePlayed.musicSrc;
         link.click();
         link.remove();
     }
 
 
     render() {
-        if (!this.props.mediaPlayed) {
+        if (!this.props.episodePlayed) {
             return null
         }
         const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
         return (
             <>
                 <ReactJkMusicPlayer
-                    audioLists={[this.props.mediaPlayed]}
+                    audioLists={[this.props.episodePlayed]}
                     autoPlay={true}
                     glassBg={true}
                     mode="full"
@@ -111,7 +111,7 @@ class MediaPlayer extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaPlayed: state.mediaReducer.mediaPlayed,
+        episodePlayed: state.mediaReducer.episodePlayed,
         playState: state.mediaReducer.playState
     }
 };

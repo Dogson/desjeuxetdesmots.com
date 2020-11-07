@@ -1,6 +1,6 @@
 @import "src/index";
 
-.activeMediaBoxContainer {
+.activeEpisodeBoxContainer {
   width: 100%;
   @extend .flexColumn;
   margin: 0 20px 30px;
@@ -178,7 +178,7 @@
 }
 
 @media #{$media-tablet} {
-  .activeMediaBoxContainer {
+  .activeEpisodeBoxContainer {
     margin: 0;
     padding: 0 20px 30px 20px;
     box-sizing: border-box;
@@ -207,7 +207,7 @@
 }
 
 @media #{$media-phone} {
-  .activeMediaBoxContainer {
+  .activeEpisodeBoxContainer {
 
     .titleContainer {
 

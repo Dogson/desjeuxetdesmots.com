@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./activeMediaBox.module.scss";
+import styles from "./activeEpisodeBox.module.scss";
 import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
@@ -200,7 +200,7 @@ class ActiveMediaBox extends React.Component {
             return epGame._id !== this.props.currentGame._id;
         });
         const {media} = this.props;
-        return <div className={styles.activeMediaBoxContainer}>
+        return <div className={styles.activeEpisodeBoxContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
