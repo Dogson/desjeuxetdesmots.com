@@ -12,6 +12,11 @@ export default (state = {
                 ...state,
                 medias: action.payload,
             };
+        case ACTIONS_MEDIAS.SET_CURRENT_MEDIA:
+            return {
+                ...state,
+                currentMedia: action.payload,
+            };
         case ACTIONS_MEDIAS.SET_ACTIVE_EPISODE:
             return {
                 ...state,
