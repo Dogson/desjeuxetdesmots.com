@@ -11,7 +11,7 @@ class AdminMediaSection extends React.Component {
         getAllMedia()
             .then((medias) => {
                 this.props.dispatch({
-                    type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
+                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
                     payload: medias
                 });
             })

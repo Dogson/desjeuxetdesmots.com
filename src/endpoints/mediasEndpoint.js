@@ -8,7 +8,7 @@ export async function getAllMedia() {
     return _sortEpisodesByMedia(medias);
 }
 
-export async function setGamesForMedia({episodeId, games}) {
+export async function setGamesForEpisode({episodeId, games}) {
     const response = await put(`${API_CONFIG.endpoints.MEDIA}/${episodeId}`, {
         games: games,
         verified: true
@@ -16,7 +16,7 @@ export async function setGamesForMedia({episodeId, games}) {
     return response.data;
 }
 
-export async function toggleVerifyMedia({episodeId, verified}) {
+export async function toggleVerifyEpisode({episodeId, verified}) {
     const response = await put(`${API_CONFIG.endpoints.MEDIA}/${episodeId}`, {
         verified: verified
     });

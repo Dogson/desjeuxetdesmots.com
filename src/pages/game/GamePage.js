@@ -37,7 +37,7 @@ class GamePage extends React.Component {
                 payload: null
             });
             this.props.dispatch({
-                type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
+                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
                 payload: this.sortEpisodesByMediaTypes(this.props.currentGame.episodes)
             });
         }
@@ -66,7 +66,7 @@ class GamePage extends React.Component {
         if (this.props.location.game) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: this.props.location.game});
             this.props.dispatch({
-                type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
+                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
                 payload: this.sortEpisodesByMediaTypes(this.props.location.game.episodes)
             });
         } else {
@@ -75,7 +75,7 @@ class GamePage extends React.Component {
                 .then((game) => {
                     this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
                     this.props.dispatch({
-                        type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
+                        type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
                         payload: this.sortEpisodesByMediaTypes(game.episodes)
                     });
                 })

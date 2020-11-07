@@ -20,7 +20,7 @@ import decode from "entity-decode/browser"
 import {Checkbox} from "pretty-checkbox-react";
 import {ACTIONS_USERS} from "../../actions/usersActions";
 
-class ActiveMediaBox extends React.Component {
+class ActiveEpisodeBox extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,10 +28,10 @@ class ActiveMediaBox extends React.Component {
         this._handleChange = this._handleChange.bind(this);
         this._handleClickSuggestion = this._handleClickSuggestion.bind(this);
         this._handleOnSaveGames = this._handleOnSaveGames.bind(this);
-        this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
+        this._handleVerifyEpisode = this._handleVerifyEpisode.bind(this);
         this.state = {
             searchResults: [],
-            episodeGames: this.props.media.games,
+            episodeGames: this.props.episode.games,
             loadingGames: false,
             showSaveBtn: false,
             loadingSuggestions: false,
@@ -53,13 +53,13 @@ class ActiveMediaBox extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.episodeGames.length !== this.state.episodeGames.length) {
-            if (this.state.episodeGames.length !== this.props.media.games.length) {
+            if (this.state.episodeGames.length !== this.props.episode.games.length) {
                 this.setState({showSaveBtn: true});
             } else {
                 const episodeGamesIds = this.state.episodeGames.map((currentGame) => {
                     return currentGame.igdbId;
                 }).sort();
-                const gamesIds = this.props.media.games.map((game) => {
+                const gamesIds = this.props.episode.games.map((game) => {
                     return game.igdbId;
                 }).sort();
                 let showSaveBtn = false;
@@ -72,14 +72,14 @@ class ActiveMediaBox extends React.Component {
                 this.setState({showSaveBtn});
             }
         }
-        if (prevProps.media._id !== this.props.media._id) {
+        if (prevProps.episode._id !== this.props.episode._id) {
             this.setState({loadingGames: true})
-            if (this.props.media.games[0] && typeof this.props.media.games[0] === "string")
-                getGamesById(this.props.media.games).then((games) => {
+            if (this.props.episode.games[0] && typeof this.props.episode.games[0] === "string")
+                getGamesById(this.props.episode.games).then((games) => {
                     this.setState({episodeGames: games, loadingGames: false});
                 });
             else {
-                this.setState({episodeGames: this.props.media.games, loadingGames: false});
+                this.setState({episodeGames: this.props.episode.games, loadingGames: false});
             }
         }
         if (this.state.searchInput !== prevState.searchInput || this.state.alternativeSearch !== prevState.alternativeSearch) {
@@ -149,12 +149,12 @@ class ActiveMediaBox extends React.Component {
             })
     }
 
-    _handleVerifyMedia() {
+    _handleVerifyEpisode() {
         if (this.state.loadingSaveGames || !this.props.authUser) {
             return;
         }
         this.setState({loadingSaveGames: true});
-        return this.props.onVerifyMedia()
+        return this.props.onVerifyEpisode()
             .then(() => {
                 this.setState({loadingSaveGames: false, showSaveBtn: false});
             })
@@ -170,9 +170,9 @@ class ActiveMediaBox extends React.Component {
         });
     }
 
-    renderMediaAuthorAndDate() {
-        const {media} = this.props;
-        const name = media.media.name;
+    renderEpisodeAuthorAndDate() {
+        const {episode} = this.props;
+        const name = episode.media.name;
         const mediaLogo = MEDIA_LOGOS.find(med => med.name === name)
         const logo = mediaLogo && mediaLogo.logoMin;
 
@@ -181,7 +181,7 @@ class ActiveMediaBox extends React.Component {
             <div>
                 <div className={styles.author}>{name}</div>
                 <div className={styles.date}>
-                    {moment(media.releaseDate).format('DD/MM/YYYY')}
+                    {moment(episode.releaseDate).format('DD/MM/YYYY')}
                 </div>
             </div>
         </div>
@@ -192,23 +192,23 @@ class ActiveMediaBox extends React.Component {
         const {loadingGames} = this.state;
         let {episodeGames, alternativeSearch} = this.state;
         if (loadingGames) {
-            episodeGames = this.props.media.games.map((game) => {
+            episodeGames = this.props.episode.games.map((game) => {
                 return {_id: game}
             });
         }
         episodeGames = user ? episodeGames : episodeGames.filter((epGame) => {
             return epGame._id !== this.props.currentGame._id;
         });
-        const {media} = this.props;
+        const {episode} = this.props;
         return <div className={styles.activeEpisodeBoxContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    {media.name}
+                    {episode.name}
                 </div>
-                {this.renderMediaAuthorAndDate()}
-                {media.media.type === "podcast" &&
+                {this.renderEpisodeAuthorAndDate()}
+                {episode.media.type === "podcast" &&
                 <div className={styles.subscribeBtn}><a className={cx(styles.btn)}
-                                                        href={`podcast://${media.media.feedUrl}`}>S'abonner avec votre
+                                                        href={`podcast://${episode.media.feedUrl}`}>S'abonner avec votre
                     app de
                     podcasts</a></div>}
             </div>
@@ -218,7 +218,7 @@ class ActiveMediaBox extends React.Component {
 
                         {this.state.showFullDesc ?
                             <div>
-                                {media.description.split("\n").map((line, key) => {
+                                {episode.description.split("\n").map((line, key) => {
                                     return <div style={{minHeight: 10}}
                                                 key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
                                 })}
@@ -234,7 +234,7 @@ class ActiveMediaBox extends React.Component {
                             })}
                                                                              className={cx(styles.readMoreBtn)}>Voir plus</button></span>}>
                                 <div>
-                                    {media.description.split("\n").map((line, key) => {
+                                    {episode.description.split("\n").map((line, key) => {
                                         return <div style={{minHeight: 10}}
                                                     key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
                                     })}
@@ -242,12 +242,12 @@ class ActiveMediaBox extends React.Component {
                             </Truncate>
                         }
                     </div>
-                    {user && <div className={styles.description}>{media.keywords}</div>}
+                    {user && <div className={styles.description}>{episode.keywords}</div>}
                 </div>
                 <div className={styles.rightRow}>
                     <div className={styles.rightRowContainer}>
                         <div className={styles.mediaPlayerContainer}>
-                            {media.media.type === "podcast" ?
+                            {episode.media.type === "podcast" ?
                                 <PlayPodcast/> :
                                 <PlayVideo/>}
                         </div>
@@ -270,8 +270,8 @@ class ActiveMediaBox extends React.Component {
                                 </div>
                             </div> :
                             <div className={styles.verifyContainer}>
-                                {media.verified || !user ? null :
-                                    <div onClick={this._handleVerifyMedia} data-tip="Marquer comme vérifié"
+                                {episode.verified || !user ? null :
+                                    <div onClick={this._handleVerifyEpisode} data-tip="Marquer comme vérifié"
                                          data-for="verifyAndSave">
                                         {!this.state.loadingSaveGames ? <FaCheck className={styles.icon}/> :
                                             <Loader
@@ -389,4 +389,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default withRouter(connect(mapStateToProps)(ActiveMediaBox));
+export default withRouter(connect(mapStateToProps)(ActiveEpisodeBox));
