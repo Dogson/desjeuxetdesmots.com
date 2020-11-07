@@ -6,5 +6,7 @@ Plateforme web de découverte de podcasts et vidéastes francophones qui analyse
 
 ## Development   
 ReactJS
+
 NestJS
+
 IGDB API, GAMER JUICE API, Youtube API v3
