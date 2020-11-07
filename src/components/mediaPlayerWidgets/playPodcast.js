@@ -6,31 +6,31 @@ import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {MEDIA_LOGOS} from "../../config/const";
 
 const PlayPodcast = (props) => {
-    const {mediaActive, mediaPlayed, playState} = props;
-    const mediaLogo = MEDIA_LOGOS.find(med => mediaActive.media.name === med.name)
-    const thumbnail = mediaActive && ((mediaLogo && mediaLogo.overrideThumbnail) || mediaActive.image);
+    const {episodeActive, mediaPlayed, playState} = props;
+    const mediaLogo = MEDIA_LOGOS.find(med => episodeActive.media.name === med.name)
+    const thumbnail = episodeActive && ((mediaLogo && mediaLogo.overrideThumbnail) || episodeActive.image);
 
-    return mediaActive ?
+    return episodeActive ?
         <div className={styles.playPodcastContainer} onClick={() => {
             props.dispatch({
                 type: ACTIONS_MEDIAS.SET_PLAYED_MEDIA,
                 payload: {
-                    _id: mediaActive._id,
-                    name: mediaActive.name,
-                    singer: mediaActive.media.name,
+                    _id: episodeActive._id,
+                    name: episodeActive.name,
+                    singer: episodeActive.media.name,
                     cover: thumbnail,
-                    musicSrc: mediaActive.fileUrl,
+                    musicSrc: episodeActive.fileUrl,
                 }
             });
             props.dispatch({
                 type: ACTIONS_MEDIAS.SET_PLAY_STATE,
                 payload: {
-                    isPaused: mediaPlayed && mediaPlayed._id === mediaActive._id && !playState.isPaused
+                    isPaused: mediaPlayed && mediaPlayed._id === episodeActive._id && !playState.isPaused
                 }
             });
         }}>
-            <img src={thumbnail} alt={mediaActive.name}/>
-            {mediaPlayed && mediaPlayed._id === mediaActive._id && !playState.isPaused ?
+            <img src={thumbnail} alt={episodeActive.name}/>
+            {mediaPlayed && mediaPlayed._id === episodeActive._id && !playState.isPaused ?
                 <FaPause className={styles.playIcon}/> :
                 <FaPlay className={styles.playIcon}/>
             }
@@ -40,7 +40,7 @@ const PlayPodcast = (props) => {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive,
+        episodeActive: state.mediaReducer.episodeActive,
         mediaPlayed: state.mediaReducer.mediaPlayed,
         playState: state.mediaReducer.playState
     }

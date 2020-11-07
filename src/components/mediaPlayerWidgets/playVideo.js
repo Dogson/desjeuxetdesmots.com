@@ -33,10 +33,10 @@ class PlayVideo extends React.Component {
         };
 
 
-        const {mediaActive} = this.props;
+        const {episodeActive} = this.props;
         const beforeId = 'watch?v=';
-        const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);
-        return mediaActive ?
+        const mediaId = episodeActive.fileUrl.slice(episodeActive.fileUrl.indexOf('watch?v=') + beforeId.length);
+        return episodeActive ?
             <div className={styles.videoContainer}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
             null
     }
@@ -44,7 +44,7 @@ class PlayVideo extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive,
+        episodeActive: state.mediaReducer.episodeActive,
         mediaPlayed: state.mediaReducer.mediaPlayed,
         playState: state.mediaReducer.playState
     }

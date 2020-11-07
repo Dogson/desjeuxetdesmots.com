@@ -12,10 +12,10 @@ export default (state = {
                 ...state,
                 medias: action.payload,
             };
-        case ACTIONS_MEDIAS.SET_ACTIVE_MEDIA:
+        case ACTIONS_MEDIAS.SET_ACTIVE_EPISODE:
             return {
                 ...state,
-                mediaActive: action.payload,
+                episodeActive: action.payload,
             };
         case ACTIONS_MEDIAS.SET_PLAYED_MEDIA:
             return {

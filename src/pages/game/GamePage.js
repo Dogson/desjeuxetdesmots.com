@@ -33,7 +33,7 @@ class GamePage extends React.Component {
         } else {
             window.scrollTo({top: 0, behavior: "auto"});
             this.props.dispatch({
-                type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+                type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
                 payload: null
             });
             this.props.dispatch({
@@ -58,7 +58,7 @@ class GamePage extends React.Component {
     refreshGame() {
         window.scrollTo({top: 0, behavior: 'auto'});
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
             payload: null
         });
         const gameId = String(this.props.match.params.gameId);
@@ -140,7 +140,7 @@ class GamePage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive,
+        episodeActive: state.mediaReducer.episodeActive,
         currentGame: state.gamesReducer.currentGame,
         settings: state.settingsReducer.settings,
     }

@@ -22,7 +22,7 @@ class MediaSection extends React.Component {
 
     _handleClickMedia(episode, ref) {
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
             payload: {...episode}
         });
         setTimeout(() => {
@@ -33,7 +33,7 @@ class MediaSection extends React.Component {
     _handleSaveGames(games) {
         return setGamesForMedia({
             games,
-            episodeId: this.props.mediaActive._id
+            episodeId: this.props.episodeActive._id
         })
             .then((result) => {
                 this.saveMedia(result);
@@ -43,7 +43,7 @@ class MediaSection extends React.Component {
     _handleVerifyMedia() {
         return toggleVerifyMedia({
             verified: true,
-            episodeId: this.props.mediaActive._id
+            episodeId: this.props.episodeActive._id
         })
             .then((newMedia) => {
                 this.saveMedia(newMedia);
@@ -53,17 +53,17 @@ class MediaSection extends React.Component {
     goToNextMedia() {
         let episodes = [];
         this.props.medias.forEach((media) => {
-            if (media.name === this.props.mediaActive.media.name) {
+            if (media.name === this.props.episodeActive.media.name) {
                episodes = media.episodes;
             }
         })
         const mappedMedia = episodes.map(media => media.name);
         const currentMediaIndex = mappedMedia.findIndex((media) => {
-            return media === this.props.mediaActive.name
+            return media === this.props.episodeActive.name
         });
         const nextMedia = episodes[currentMediaIndex + 1];
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
             payload: nextMedia
         });
     }
@@ -86,23 +86,23 @@ class MediaSection extends React.Component {
         this.goToNextMedia();
     }
 
-    renderActiveMedia(mediaActive, ref) {
-        return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
+    renderActiveMedia(episodeActive, ref) {
+        return <div ref={ref}><ActiveMediaBox media={episodeActive} onSaveGames={this._handleSaveGames}
                                               onVerifyMedia={this._handleVerifyMedia}
         /></div>
     }
 
     renderMediaRow(media) {
-        const {mediaActive, rowAttribute} = this.props;
-        let mediaActiveType;
-        if (mediaActive && mediaActive.media) {
-            mediaActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === mediaActive.media.type);
+        const {episodeActive, rowAttribute} = this.props;
+        let episodeActiveType;
+        if (episodeActive && episodeActive.media) {
+            episodeActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === episodeActive.media.type);
         }
         const medias = media.episodes;
-        const activeItem = this.props.mediaActive;
+        const activeItem = this.props.episodeActive;
         if (medias && medias.length > 0) {
             return <div key={media.name}
-                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: mediaActive && mediaActive.media && mediaActiveType && media.type === mediaActiveType.dataLabel})}>
+                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: episodeActive && episodeActive.media && episodeActiveType && media.type === episodeActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
                         <img className={styles.imageContainer} src={media.logoMin} alt={media.name}/>
@@ -115,7 +115,7 @@ class MediaSection extends React.Component {
                               activeItem={activeItem}
                               smallerCards={media.type === "video"}/>
                     <div className={styles.activeMediaContainer}>
-                        {mediaActive && mediaActive.media && media[rowAttribute] === mediaActive.media[rowAttribute] && this.renderActiveMedia(mediaActive, media.ref)}
+                        {episodeActive && episodeActive.media && media[rowAttribute] === episodeActive.media[rowAttribute] && this.renderActiveMedia(episodeActive, media.ref)}
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@ class MediaSection extends React.Component {
 const mapStateToProps = state => {
     return {
         medias: state.mediaReducer.medias,
-        mediaActive: state.mediaReducer.mediaActive,
+        episodeActive: state.mediaReducer.episodeActive,
         currentGame: state.gamesReducer.currentGame
     }
 };
