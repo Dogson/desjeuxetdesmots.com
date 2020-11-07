@@ -2,20 +2,33 @@ import React from "react";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import styles from "./mediaPage.module.scss";
+import PageLayout from "../../layouts/PageLayout";
+import {Helmet} from "react-helmet";
 
 class MediaPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            game: {},
             loading: false,
             error: false
         };
     }
 
+    componentDidMount() {
+        const {currentMedia} = this.props;
+    }
+
     render() {
-        return null;
+        const {currentMedia} = this.props;
+
+        return <PageLayout smallHeader>
+            {currentMedia && currentMedia.name && <Helmet title={`${currentMedia.name} - Des jeux et des mots`}/>}
+
+            <div className={styles.mediaPageContainer}>
+
+            </div>
+        </PageLayout>
     }
 }
 

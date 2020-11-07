@@ -112,6 +112,13 @@ class Homepage extends Component {
             <div className={styles.subtitle}>Prendre le temps d'écouter celles et ceux qui prennent le temps d'analyser
                 vos jeux favoris.
             </div>
+
+            {/*TODO remove*/}
+            <NavLink to={{
+                pathname: `/media/Canard PC`
+            }}
+                     className={styles.cardContainer}>KEKEK</NavLink>
+
             <div className={cx(styles.inputContainer, {[styles.focus]: this.state.inputFocused})}>
                 <FaSearch className={styles.icon}/>
                 <DebounceInput

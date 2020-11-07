@@ -10,7 +10,7 @@ export default (state = {
         case ACTIONS_MEDIAS.SET_MEDIAS_LIST:
             return {
                 ...state,
-                medias: action.payload,
+                medias: action.payload
             };
         case ACTIONS_MEDIAS.SET_CURRENT_MEDIA:
             return {

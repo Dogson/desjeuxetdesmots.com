@@ -21,7 +21,7 @@ class App extends Component {
                     <Route path="/" exact component={withTracker(Index)}/>
                     <Route path="/admin" exact component={withTracker(Admin)}/>
                     <Route exact path="/game/:gameId" component={withTracker(GamePage)}/>
-                    <Route exact path="/media/:mediaId" component={withTracker(MediaPage)}/>
+                    <Route exact path="/media/:mediaName" component={withTracker(MediaPage)}/>
                     <Route component={withTracker(PageNotFound)}/>
                 </Switch>
                 <MediaPlayer/>
