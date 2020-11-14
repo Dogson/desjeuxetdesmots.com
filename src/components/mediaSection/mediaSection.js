@@ -54,7 +54,7 @@ class MediaSection extends React.Component {
         let episodes = [];
         this.props.medias.forEach((media) => {
             if (media.name === this.props.episodeActive.media.name) {
-               episodes = media.episodes;
+                episodes = media.episodes;
             }
         })
         const mappedEpisodes = episodes.map(ep => ep.name);
@@ -70,7 +70,6 @@ class MediaSection extends React.Component {
 
     saveEpisode(newEpisode) {
         const {medias} = this.props;
-        console.log(medias);
         const updatedMedias = medias.map((media) => {
             media.episodes = media.episodes.map((episode) => {
                 if (episode._id === newEpisode._id) {
@@ -80,7 +79,6 @@ class MediaSection extends React.Component {
             });
             return media;
         });
-        console.log(updatedMedias);
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
             payload: updatedMedias
@@ -90,12 +88,12 @@ class MediaSection extends React.Component {
 
     renderActiveEpisode(episodeActive, ref) {
         return <div ref={ref}><ActiveEpisodeBox episode={episodeActive} onSaveGames={this._handleSaveGames}
-                                              onVerifyEpisode={this._handleVerifyEpisode}
+                                                onVerifyEpisode={this._handleVerifyEpisode}
         /></div>
     }
 
     renderMediaRow(media) {
-        const {episodeActive, rowAttribute} = this.props;
+        const {episodeActive, rowAttribute, carouselTitle, carouselImg, noTitle} = this.props;
         let episodeActiveType;
         if (episodeActive && episodeActive.media) {
             episodeActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === episodeActive.media.type);
@@ -106,10 +104,10 @@ class MediaSection extends React.Component {
             return <div key={media.name}
                         className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: episodeActive && episodeActive.media && episodeActiveType && media.type === episodeActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
-                    <div className={styles.title}>
-                        <img className={styles.imageContainer} src={media.logoMin} alt={media.name}/>
-                        {media.name}
-                    </div>
+                    {!noTitle && <div className={styles.title}>
+                        <img className={styles.imageContainer} src={carouselImg || media.logoMin} alt={media.name}/>
+                        {carouselTitle || media.name}
+                    </div>}
                     <Carousel medias={medias}
                               onClickItem={(episode) => {
                                   this._handleClickEpisode(episode, media.ref)

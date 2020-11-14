@@ -1,1 +1,100 @@
 @import "../../index";
+
+.mediaPageContainer {
+  margin: 30px 0;
+  width: 100%;
+
+  .mediaTitleContainer {
+    @extend .flexColumn;
+    @extend .flexAlignCenter;
+    color: $color-bright-2;
+    margin-top: 20px;
+    margin-bottom: 40px;
+
+    .mediaLogo {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background-color: $color-dark-2;
+      box-shadow: 2px 2px 0 0 #FFC857;
+      margin-bottom: 10px;
+
+      img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+      }
+    }
+
+    .mediaName {
+      letter-spacing: 1px;
+    }
+
+    .epNumber {
+      font-size: $size-small;
+    }
+  }
+
+  .mediaRowContainer {
+    @extend .flexColumn;
+  }
+
+  .sectionTitle {
+    align-self: center;
+    @extend .flexRow;
+    align-items: center;
+    color: $color-bright-1;
+    font-size: $size-small;
+
+    .imageContainer {
+      height: 35px;
+      width: 35px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background-color: $color-dark-2;
+    }
+
+    .icon {
+      height: auto;
+      width: auto;
+      font-size: 25px;
+      padding: 5px;
+      color: $color-bright-2;
+    }
+
+    img {
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+    }
+  }
+
+  .gamesContainer {
+    @extend .flexColumn;
+
+    .gamesGridTitleContainer {
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+      letter-spacing: 1px;
+      color: $color-bright-1;
+      margin: 0 10px 5px;
+
+      .gamesGridTitleImg {
+        margin-right: 10px;
+        border-radius: 50%;
+        background-color: $color-dark-2;
+        color: $color-bright-2;
+        font-size: 20px;
+        padding: 5px;
+      }
+
+      .gameGridTitleText {
+      }
+    }
+
+    .gamesGrid {
+      align-self: center;
+    }
+  }
+
+}

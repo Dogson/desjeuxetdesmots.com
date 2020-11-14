@@ -19,11 +19,13 @@ export async function getGameById(gameId) {
 }
 
 export async function getGamesBySearch(params) {
+    console.log(params);
     const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
     params.filters = JSON.stringify({
-        "media.name": _mapFilter(filters.medias),
+        "media.name": params["media.name"] || _mapFilter(filters.medias),
     });
+    delete params["media.name"];
     const games = await get(API_CONFIG.endpoints.GAME, params);
     return games.map(_mapResultToGame);
 }
@@ -84,7 +86,6 @@ export async function getGamesFromIGDB({search, limit = 100, alternativeSearch})
     };
     const result = await get(API_CONFIG.endpoints.IGDB, params)
     return result.map((game) => {
-        console.log(game);
         return {
             ...game,
             formattedDate: moment(game.releaseDate).format("YYYY") !== "2077" ? moment(game.releaseDate).format("YYYY") : "À venir",
