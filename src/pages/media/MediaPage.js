@@ -84,8 +84,8 @@ class MediaPage extends React.Component {
     renderCurrentMedia() {
         return <div className={styles.mediaPageContainer}>
             {this.renderMediaTitle()}
-            {this.renderMediaRow()}
-            {this.renderGameGrid()}
+            {this.renderMediaGrid()}
+            {/*{this.renderGameGrid()}*/}
         </div>
     }
 
@@ -106,30 +106,10 @@ class MediaPage extends React.Component {
         </div>
     }
 
-    renderMediaRow() {
-        const {currentMedia} = this.props;
-        const mediaType = currentMedia && MEDIA_TYPES.find(type => type.dataLabel === currentMedia.type);
+    renderMediaGrid() {
         return <div className={styles.mediaRowContainer}>
-            <div className={styles.sectionTitle}>
-                <div className={styles.imageContainer}>
-                    {mediaType && <img src={mediaType.logoMin} alt={mediaType.name}/>}
-                </div>
-                {mediaType && mediaType.name}
-            </div>
             <MediaSection rowAttribute="type"
                           noTitle/>
-        </div>
-    }
-
-    renderGameGrid() {
-        return <div className={styles.gamesContainer}>
-            <div className={styles.sectionTitle}>
-                <FaGamepad className={cx(styles.imageContainer, styles.icon)}/>
-                Jeux vidéos
-            </div>
-            <div className={styles.gamesGrid}>
-                <GameGridContainer disableSearch disableLogos/>
-            </div>
         </div>
     }
 

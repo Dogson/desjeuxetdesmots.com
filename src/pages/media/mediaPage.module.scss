@@ -39,36 +39,6 @@
     @extend .flexColumn;
   }
 
-  .sectionTitle {
-    align-self: center;
-    @extend .flexRow;
-    align-items: center;
-    color: $color-bright-1;
-    font-size: $size-small;
-
-    .imageContainer {
-      height: 35px;
-      width: 35px;
-      margin-right: 10px;
-      border-radius: 50%;
-      background-color: $color-dark-2;
-    }
-
-    .icon {
-      height: auto;
-      width: auto;
-      font-size: 25px;
-      padding: 5px;
-      color: $color-bright-2;
-    }
-
-    img {
-      height: 35px;
-      width: 35px;
-      border-radius: 50%;
-    }
-  }
-
   .gamesContainer {
     @extend .flexColumn;
 
