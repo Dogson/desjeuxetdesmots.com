@@ -309,7 +309,7 @@ class ActiveMediaBox extends React.Component {
                         }
                         {user && <div className={styles.inputWithSuggestionsContainer}>
                             <div
-                                className={cx(styles.inputContainer, styles.small, {[styles.focus]: this.state.inputFocused})}>
+                                className={cx(styles.inputContainer, styles.smallest, {[styles.focus]: this.state.inputFocused})}>
                                 <FaSearch className={styles.icon}/>
                                 <DebounceInput
                                     value={this.state.searchInput}
