@@ -84,7 +84,6 @@ export async function getGamesFromIGDB({search, limit = 100, alternativeSearch})
     };
     const result = await get(API_CONFIG.endpoints.IGDB, params)
     return result.map((game) => {
-        console.log(game);
         return {
             ...game,
             formattedDate: moment(game.releaseDate).format("YYYY") !== "2077" ? moment(game.releaseDate).format("YYYY") : "À venir",
