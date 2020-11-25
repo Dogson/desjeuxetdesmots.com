@@ -87,22 +87,34 @@ class PureHeaderSearchBar extends React.Component {
             previewSearchInput: "",
             inputFocused: false,
             searchResults: [],
-            loading: false,
             cursor: -1,
         }
 
         this._handleKeyDown = this._handleKeyDown.bind(this);
         this._handleHover = this._handleHover.bind(this);
+        this._handleBlur = this._handleBlur.bind(this);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.setState({cursor: -1, searchResults: [], previewSearchInput: ""});
+        }
     }
 
     async _handleChange(search) {
-        this.setState({previewSearchInput: search, loading: true})
+        this.setState({previewSearchInput: search})
         try {
             const games = await getGamesBySearch({name: search, limit: 5});
-            this.setState({searchResults: games, loading: false, cursor: -1})
+            this.setState({searchResults: games, cursor: -1})
         } catch (err) {
             this.setState({error: true})
         }
+    }
+
+    _handleBlur() {
+        window.setTimeout(() => {
+            this.setState({inputFocused: false})
+        }, 100)
     }
 
     _handleKeyDown(e) {
@@ -145,7 +157,7 @@ class PureHeaderSearchBar extends React.Component {
     }
 
     render() {
-        const {previewSearchInput, searchResults, loading, cursor, inputFocused} = this.state;
+        const {previewSearchInput, searchResults, cursor, inputFocused} = this.state;
         const {mobile} = this.props;
 
         return <div className={cx(styles.searchWithPreviewContainer, {[styles.mobile]: mobile})}>
@@ -160,12 +172,12 @@ class PureHeaderSearchBar extends React.Component {
                     onKeyDown={this._handleKeyDown}
                     placeholder="Rechercher un jeu"
                     onFocus={() => this.setState({inputFocused: true})}
-                    onBlur={() => this.setState({inputFocused: false})}/>
+                    onBlur={this._handleBlur}/>
             </div>
             {
                 (inputFocused || mobile) &&
                 previewSearchInput.length > 0 &&
-                <SearchPreviewResults results={searchResults} search={previewSearchInput} loading={loading}
+                <SearchPreviewResults results={searchResults} search={previewSearchInput}
                                       mobile={mobile}
                                       cursor={cursor} onHover={this._handleHover}/>}
         </div>
