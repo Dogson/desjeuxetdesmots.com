@@ -11,6 +11,10 @@
     padding: 0 20px 30px 20px;
     box-sizing: border-box;
 
+    .titleContainer {
+      margin-bottom: 0;
+    }
+
     .bodyContainer {
       flex-direction: column-reverse;
 
