@@ -24,7 +24,7 @@ class AdminMediaSection extends React.Component {
             return <LoadingSpinner/>
         }
         return <div>
-            <MediaSection rowAttribute="name"/>
+            <MediaSection rowAttribute="name" smallVideo/>
             {
                 medias.length === 0 &&
                 <div className={styles.noMedia}>

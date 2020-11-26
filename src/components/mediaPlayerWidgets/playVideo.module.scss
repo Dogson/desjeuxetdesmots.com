@@ -8,16 +8,26 @@
     width: calc(100%);
     height: calc(100vh - 150px);
   }
+
+  &.smallVideo {
+      height: 390px;
+      width: 500px;
+
+      iframe {
+        height: 390px;
+        width: 500px;
+      }
+    }
 }
 
 @media #{$media-tablet} {
   .videoContainer {
-    width: calc(100vw - 40px);
-    height: calc((100vw - 40px) * 0.61);
+    width: calc(100vw - 40px) !important;
+    height: calc((100vw - 40px) * 0.61) !important;;
 
     iframe {
-      width: calc(100vw - 40px);
-      height: calc((100vw - 40px) * 0.61);
+      width: calc(100vw - 40px) !important;;
+      height: calc((100vw - 40px) * 0.61) !important;;
     }
   }
 }

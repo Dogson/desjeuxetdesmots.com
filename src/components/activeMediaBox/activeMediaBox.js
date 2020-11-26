@@ -201,7 +201,7 @@ class ActiveMediaBox extends React.Component {
         });
         const {media} = this.props;
         const isVideo = media.media.type === "video";
-        return <div className={cx(styles.activeMediaBoxContainer, {[styles.video]: isVideo})}>
+        return <div className={cx(styles.activeMediaBoxContainer, {[styles.video]: isVideo && !this.props.smallVideo})}>
             <div className={styles.closeBtn}
                  onClick={this.props.onCloseMedia}>
                 <FaTimes/>
@@ -254,7 +254,7 @@ class ActiveMediaBox extends React.Component {
                         <div className={styles.mediaPlayerContainer}>
                             {media.media.type === "podcast" ?
                                 <PlayPodcast/> :
-                                <PlayVideo/>}
+                                <PlayVideo smallVideo={this.props.smallVideo}/>}
                         </div>
                     </div>
                     <div className={styles.rightRowContainer}>

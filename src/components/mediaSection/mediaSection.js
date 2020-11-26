@@ -98,6 +98,7 @@ class MediaSection extends React.Component {
         return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
                                               onVerifyMedia={this._handleVerifyMedia}
                                               onCloseMedia={this._handleCloseMedia}
+                                              smallVideo={this.props.smallVideo}
         /></div>
     }
 

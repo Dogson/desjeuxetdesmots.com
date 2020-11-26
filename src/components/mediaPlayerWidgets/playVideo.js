@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import YouTube from 'react-youtube';
 import styles from "./playVideo.module.scss";
+import cx from "classnames";
 
 class PlayVideo extends React.Component {
     constructor(props) {
@@ -32,12 +33,13 @@ class PlayVideo extends React.Component {
             allowFullScreen: 1
         };
 
+        console.log(this.props);
 
         const {mediaActive} = this.props;
         const beforeId = 'watch?v=';
         const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);
         return mediaActive ?
-            <div className={styles.videoContainer}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
+            <div className={cx(styles.videoContainer, {[styles.smallVideo]: this.props.smallVideo})}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
             null
     }
 }
