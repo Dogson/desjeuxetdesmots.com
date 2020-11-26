@@ -1,7 +1,13 @@
 @import "../../index";
 
 .videoContainer {
-  height: 390px;
+  width: calc(100%);
+  height: calc(100vh - 100px);
+
+  iframe {
+    width: calc(100%);
+    height: calc(100vh - 150px);
+  }
 }
 
 @media #{$media-tablet} {

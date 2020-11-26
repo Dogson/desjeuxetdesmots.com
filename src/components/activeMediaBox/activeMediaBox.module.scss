@@ -5,6 +5,35 @@
   @extend .flexColumn;
   margin: 0 20px 30px;
 
+  &.video {
+    width: 100%;
+    margin: 0;
+    padding: 0 20px 30px 20px;
+    box-sizing: border-box;
+
+    .bodyContainer {
+      flex-direction: column-reverse;
+
+      .rightRow {
+        margin-left: 0;
+
+        .rightRowContainer {
+          min-height: 0;
+          width: 100%;
+        }
+
+        .noGame {
+          display: none;
+        }
+
+      }
+
+      .leftRow {
+        margin-top: 20px;
+      }
+    }
+  }
+
   .titleContainer {
     //@extend .flexRow;
     @extend .flexSpaceBetween;

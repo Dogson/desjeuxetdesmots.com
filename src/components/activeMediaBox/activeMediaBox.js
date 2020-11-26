@@ -200,7 +200,8 @@ class ActiveMediaBox extends React.Component {
             return epGame._id !== this.props.currentGame._id;
         });
         const {media} = this.props;
-        return <div className={styles.activeMediaBoxContainer}>
+        const isVideo = media.media.type === "video";
+        return <div className={cx(styles.activeMediaBoxContainer, {[styles.video]: isVideo})}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
