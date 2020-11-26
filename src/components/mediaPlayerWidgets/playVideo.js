@@ -33,8 +33,6 @@ class PlayVideo extends React.Component {
             allowFullScreen: 1
         };
 
-        console.log(this.props);
-
         const {mediaActive} = this.props;
         const beforeId = 'watch?v=';
         const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);

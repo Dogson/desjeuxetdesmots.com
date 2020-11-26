@@ -118,6 +118,11 @@ export const MEDIA_LOGOS = [
         logoMin: require("../assets/logos/medias/octopaddle.jpg"),
         type: "podcast",
     },
+    {
+        name: "merugezu",
+        logoMin: require("../assets/logos/medias/merugezu.jpg"),
+        type: "podcast",
+    },
     //VIDEOS
     {
         name: "Ex Serv",
