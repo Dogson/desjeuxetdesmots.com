@@ -18,6 +18,7 @@ class MediaSection extends React.Component {
         this._handleClickMedia = this._handleClickMedia.bind(this);
         this._handleSaveGames = this._handleSaveGames.bind(this);
         this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
+        this._handleCloseMedia = this._handleCloseMedia.bind(this);
     }
 
     _handleClickMedia(episode, ref) {
@@ -50,11 +51,18 @@ class MediaSection extends React.Component {
             });
     }
 
+    _handleCloseMedia() {
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_MEDIA,
+            payload: null
+        });
+    }
+
     goToNextMedia() {
         let episodes = [];
         this.props.medias.forEach((media) => {
             if (media.name === this.props.mediaActive.media.name) {
-               episodes = media.episodes;
+                episodes = media.episodes;
             }
         })
         const mappedMedia = episodes.map(media => media.name);
@@ -89,6 +97,7 @@ class MediaSection extends React.Component {
     renderActiveMedia(mediaActive, ref) {
         return <div ref={ref}><ActiveMediaBox media={mediaActive} onSaveGames={this._handleSaveGames}
                                               onVerifyMedia={this._handleVerifyMedia}
+                                              onCloseMedia={this._handleCloseMedia}
         /></div>
     }
 

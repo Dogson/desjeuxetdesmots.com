@@ -4,7 +4,7 @@ import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
 import Loader from 'react-loader-spinner';
-import {FaCheck, FaSave, FaSearch} from "react-icons/fa";
+import {FaCheck, FaSave, FaSearch, FaTimes} from "react-icons/fa";
 import {getGamesById, getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink, withRouter} from "react-router-dom";
@@ -202,6 +202,10 @@ class ActiveMediaBox extends React.Component {
         const {media} = this.props;
         const isVideo = media.media.type === "video";
         return <div className={cx(styles.activeMediaBoxContainer, {[styles.video]: isVideo})}>
+            <div className={styles.closeBtn}
+                 onClick={this.props.onCloseMedia}>
+                <FaTimes/>
+            </div>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {media.name}
