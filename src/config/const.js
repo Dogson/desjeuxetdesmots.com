@@ -232,7 +232,17 @@ export const MEDIA_LOGOS = [
     {
         name: "Ryo Va Vous Causer !",
         logoMin: require("../assets/logos/medias/jeuxVideoEtSynapseries.jpg"),
-        type: "podcast",
+        type: "video",
+    },
+    {
+        name: "Game Spectrum",
+        logoMin: require("../assets/logos/medias/gameSpectrum.jpg"),
+        type: "video",
+    },
+    {
+        name: "PsEuDoLeSs1",
+        logoMin: require("../assets/logos/medias/pseudoless.jpg"),
+        type: "video",
     },
 ];
 //
