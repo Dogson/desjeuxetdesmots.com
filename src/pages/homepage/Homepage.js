@@ -176,13 +176,13 @@ const MediasSummary = ({game}) => {
             <div className={styles.badge}>
                 <span className={styles.number}>{nbPodcasts}</span>
                 <span>podcasts</span>
-                <span className={styles.emoji}>🎙️</span>
+                <span role="img" aria-label="Podcast" className={styles.emoji}>🎙️</span>
             </div>}
             {nbVideos > 0 &&
             <div className={styles.badge}>
                 <span className={styles.number}>{nbVideos}</span>
                 <span>vidéos</span>
-                <span className={styles.emoji}>🎥</span>
+                <span role="img" aria-label="Vidéo" className={styles.emoji}>🎥</span>
             </div>
             }
         </div>

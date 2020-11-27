@@ -146,7 +146,7 @@ class Settings extends React.Component {
                           checked={!checkAll}
                           onChange={() => this._handleSelectAll(type)}
                 >
-                    <span>{mediaType.name} {mediaType.emoji}</span>
+                    <span>{mediaType.name} <span role="img" aria-label={mediaType.name}>{mediaType.emoji}</span></span>
                 </Checkbox>
             </div>
             {
