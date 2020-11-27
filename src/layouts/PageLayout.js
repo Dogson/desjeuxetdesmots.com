@@ -7,7 +7,6 @@ import cx from "classnames";
 import {LoadingSpinner} from "../components/loadingSpinner/loadingSpinner";
 
 const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen}) => {
-    console.log(mobileDrawerOpen);
     return  <div className={styles.pageContainer}>
         {smallHeader && <MobileDrawer/>}
         <Header smallHeader={smallHeader} hideSettings={!mediaFilters}/>

@@ -31,6 +31,10 @@ class Homepage extends Component {
     }
 
     componentDidMount() {
+        const queryValues = queryString.parse(this.props.location.search).q;
+        if (queryValues && this.props.history.action === "PUSH")  {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+        }
         this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
     }
 
