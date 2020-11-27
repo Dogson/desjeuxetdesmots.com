@@ -33,10 +33,10 @@ class PlayVideo extends React.Component {
             allowFullScreen: 1
         };
 
-        const {mediaActive} = this.props;
+        const {episodeActive} = this.props;
         const beforeId = 'watch?v=';
-        const mediaId = mediaActive.fileUrl.slice(mediaActive.fileUrl.indexOf('watch?v=') + beforeId.length);
-        return mediaActive ?
+        const mediaId = episodeActive.fileUrl.slice(episodeActive.fileUrl.indexOf('watch?v=') + beforeId.length);
+        return episodeActive ?
             <div className={cx(styles.videoContainer, {[styles.smallVideo]: this.props.smallVideo})}><YouTube videoId={mediaId} opts={opts} onPlay={this._handlePlay}/></div> :
             null
     }
@@ -44,8 +44,8 @@ class PlayVideo extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        mediaActive: state.mediaReducer.mediaActive,
-        mediaPlayed: state.mediaReducer.mediaPlayed,
+        episodeActive: state.mediaReducer.episodeActive,
+        episodePlayed: state.mediaReducer.episodePlayed,
         playState: state.mediaReducer.playState
     }
 };

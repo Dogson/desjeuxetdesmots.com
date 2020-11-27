@@ -7,12 +7,34 @@ import GamePage from "./pages/game/GamePage";
 import MediaPlayer from "./components/mediaPlayerWidgets/mediaPlayerWidgets";
 import {PageNotFound} from "./pages/404/pageNotFound";
 import withTracker from "./components/withTracker/withTracker";
+import {getAllMedias} from "./endpoints/mediasEndpoint";
+import {ACTIONS_MEDIAS} from "./actions/mediaActions";
+import {connect} from "react-redux";
+import {ACTIONS_SETTINGS} from "./actions/settingsActions";
 
 function Index() {
     return <Homepage/>
 }
 
 class App extends Component {
+    componentDidMount() {
+        getAllMedias()
+            .then((medias) => {
+                this.props.dispatch({
+                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                    payload: medias
+                });
+                const filters = {}
+                medias.forEach(media => {
+                    filters[media.name] = true;
+                });
+                this.props.dispatch({
+                    type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
+                    payload: {medias: filters}
+                });
+            })
+    }
+
     render() {
         return (
             <Router>
@@ -30,4 +52,4 @@ class App extends Component {
 }
 
 
-export default App;
+export default connect()(App);

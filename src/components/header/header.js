@@ -57,6 +57,13 @@ class PureMobileDrawer extends React.Component {
 export const MobileDrawer = withRouter(PureMobileDrawer);
 
 export class Header extends React.Component {
+    renderSettings() {
+        if (this.props.hideSettings) {
+            return null;
+        }
+        return <Settings/>
+    }
+
     render() {
         const {smallHeader} = this.props;
         return <div className={cx(styles.headerContainer, {[styles.smallHeader]: smallHeader})}>
@@ -73,7 +80,7 @@ export class Header extends React.Component {
                 </div>
             </>
             }
-            <Settings/>
+            {this.renderSettings()}
         </div>
     }
 

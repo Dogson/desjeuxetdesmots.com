@@ -172,7 +172,7 @@ const MediaLogos = ({game}) => {
         {
             medias.map((media) => {
                 return <div key={media.name} className={styles.mediaLogo}>
-                    <img src={media.logoMin} alt={media.name}/>
+                    {/*<img src={media.logo} alt={media.name}/>*/}
                 </div>
             })
         }

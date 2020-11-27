@@ -1,21 +1,8 @@
 import {ACTIONS_SETTINGS} from "../actions/settingsActions";
-import {MEDIA_LOGOS} from "../config/const";
-
-const getDefaultMediaFilter = () => {
-    const res = {}
-    MEDIA_LOGOS.forEach(media => {
-        res[media.name] = true;
-    });
-    return res;
-}
-
-const defaultFilters = {
-    medias: getDefaultMediaFilter(),
-}
 
 export default (state = {
     settings: {
-        filters: defaultFilters,
+        filters: {},
         remember: false
     }
 }, action) => {

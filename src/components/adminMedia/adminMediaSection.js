@@ -1,5 +1,5 @@
 import React from "react";
-import {getAllMedia} from "../../endpoints/mediasEndpoint";
+import {getAllEpisodes} from "../../endpoints/mediasEndpoint";
 import MediaSection from "../mediaSection/mediaSection";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import styles from "./adminMediaSection.module.scss";
@@ -8,10 +8,10 @@ import {connect} from "react-redux";
 
 class AdminMediaSection extends React.Component {
     componentDidMount() {
-        getAllMedia()
+        getAllEpisodes()
             .then((medias) => {
                 this.props.dispatch({
-                    type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                    type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
                     payload: medias
                 });
             })

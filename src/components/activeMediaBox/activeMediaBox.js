@@ -15,7 +15,6 @@ import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
 import PlayVideo from "../mediaPlayerWidgets/playVideo";
 import {isValidUrl} from "../../utils";
-import {MEDIA_LOGOS} from "../../config/const";
 import decode from "entity-decode/browser"
 import {Checkbox} from "pretty-checkbox-react";
 import {ACTIONS_USERS} from "../../actions/usersActions";
@@ -172,9 +171,7 @@ class ActiveMediaBox extends React.Component {
 
     renderMediaAuthorAndDate() {
         const {media} = this.props;
-        const name = media.media.name;
-        const mediaLogo = MEDIA_LOGOS.find(med => med.name === name)
-        const logo = mediaLogo && mediaLogo.logoMin;
+        const {logo, name} = media.media;
 
         return <div className={styles.authorAndDateContainer}>
             <img src={logo} alt={name}/>

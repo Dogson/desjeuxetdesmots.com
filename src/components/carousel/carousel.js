@@ -5,7 +5,6 @@ import styles from "./carousel.module.scss";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
 import {connect} from "react-redux";
-import {MEDIA_LOGOS} from "../../config/const";
 
 class Carousel extends Component {
     constructor(props) {
@@ -17,7 +16,7 @@ class Carousel extends Component {
     }
 
     render() {
-        const {medias, activeItem, onClickItem, smallerCards} = this.props;
+        const {episodes, activeItem, onClickItem, smallerCards} = this.props;
         const settings = {
             dots: true,
             infinite: false,
@@ -39,7 +38,7 @@ class Carousel extends Component {
                     settings: {
                         slidesToShow: 5,
                         slidesToScroll: 5,
-                        infinite: medias.length > 5,
+                        infinite: episodes.length > 5,
                     }
                 },
                 {
@@ -76,10 +75,10 @@ class Carousel extends Component {
         return (
             <div className={styles.carouselContainer}>
                 <Slider {...settings}>
-                    {medias.map((episode, index) => {
+                    {episodes.map((episode, index) => {
                         return <div className={styles.slideContainer} key={index}>
                             {episode ? <Card isActive={activeItem && episode._id === activeItem._id}
-                                             media={episode}
+                                             episode={episode}
                                              onClick={() => onClickItem(episode)}
                                              smaller={smallerCards}
                                              hideRibbon={!this.props.authUser}/> :
@@ -101,13 +100,13 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps)(Carousel);
 
-const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
-    const mediaLogo = MEDIA_LOGOS.find(med => media.media.name === med.name)
-    const thumbnail = (mediaLogo && mediaLogo.overrideThumbnail) || media.image;
+const Card = ({episode, onClick, isActive, smaller, hideRibbon}) => {
+    const mediaLogo = episode.media.logo
+    const thumbnail = (mediaLogo && mediaLogo.overrideThumbnail) || episode.image;
     return <div className={cx(styles.cardContainer, {[styles.active]: isActive})} onClick={onClick}
                 style={smaller ? {height: '180px'} : {}}>
         {
-            !media.verified && !hideRibbon ?
+            !episode.verified && !hideRibbon ?
                 <div className={styles.ribbon}/>
                 : null
         }
@@ -118,11 +117,11 @@ const Card = ({media, onClick, isActive, smaller, hideRibbon}) => {
         <div className={styles.gradient} style={smaller ? {height: '115px'} : {}}/>
         <div className={styles.cardHeader}>
             <div className={styles.badge}>
-                <img src={mediaLogo && mediaLogo.logoMin} alt=""/>
+                <img src={mediaLogo} alt=""/>
             </div>
-            <div className={styles.mediaName}>{media.media.name}</div>
+            <div className={styles.mediaName}>{episode.media.name}</div>
         </div>
-        <div className={styles.title}><Dotdotdot clamp={3}>{media.name}</Dotdotdot></div>
+        <div className={styles.title}><Dotdotdot clamp={3}>{episode.name}</Dotdotdot></div>
     </div>
 };
 
