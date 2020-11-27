@@ -60,7 +60,7 @@ class MediaSection extends React.Component {
 
     goToNextMedia() {
         let episodes = [];
-        this.props.medias.forEach((media) => {
+        this.props.episodesMedia.forEach((media) => {
             if (media.name === this.props.episodeActive.media.name) {
                 episodes = media.episodes;
             }
@@ -77,8 +77,8 @@ class MediaSection extends React.Component {
     }
 
     saveMedia(newMedia) {
-        const {medias} = this.props;
-        const updatedMedias = medias.map((media) => {
+        const {episodesMedia} = this.props;
+        const updatedMedias = episodesMedia.map((media) => {
             media.episodes = media.episodes.map((episode) => {
                 if (episode._id === newMedia._id) {
                     return {...newMedia, verified: true};
