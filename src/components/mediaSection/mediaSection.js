@@ -115,7 +115,7 @@ class MediaSection extends React.Component {
                         className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: episodeActive && episodeActive.media && episodeActiveType && epMedia.type === episodeActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
                     <div className={styles.title}>
-                        <img className={styles.imageContainer} src={epMedia.logoMin} alt={epMedia.name}/>
+                        <span className={styles.emoji}>{epMedia.emoji}</span>
                         {epMedia.name}
                     </div>
                     <Carousel episodes={episodes}
