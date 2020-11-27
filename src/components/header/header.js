@@ -8,6 +8,8 @@ import {FaSearch, FaArrowLeft} from "react-icons/fa";
 import {DebounceInput} from "react-debounce-input";
 import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import Sidebar from "react-sidebar";
+import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
+import {connect} from "react-redux";
 
 class PureMobileDrawer extends React.Component {
     constructor(props) {
@@ -25,10 +27,23 @@ class PureMobileDrawer extends React.Component {
         if (prevProps.location.pathname !== this.props.location.pathname) {
             this.setState({sidebarOpen: false});
         }
+        if (prevState.sidebarOpen !== this.state.sidebarOpen) {
+            this._hideOrShowPageContent(this.state.sidebarOpen);
+        }
     }
 
     _handleSetSidebarOpen(open) {
         this.setState({sidebarOpen: open});
+    }
+
+    _hideOrShowPageContent(mobileOpen) {
+        const timeout = mobileOpen ? 300 : 0;
+        window.setTimeout(() => {
+            this.props.dispatch({
+                type: ACTIONS_SETTINGS.IS_MOBILE_DRAWER_OPEN,
+                payload: mobileOpen
+            })
+        }, timeout)
     }
 
     render() {
@@ -54,7 +69,7 @@ class PureMobileDrawer extends React.Component {
     }
 }
 
-export const MobileDrawer = withRouter(PureMobileDrawer);
+export const MobileDrawer =withRouter(connect()(PureMobileDrawer));
 
 export class Header extends React.Component {
     renderSettings() {

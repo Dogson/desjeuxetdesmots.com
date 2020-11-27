@@ -313,6 +313,10 @@ input {
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
 // Buttons
 .btn {
   color: $color-bright-1;

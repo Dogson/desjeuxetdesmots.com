@@ -25,6 +25,14 @@ export default (state = {
                     remember: action.payload
                 }
             };
+        case ACTIONS_SETTINGS.IS_MOBILE_DRAWER_OPEN:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    mobileDrawerOpen: action.payload
+                }
+            };
         default:
             return {
                 ...state
