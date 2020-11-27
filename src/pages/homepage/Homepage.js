@@ -175,13 +175,13 @@ const MediasSummary = ({game}) => {
             {nbPodcasts > 0 &&
             <div className={styles.badge}>
                 <span className={styles.number}>{nbPodcasts}</span>
-                <span>podcasts</span>
+                <span>podcast{nbPodcasts > 1 && "s"}</span>
                 <span role="img" aria-label="Podcast" className={styles.emoji}>🎙️</span>
             </div>}
             {nbVideos > 0 &&
             <div className={styles.badge}>
                 <span className={styles.number}>{nbVideos}</span>
-                <span>vidéos</span>
+                <span>vidéo{nbVideos > 1 && "s"}</span>
                 <span role="img" aria-label="Vidéo" className={styles.emoji}>🎥</span>
             </div>
             }
