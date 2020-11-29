@@ -8,8 +8,6 @@ import '@djthoms/pretty-checkbox';
 import cx from "classnames";
 import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
-import {withGetScreen} from 'react-getscreen'
-import {compose} from "redux";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -220,4 +218,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default compose(withGetScreen, connect(mapStateToProps))(Settings);
+export default connect(mapStateToProps)(Settings);
