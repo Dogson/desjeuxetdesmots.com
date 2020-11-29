@@ -69,7 +69,7 @@ class PureMobileDrawer extends React.Component {
     }
 }
 
-export const MobileDrawer =withRouter(connect()(PureMobileDrawer));
+export const MobileDrawer = withRouter(connect()(PureMobileDrawer));
 
 export class Header extends React.Component {
     renderSettings() {
@@ -215,7 +215,7 @@ class SearchPreviewResults extends React.Component {
         return <div className={styles.searchResultsContainer}>
             <ul>
                 {results.map((item, i) => {
-                    return <li className={cx({[styles.active]: i === cursor})}
+                    return <li key={i} className={cx({[styles.active]: i === cursor})}
                                onMouseOver={() => onHover(i)}>
                         <NavLink to={{
                             pathname: `/game/${item._id}`,

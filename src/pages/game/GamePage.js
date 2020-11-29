@@ -122,7 +122,7 @@ class GamePage extends React.Component {
                                 </div>
                                 <div className={styles.gameDevelopers}>
                                     {currentGame.companies.map((comp, index) => {
-                                        return <span>{comp.name}{index < currentGame.companies.length - 1 && ", "}</span>
+                                        return <span key={comp.name}>{comp.name}{index < currentGame.companies.length - 1 && ", "}</span>
                                     })}
                                 </div>
                                 <div className={styles.gameDate}>

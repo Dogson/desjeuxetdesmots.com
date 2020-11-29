@@ -161,9 +161,9 @@ class ActiveMediaBox extends React.Component {
 
     renderDescriptionLine(str) {
         let array = str.split(' ');
-        return array.map((string) => {
+        return array.map((string, i) => {
             if (isValidUrl(string)) {
-                return <a className={styles.link} href={string}>{string} </a>
+                return <a key={i} className={styles.link} href={string}>{string} </a>
             }
             return decode(string) + " ";
         });
@@ -291,8 +291,8 @@ class ActiveMediaBox extends React.Component {
 
                         {episodeGames.length > 0 ?
                             <div className={styles.gamesContainer}>
-                                {episodeGames.map((game) => {
-                                    return <div key={game._id}>
+                                {episodeGames.map((game, i) => {
+                                    return <div key={i}>
                                         {loadingGames ?
                                             <GameCard game={game}/> :
                                             <NavLink to={`/game/${game._id}`}>
@@ -333,12 +333,12 @@ class ActiveMediaBox extends React.Component {
                             <div className={styles.suggestionsContainer}>
                                 {this.state.loadingSuggestions ?
                                     <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
-                                    </div> : this.state.searchResults.map((result) => {
+                                    </div> : this.state.searchResults.map((result, i) => {
                                         return <div className={cx(styles.suggestionItem, {
                                             [styles.active]: this.state.episodeGames.find((game) => {
                                                 return game.igbdId === result.igbdId
                                             })
-                                        })} key={result.igbdId}
+                                        })} key={i}
                                                     onClick={() => this._handleClickSuggestion(result)}>
                                             {result.name} ({
                                             result.formattedDate

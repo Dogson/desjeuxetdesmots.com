@@ -138,7 +138,7 @@ class Settings extends React.Component {
         const {mediasFilter} = this.state;
         const type = mediaType.dataLabel;
         const checkAll = type === "podcast" ? this.state.shouldCheckAllPodcasts : this.state.shouldCheckAllVideos;
-        return <div className={styles.subBlock}>
+        return <div className={styles.subBlock} key={type}>
             <div className={styles.subBlockTitle}>
                 <Checkbox shape="curve" color="#FFC857"
                           checked={!checkAll}
@@ -154,7 +154,7 @@ class Settings extends React.Component {
                     })
                     .sort((x, y) => x.name < y.name ? -1 : 1)
                     .map(media =>
-                        <div className={styles.filterRow}>
+                        <div className={styles.filterRow} key={media.name}>
                             <Checkbox shape="curve"
                                       checked={mediasFilter[media.name]}
                                       onChange={() => this._handleChangeMediasFilter(media.name, type)}>
