@@ -48,7 +48,7 @@ class CookieConsent extends React.Component {
                 données de navigation sur ce site.</p>
 
             <div className={styles.cookieConsentFooter}>
-                <button className={styles.btn} onClick={this._handleKillCookies}>Se rétracter</button>
+                <button className={styles.btn} onClick={this._handleKillCookies}>Désactiver les données de navigation</button>
                 <button className={styles.btn} onClick={this._handleAcceptCookies}>Accepter</button>
             </div>
 
