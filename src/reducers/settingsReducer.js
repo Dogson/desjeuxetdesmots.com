@@ -3,8 +3,9 @@ import {ACTIONS_SETTINGS} from "../actions/settingsActions";
 export default (state = {
     settings: {
         filters: {},
-        remember: false
-    }
+        remember: false,
+    },
+    cookieConsent: localStorage.getItem('cookie-consent')
 }, action) => {
     switch (action.type) {
         case ACTIONS_SETTINGS.SET_FILTERED_VALUES:
@@ -32,6 +33,12 @@ export default (state = {
                     ...state.settings,
                     mobileDrawerOpen: action.payload
                 }
+            };
+        case ACTIONS_SETTINGS.SET_COOKIE_CONSENT:
+            localStorage.setItem('cookie-consent', action.payload);
+            return {
+                ...state,
+                cookieConsent: action.payload
             };
         default:
             return {

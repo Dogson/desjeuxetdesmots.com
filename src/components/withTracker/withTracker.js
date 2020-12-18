@@ -1,7 +1,8 @@
 import React, {Component,} from "react";
 import GoogleAnalytics from "react-ga";
 
-GoogleAnalytics.initialize("UA-180553178-1");
+if (localStorage.getItem('cookie-consent') === "accepted")
+    GoogleAnalytics.initialize("UA-180553178-1");
 
 const withTracker = (WrappedComponent, options = {}) => {
     const trackPage = page => {
