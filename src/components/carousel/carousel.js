@@ -116,12 +116,12 @@ const Card = ({episode, onClick, isActive, smaller, hideRibbon}) => {
             backgroundImage: `url(${thumbnail})`
         } : {backgroundImage: `url(${thumbnail})`}}/>
         <div className={styles.gradient} style={smaller ? {height: '115px'} : {}}/>
-        <NavLink to={`/media/${episode.media.name}`} className={styles.cardHeader}>
-            <div className={styles.badge}>
+        <div className={styles.cardHeader}>
+            <NavLink to={`/media/${episode.media.name}`} className={styles.badge}>
                 <img src={mediaLogo} alt=""/>
-            </div>
+            </NavLink>
             <div className={styles.mediaName}>{episode.media.name}</div>
-        </NavLink>
+        </div>
         <div className={styles.title}><Dotdotdot clamp={3}>{episode.name}</Dotdotdot></div>
     </div>
 };

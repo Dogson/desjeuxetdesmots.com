@@ -6,9 +6,10 @@ import PageLayout from "../../layouts/PageLayout";
 import {Helmet} from "react-helmet";
 import {getMedia} from "../../endpoints/mediasEndpoint";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
-import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import GameGridContainer from "../../components/gameGrid/gameGrid";
 import cx from "classnames";
+import {ACTIONS_GAMES} from "../../actions/gamesActions";
+import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
 
 class MediaPage extends React.Component {
 
@@ -16,8 +17,7 @@ class MediaPage extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            error: false,
-            games: null
+            error: false
         };
     }
 
@@ -27,8 +27,12 @@ class MediaPage extends React.Component {
         const {mediaName} = this.props.match.params;
 
         if (!currentMedia || currentMedia.name !== mediaName) {
-            this.refreshMedia();
-            this.refreshGames();
+            this.refreshMedia()
+                .then(() => {
+                    this.refreshGames();
+                });
+
+
         }
     }
 
@@ -38,9 +42,10 @@ class MediaPage extends React.Component {
             payload: null
         });
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_CURRENT_MEDIA,
-            payload: null
+            type: ACTIONS_GAMES.SET_GAMES,
+            payload: {games: [], page: 1}
         });
+
     }
 
     async refreshMedia() {
@@ -57,15 +62,18 @@ class MediaPage extends React.Component {
     }
 
     async refreshGames() {
-        const {mediaName} = this.props.match.params;
-        const games = await getGamesBySearch({"media.name": mediaName});
-        this.setState({games});
+        this.props.dispatch({
+            type: ACTIONS_GAMES.SET_GAMES,
+            payload: {games: null}
+        });
     }
 
     renderCurrentMedia() {
         return <div className={styles.mediaPageContainer}>
             {this.renderMediaTitle()}
-            {this.renderGameGrid()}
+            {this.props.currentMedia ?
+                this.renderGameGrid() :
+                <LoadingSpinner/>}
         </div>
     }
 
@@ -111,8 +119,7 @@ class MediaPage extends React.Component {
     }
 
     renderGameGrid() {
-        const {games} = this.state;
-        return <GameGridContainer games={games} disableLogo disableSearch disableMediasSummary/>
+        return <GameGridContainer disableLogo disableSearch disableMediasSummary/>
     }
 
     render() {
@@ -128,7 +135,6 @@ class MediaPage extends React.Component {
 const mapStateToProps = state => {
     return {
         currentMedia: state.mediaReducer.currentMedia,
-        games: state.gamesReducer.games
     }
 }
 

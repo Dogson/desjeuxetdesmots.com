@@ -78,12 +78,6 @@
       opacity: 1;
       padding: 5px;
       cursor: pointer;
-
-      &:hover {
-        .mediaName {
-          color: $color-bright-2;
-        }
-      }
     }
 
     .mediaName {
@@ -95,6 +89,12 @@
     .badge {
       height: 35px;
       width: 35px;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+      }
 
 
       img {
