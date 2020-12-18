@@ -19,6 +19,7 @@
   }
 
   .cookieConsentFooter {
+    margin-top: 30px;
     @extend .flexRow;
     justify-content: flex-end;
 
@@ -35,6 +36,8 @@
     right: 0;
     width: unset;
     top: 50%;
+    margin: 0 10px;
+    padding: 25px;
     transform: translateY(-50%);
   }
 }

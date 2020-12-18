@@ -9,7 +9,7 @@ class CookieConsent extends React.Component {
     constructor(props) {
         super(props);
 
-        this._handleAcceptCookies =  this._handleAcceptCookies.bind(this);
+        this._handleAcceptCookies = this._handleAcceptCookies.bind(this);
         this._handleAcceptCookies = this._handleAcceptCookies.bind(this);
     }
 
