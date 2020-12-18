@@ -8,6 +8,7 @@ import {getMedia} from "../../endpoints/mediasEndpoint";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import GameGridContainer from "../../components/gameGrid/gameGrid";
+import cx from "classnames";
 
 class MediaPage extends React.Component {
 
@@ -82,18 +83,43 @@ class MediaPage extends React.Component {
             <div className={styles.epNumber}>
                 {currentMedia && currentMedia.total} {currentMedia && (currentMedia.type === "video" ? "vidéos" : "épisodes")}
             </div>
+            {currentMedia && this.renderExternalLink()}
         </div>
+    }
+
+    renderExternalLink() {
+        const {currentMedia} = this.props;
+        if (currentMedia.type === "video") {
+            console.log(currentMedia.feedUrl);
+            const youtubeChannelId = currentMedia.feedUrl.split("channel_id=")[1];
+            const youtubeChannelUrl = `https://www.youtube.com/channel/${youtubeChannelId}`;
+            return <div className={styles.subscribeBtn}>
+                <a className={cx(styles.btn)}
+                   href={youtubeChannelUrl}>Accéder à la chaîne Youtube
+                </a>
+            </div>
+        } else {
+            return <div className={styles.subscribeBtn}>
+                <a className={cx(styles.btn, styles.mobile)}
+                   href={`podcast://${currentMedia.feedUrl}`}>S'abonner avec votre app de podcasts
+                </a>
+                <a className={cx(styles.btn, styles.desktop)}
+                   href={currentMedia.feedUrl}>Accéder au flux RSS du podcast
+                </a>
+            </div>
+        }
     }
 
     renderGameGrid() {
         const {games} = this.state;
-        return <GameGridContainer games={games} disableLogo disableSearch/>
+        return <GameGridContainer games={games} disableLogo disableSearch disableMediasSummary/>
     }
 
     render() {
         const {currentMedia} = this.props;
         return <PageLayout smallHeader dark>
-            {currentMedia && currentMedia.name && <Helmet title={`${currentMedia.name} - Des jeux et des mots`}/>}
+            {currentMedia && currentMedia.name && <Helmet
+                title={`${currentMedia.name} : ${currentMedia.type === "video" ? "Vidéos" : "Podcasts"} -  Des jeux et des mots`}/>}
             {this.renderCurrentMedia()}
         </PageLayout>
     }

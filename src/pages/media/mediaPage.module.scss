@@ -3,6 +3,8 @@
 .mediaPageContainer {
   margin: 30px 0;
   width: 100%;
+  @extend .flexColumn;
+  @extend .flexAlignCenter;
 
   .mediaTitleContainer {
     @extend .flexColumn;
@@ -15,7 +17,7 @@
       height: 200px;
       width: 200px;
       background-color: $color-dark-2;
-      box-shadow:  10px 10px 0 2px $color-bright-2;
+      box-shadow: 10px 10px 0 2px $color-bright-2;
 
       margin-bottom: 30px;
 
@@ -35,6 +37,15 @@
 
     .epNumber {
       font-size: $size-normal;
+    }
+  }
+
+  .subscribeBtn {
+    display: flex;
+    margin: 15px;
+
+    .mobile {
+      display: none;
     }
   }
 
@@ -70,4 +81,18 @@
     }
   }
 
+}
+
+@media #{$media-phone} {
+  .mediaPageContainer {
+    .subscribeBtn {
+      .mobile {
+        display: unset;
+      }
+
+      .desktop {
+        display: none;
+      }
+    }
+  }
 }

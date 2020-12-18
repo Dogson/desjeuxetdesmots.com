@@ -87,7 +87,7 @@ class GameGridContainer extends React.Component {
     }
 
     renderGameGrid() {
-        const {disableLogo} = this.props;
+        const {disableLogo, disableMediasSummary} = this.props;
         return <InfiniteScroll
             loadMore={this.getMoreGames}
             hasMore={this.state.hasMoreGames && !this.state.error}
@@ -96,7 +96,7 @@ class GameGridContainer extends React.Component {
 
             {this.state.error ?
                 <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage> :
-                <GameGrid games={this.props.games} loading={this.state.loading} disableLogo={disableLogo}/>
+                <GameGrid games={this.props.games} loading={this.state.loading} disableLogo={disableLogo} disableMediasSummary={disableMediasSummary}/>
 
             }
         </InfiniteScroll>
@@ -136,7 +136,7 @@ const mapStateToProps = state => {
 
 export default withRouter(connect(mapStateToProps)(GameGridContainer));
 
-const GameGrid = ({games, loading}) => {
+const GameGrid = ({games, loading, disableMediasSummary}) => {
     if (!games)
         return null;
     if (games.length === 0 && !loading) {
@@ -163,7 +163,7 @@ const GameGrid = ({games, loading}) => {
                         <div className={styles.secondaryInfoContainer}>
                             {game.formattedDate}
                         </div>
-                        <MediasSummary game={game}/>
+                        {!disableMediasSummary && <MediasSummary game={game}/>}
                     </div>
                 </NavLink>
             })
