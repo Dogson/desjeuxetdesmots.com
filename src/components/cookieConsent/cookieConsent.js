@@ -10,7 +10,7 @@ class CookieConsent extends React.Component {
         super(props);
 
         this._handleAcceptCookies = this._handleAcceptCookies.bind(this);
-        this._handleAcceptCookies = this._handleAcceptCookies.bind(this);
+        this._handleKillCookies = this._handleKillCookies.bind(this);
     }
 
     _trackCurrentPage(page) {
