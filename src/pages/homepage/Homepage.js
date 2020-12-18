@@ -111,7 +111,7 @@ class Homepage extends Component {
         const searchInput = queryString.parse(this.props.location.search).q;
         return <PageLayout>
             <Helmet>
-                <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'Des jeux et des mots'}</title>
+                <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'Des jeux et des mots - Podcasts et vidéos de jeux vidéos'}</title>
             </Helmet>
             <div className={styles.subtitle}>Prendre le temps d'écouter celles et ceux qui prennent le temps d'analyser
                 vos jeux favoris.
