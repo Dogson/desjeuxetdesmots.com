@@ -7,11 +7,11 @@ import cx from "classnames";
 import {LoadingSpinner} from "../components/loadingSpinner/loadingSpinner";
 import CookieConsent from "../components/cookieConsent/cookieConsent";
 
-const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen, cookieConsent}) => {
+const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen, cookieConsent, dark}) => {
     return  <div className={styles.pageContainer}>
         {smallHeader && <MobileDrawer/>}
         <Header smallHeader={smallHeader} hideSettings={!mediaFilters}/>
-        <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen})}>
+        <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen}, {[styles.dark]: dark})}>
             {title ? <div className={styles.titleContainer}>{title}</div> : null}
             {mediaFilters ? children : <LoadingSpinner/>}
         </div>

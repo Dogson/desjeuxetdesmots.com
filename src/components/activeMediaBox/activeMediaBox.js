@@ -173,7 +173,7 @@ class ActiveMediaBox extends React.Component {
         const {media} = this.props;
         const {logo, name} = media.media;
 
-        return <div className={styles.authorAndDateContainer}>
+        return <NavLink to={`/media/${name}`} className={styles.authorAndDateContainer}>
             <img src={logo} alt={name}/>
             <div>
                 <div className={styles.author}>{name}</div>
@@ -181,7 +181,7 @@ class ActiveMediaBox extends React.Component {
                     {moment(media.releaseDate).format('DD/MM/YYYY')}
                 </div>
             </div>
-        </div>
+        </NavLink>
     }
 
     renderAlreadyUploadedWarning() {

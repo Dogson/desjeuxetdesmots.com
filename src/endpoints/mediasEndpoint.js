@@ -8,8 +8,7 @@ export async function getAllMedias() {
 
 
 export async function getMedia(name) {
-    const medias = await get(API_CONFIG.endpoints.MEDIAS, {"name": name});
-    return medias && medias.length > 0 && medias[0];
+    return await get(`${API_CONFIG.endpoints.MEDIAS}/${name}`);
 }
 
 export async function getAllEpisodes() {

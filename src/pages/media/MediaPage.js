@@ -7,7 +7,6 @@ import {Helmet} from "react-helmet";
 import {getMedia} from "../../endpoints/mediasEndpoint";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
-import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import GameGridContainer from "../../components/gameGrid/gameGrid";
 
 class MediaPage extends React.Component {
@@ -16,11 +15,13 @@ class MediaPage extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            error: false
+            error: false,
+            games: null
         };
     }
 
     componentDidMount() {
+        window.scrollTo({top: 0, behavior: "auto"});
         const {currentMedia} = this.props;
         const {mediaName} = this.props.match.params;
 
@@ -57,10 +58,7 @@ class MediaPage extends React.Component {
     async refreshGames() {
         const {mediaName} = this.props.match.params;
         const games = await getGamesBySearch({"media.name": mediaName});
-        this.props.dispatch({
-            type: ACTIONS_GAMES.SET_GAMES,
-            payload: games
-        })
+        this.setState({games});
     }
 
     renderCurrentMedia() {
@@ -88,14 +86,13 @@ class MediaPage extends React.Component {
     }
 
     renderGameGrid() {
-        console.log(this.props);
-        const {games} = this.props;
-        return <GameGridContainer games={games} disableLogo/>
+        const {games} = this.state;
+        return <GameGridContainer games={games} disableLogo disableSearch/>
     }
 
     render() {
         const {currentMedia} = this.props;
-        return <PageLayout smallHeader>
+        return <PageLayout smallHeader dark>
             {currentMedia && currentMedia.name && <Helmet title={`${currentMedia.name} - Des jeux et des mots`}/>}
             {this.renderCurrentMedia()}
         </PageLayout>

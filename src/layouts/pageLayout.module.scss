@@ -19,6 +19,10 @@
       color: $color-bright-1;
       padding: 20px;
     }
+
+    &.dark {
+      background-color: $color-dark-2;
+    }
   }
 
   .sidebarContainer {

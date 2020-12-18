@@ -12,26 +12,29 @@
     margin-bottom: 40px;
 
     .mediaLogo {
-      height: 50px;
-      width: 50px;
-      border-radius: 50%;
+      height: 200px;
+      width: 200px;
       background-color: $color-dark-2;
-      box-shadow: 2px 2px 0 0 #FFC857;
-      margin-bottom: 10px;
+      box-shadow:  10px 10px 0 2px $color-bright-2;
+
+      margin-bottom: 30px;
 
       img {
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
+        height: 100%;
+        width: 100%;
       }
     }
 
     .mediaName {
+      text-transform: uppercase;
       letter-spacing: 1px;
+      font-size: 36px;
+      font-weight: normal;
+      margin-bottom: 5px;
     }
 
     .epNumber {
-      font-size: $size-small;
+      font-size: $size-normal;
     }
   }
 
