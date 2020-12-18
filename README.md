@@ -9,4 +9,6 @@ ReactJS
 
 NestJS
 
-IGDB API, GAMER JUICE API, Youtube API v3
+IGDB API, Youtube API v3
+
+API Back-end : https://github.com/Dogson/desjeuxetdesmots-api
