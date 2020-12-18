@@ -73,11 +73,20 @@
     }
 
     .authorAndDateContainer {
-      @extend .flexRow;
-      @extend .flexAlignCenter;
       color: $color-bright-2;
       margin: 10px 0;
+      @extend .flexRow;
+      @extend .flexAlignCenter;
 
+      .authorAndDateContent {
+        @extend .flexRow;
+        @extend .flexAlignCenter;
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
 
       .author {
         font-weight: normal;

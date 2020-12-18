@@ -174,11 +174,13 @@ class ActiveMediaBox extends React.Component {
         const {logo, name} = media.media;
 
         return <NavLink to={`/media/${name}`} className={styles.authorAndDateContainer}>
-            <img src={logo} alt={name}/>
-            <div>
-                <div className={styles.author}>{name}</div>
-                <div className={styles.date}>
-                    {moment(media.releaseDate).format('DD/MM/YYYY')}
+            <div className={styles.authorAndDateContent}>
+                <img src={logo} alt={name}/>
+                <div>
+                    <div className={styles.author}>{name}</div>
+                    <div className={styles.date}>
+                        {moment(media.releaseDate).format('DD/MM/YYYY')}
+                    </div>
                 </div>
             </div>
         </NavLink>
