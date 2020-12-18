@@ -41,7 +41,7 @@ class CookieConsent extends React.Component {
     render() {
         return <div className={styles.cookieConsentContainer}>
             <p>Bonjour, je cherche à améliorer l'expérience utilisateur du site internet. Pour cela, je récupère les
-                données de navigation sur le site <strong>à des fins purement statistiques.</strong></p>
+                données de navigation sur le site <strong>à des fins purement statistiques (aucun partage avec des annonceurs).</strong></p>
             <p>Le code source du projet est disponible en open-source <a
                 href="https://github.com/dogson/desjeuxetdesmots.com">ici</a> pour les plus curieux.</p>
             <p><strong>Vous pouvez évidemment décider de vous rétracter</strong> si vous ne souhaitez pas partager vos
