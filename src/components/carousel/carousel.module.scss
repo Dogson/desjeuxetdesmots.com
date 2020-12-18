@@ -77,6 +77,13 @@
       width: 100%;
       opacity: 1;
       padding: 5px;
+      cursor: pointer;
+
+      &:hover {
+        .mediaName {
+          color: $color-bright-2;
+        }
+      }
     }
 
     .mediaName {

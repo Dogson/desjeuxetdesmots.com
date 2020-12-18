@@ -5,6 +5,7 @@ import styles from "./carousel.module.scss";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import Dotdotdot from "react-dotdotdot";
 import {connect} from "react-redux";
+import {NavLink} from "react-router-dom";
 
 class Carousel extends Component {
     constructor(props) {
@@ -115,12 +116,12 @@ const Card = ({episode, onClick, isActive, smaller, hideRibbon}) => {
             backgroundImage: `url(${thumbnail})`
         } : {backgroundImage: `url(${thumbnail})`}}/>
         <div className={styles.gradient} style={smaller ? {height: '115px'} : {}}/>
-        <div className={styles.cardHeader}>
+        <NavLink to={`/media/${episode.media.name}`} className={styles.cardHeader}>
             <div className={styles.badge}>
                 <img src={mediaLogo} alt=""/>
             </div>
             <div className={styles.mediaName}>{episode.media.name}</div>
-        </div>
+        </NavLink>
         <div className={styles.title}><Dotdotdot clamp={3}>{episode.name}</Dotdotdot></div>
     </div>
 };
