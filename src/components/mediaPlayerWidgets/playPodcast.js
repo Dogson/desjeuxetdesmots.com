@@ -3,11 +3,10 @@ import {connect} from "react-redux";
 import styles from "./playPodcast.module.scss"
 import {FaPlay, FaPause} from "react-icons/fa";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
-import {MEDIA_LOGOS} from "../../config/const";
 
 const PlayPodcast = (props) => {
     const {episodeActive, episodePlayed, playState} = props;
-    const mediaLogo = MEDIA_LOGOS.find(med => episodeActive.media.name === med.name)
+    const mediaLogo = episodeActive.media.logo;
     const thumbnail = episodeActive && ((mediaLogo && mediaLogo.overrideThumbnail) || episodeActive.image);
 
     return episodeActive ?

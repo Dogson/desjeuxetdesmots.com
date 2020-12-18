@@ -1,7 +1,6 @@
 import moment from "moment";
 import {API_CONFIG} from "../config/apiConfig";
 import {asyncForEach, get} from "../utils";
-import {MEDIA_LOGOS} from "../config/const";
 import store from "../store";
 
 export async function getGamesById(gamesId) {
@@ -19,10 +18,9 @@ export async function getGameById(gameId) {
 }
 
 export async function getGamesBySearch(params) {
-    console.log(params);
     const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
-    params.filters = JSON.stringify({
+    params.filters = filters && filters.medias && JSON.stringify({
         "media.name": params["media.name"] || _mapFilter(filters.medias),
     });
     delete params["media.name"];
@@ -34,7 +32,7 @@ function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
     result.episodes = result.episodes
         .filter((episode) => {
-            return filters.medias[episode.media.name] && episode.verified;
+            return (!filters.medias || filters.medias[episode.media.name]) && episode.verified;
         })
         .sort((epX, epY) => {
             return epX.releaseDate > epY.releaseDate ? -1 : 1;
@@ -47,7 +45,7 @@ function _mapResultToGame(result) {
                 tot.push({
                     episodes: [ep],
                     name: ep.media.name,
-                    logoMin: MEDIA_LOGOS.find((med => med.name === ep.media.name)).logoMin || null
+                    logoMin: ep.media.logo
                 });
             }
             return tot;
@@ -63,14 +61,8 @@ function _mapResultToGame(result) {
     medias = medias.filter((media, index) => {
         return medias.map(med => med.name).indexOf(media.name) === index;
     })
-        .map((media) => {
-            let mediaLogo = MEDIA_LOGOS.find((medLogo) => medLogo.name === media.name);
-            mediaLogo = mediaLogo && mediaLogo.logoMin;
-            return {
-                ...media,
-                logoMin: mediaLogo
-            }
-        });
+
+
     return {
         ...result,
         medias,

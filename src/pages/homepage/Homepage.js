@@ -3,27 +3,19 @@ import {Helmet} from "react-helmet";
 import styles from "./homepage.module.scss";
 import PageLayout from "../../layouts/PageLayout";
 import {connect} from "react-redux";
-import {NavLink, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import GameGridContainer from "../../components/gameGrid/gameGrid";
 
 
 class Homepage extends Component {
-
     render() {
         return <PageLayout>
             <Helmet>
-                <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'Des jeux et des mots'}</title>
+                <title>{this.props.searchInput && this.props.searchInput.length > 0 ? `Recherche: ${this.props.searchInput}` : 'Des jeux et des mots - Podcasts et vidéos de jeux vidéos'}</title>
             </Helmet>
             <div className={styles.subtitle}>Prendre le temps d'écouter celles et ceux qui prennent le temps d'analyser
                 vos jeux favoris.
             </div>
-
-            {/*TODO remove*/}
-            <NavLink to={{
-                pathname: `/media/Canard PC`
-            }}
-                     className={styles.cardContainer}>KEKEK</NavLink>
-
             <GameGridContainer />
         </PageLayout>
     }

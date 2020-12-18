@@ -4,15 +4,11 @@ import {connect} from "react-redux";
 import styles from "./mediaPage.module.scss";
 import PageLayout from "../../layouts/PageLayout";
 import {Helmet} from "react-helmet";
-import {getEpisodesForMedia, getMedia} from "../../endpoints/mediasEndpoint";
+import {getMedia} from "../../endpoints/mediasEndpoint";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
-import MediaSection from "../../components/mediaSection/mediaSection";
-import {MEDIA_TYPES} from "../../config/const";
 import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import GameGridContainer from "../../components/gameGrid/gameGrid";
-import {FaGamepad} from "react-icons/fa";
-import cx from "classnames";
 
 class MediaPage extends React.Component {
 
@@ -30,8 +26,7 @@ class MediaPage extends React.Component {
 
         if (!currentMedia || currentMedia.name !== mediaName) {
             this.refreshMedia();
-            this.refreshMediaEpisodes();
-            this.refreshGame();
+            this.refreshGames();
         }
     }
 
@@ -59,20 +54,7 @@ class MediaPage extends React.Component {
         });
     }
 
-    async refreshMediaEpisodes() {
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_CURRENT_MEDIA,
-            payload: null
-        });
-        const {mediaName} = this.props.match.params;
-        const medias = await getEpisodesForMedia(mediaName);
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
-            payload: medias
-        });
-    }
-
-    async refreshGame() {
+    async refreshGames() {
         const {mediaName} = this.props.match.params;
         const games = await getGamesBySearch({"media.name": mediaName});
         this.props.dispatch({
@@ -84,8 +66,7 @@ class MediaPage extends React.Component {
     renderCurrentMedia() {
         return <div className={styles.mediaPageContainer}>
             {this.renderMediaTitle()}
-            {this.renderMediaGrid()}
-            {/*{this.renderGameGrid()}*/}
+            {this.renderGameGrid()}
         </div>
     }
 
@@ -106,11 +87,10 @@ class MediaPage extends React.Component {
         </div>
     }
 
-    renderMediaGrid() {
-        return <div className={styles.mediaRowContainer}>
-            <MediaSection rowAttribute="type"
-                          noTitle/>
-        </div>
+    renderGameGrid() {
+        console.log(this.props);
+        const {games} = this.props;
+        return <GameGridContainer games={games} disableLogo/>
     }
 
     render() {

@@ -1,23 +1,11 @@
 import {ACTIONS_SETTINGS} from "../actions/settingsActions";
-import {MEDIA_LOGOS} from "../config/const";
-
-const getDefaultMediaFilter = () => {
-    const res = {}
-    MEDIA_LOGOS.forEach(media => {
-        res[media.name] = true;
-    });
-    return res;
-}
-
-const defaultFilters = {
-    medias: getDefaultMediaFilter(),
-}
 
 export default (state = {
     settings: {
-        filters: defaultFilters,
-        remember: false
-    }
+        filters: {},
+        remember: false,
+    },
+    cookieConsent: localStorage.getItem('cookie-consent')
 }, action) => {
     switch (action.type) {
         case ACTIONS_SETTINGS.SET_FILTERED_VALUES:
@@ -37,6 +25,20 @@ export default (state = {
                     ...state.settings,
                     remember: action.payload
                 }
+            };
+        case ACTIONS_SETTINGS.IS_MOBILE_DRAWER_OPEN:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    mobileDrawerOpen: action.payload
+                }
+            };
+        case ACTIONS_SETTINGS.SET_COOKIE_CONSENT:
+            localStorage.setItem('cookie-consent', action.payload);
+            return {
+                ...state,
+                cookieConsent: action.payload
             };
         default:
             return {

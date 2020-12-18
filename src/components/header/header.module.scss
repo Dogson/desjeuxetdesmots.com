@@ -27,6 +27,8 @@
 
   &.smallHeader {
     padding: 0 30px;
+    position: relative;
+    z-index: 3;
 
     .titleContainer {
       font-size: $size-big;
@@ -34,15 +36,175 @@
       @extend .flexRow;
       @extend .flexCenter;
       padding-right: 35px;
+      position: absolute;
+      left: 0;
+      top: 0;
 
       .logo {
-        transform: scale(0.45);
-        margin-top: -23px;
+        transform: scale(0.40);
+        margin-top: -16px;
         padding: 0;
       }
 
+      .logoTitle {
+        display: none;
+      }
+
+    }
+  }
+}
+
+.mobileSearch {
+  display: none;
+  color: $color-bright-1;
+
+  .backButton {
+    padding: 15px 0;
+    position: relative;
+    @extend .flexRow;
+    @extend .flexAlignCenter;
+    @extend .flexCenter;
+
+    svg {
+      position: absolute;
+      left: 15px;
     }
 
+    span {
+     text-transform: uppercase;
+      font-weight: $weight-regular;
+    }
+  }
+
+  .searchWithPreviewContainer {
+    position: relative !important;
+  }
+
+  .sidebarButton {
+    @extend .flexColumn;
+    @extend .flexCenter;
+    @extend .flexAlignCenter;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    height: 50px;
+    padding: 0 15px;
+  }
+
+  .searchResultsContainer {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    border-bottom: none;
+    box-shadow: none;
+  }
+}
+
+
+.searchResultsContainer {
+  position: absolute;
+  padding: 0 30px;
+  z-index: 22;
+  @extend .flexColumn;
+  background-color: $color-dark-2;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 0 #FFC857;
+  width: 600px;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      .itemContainer {
+        padding: 10px 20px;
+        @extend .flexRow;
+      }
+
+      &.allResults {
+        color: $color-bright-1;
+        padding: 10px 20px;
+        @extend .flexColumn;
+        @extend .flexCenter;
+        font-size: $size-small;
+        cursor: pointer;
+
+        .gameTitle {
+          text-transform: none;
+        }
+      }
+
+      .imageContainer {
+        height: 60px;
+        width: 45px;
+        margin-right: 20px;
+        color: $color-dark-1;
+
+        img {
+          height: 60px;
+          opacity: 0.9;
+        }
+      }
+
+
+      .gameInfos {
+        @extend .flexColumn;
+        @extend .flexCenter;
+      }
+
+      &.active {
+        color: $color-bright-2;
+
+        img {
+          opacity: 1;
+        }
+
+        .gameTitle {
+          color: $color-bright-2;
+        }
+
+        .gameDate {
+          color: rgba($color-bright-2, 0.8);
+        }
+      }
+
+      .gameTitle {
+        text-transform: uppercase;
+        font-size: $size-normal;
+        font-weight: $weight-regular;
+        color: $color-bright-1;
+      }
+
+      .gameDate {
+        color: rgba($color-bright-1, 0.8);
+        font-size: $size-small;
+      }
+    }
+  }
+}
+
+.searchWithPreviewContainer {
+
+  &.mobile {
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    background-color: $color-dark-2;
+
+    .inputContainer {
+      .input {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -51,12 +213,29 @@
     .titleContainer {
       font-size: 30px;
     }
+
+    &.smallHeader {
+      height: 50px;
+
+      .titleContainer {
+        font-size: 20px;
+        width: 100px;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        left: auto;
+        top: auto;
+      }
+
+      .desktopSearch {
+        display: none;
+      }
+    }
   }
 
-  &.smallHeader {
-    .titleContainer {
-      font-size: 20px;
-    }
+
+  .mobileSearch {
+    display: block;
   }
 
 }

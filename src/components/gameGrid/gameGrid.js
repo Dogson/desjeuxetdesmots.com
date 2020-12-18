@@ -136,7 +136,7 @@ const mapStateToProps = state => {
 
 export default withRouter(connect(mapStateToProps)(GameGridContainer));
 
-const GameGrid = ({games, loading, disableLogo}) => {
+const GameGrid = ({games, loading}) => {
     if (!games)
         return null;
     if (games.length === 0 && !loading) {
@@ -163,7 +163,7 @@ const GameGrid = ({games, loading, disableLogo}) => {
                         <div className={styles.secondaryInfoContainer}>
                             {game.formattedDate}
                         </div>
-                        {!disableLogo && <MediaLogos game={game}/>}
+                        <MediasSummary game={game}/>
                     </div>
                 </NavLink>
             })
@@ -171,24 +171,27 @@ const GameGrid = ({games, loading, disableLogo}) => {
     </div>
 };
 
-const MediaLogos = ({game}) => {
-    const tooMuchLogos = game.medias.length > 8;
-    const medias = tooMuchLogos ? game.medias.slice(0, 7) : game.medias;
-    const nbMoreLogos = game.medias.length - medias.length;
-    return <div className={styles.mediasLogosContainer}>
-        {
-            medias.map((media) => {
-                return <div key={media.name} className={styles.mediaLogo}>
-                    <img src={media.logoMin} alt={media.name}/>
-                </div>
-            })
-        }
-        {
-            tooMuchLogos &&
-            <div className={styles.mediaLogo}>
-                <div className={styles.moreLogos}>+{nbMoreLogos}</div>
+const MediasSummary = ({game}) => {
+    const nbVideos = game.episodes.filter((ep) => {
+        return ep.media.type === "video"
+    }).length;
+    const nbPodcasts = game.episodes.length - nbVideos;
+
+    return <div className={styles.mediasSummaryContainer}>
+        <div>
+            {nbPodcasts > 0 &&
+            <div className={styles.badge}>
+                <span className={styles.number}>{nbPodcasts}</span>
+                <span>podcast{nbPodcasts > 1 && "s"}</span>
+                <span role="img" aria-label="Podcast" className={styles.emoji}>🎙️</span>
+            </div>}
+            {nbVideos > 0 &&
+            <div className={styles.badge}>
+                <span className={styles.number}>{nbVideos}</span>
+                <span>vidéo{nbVideos > 1 && "s"}</span>
+                <span role="img" aria-label="Vidéo" className={styles.emoji}>🎥</span>
             </div>
-        }
-        {/*<ReactTooltip effect="solid" id="mediaLogo" place="top"/>*/}
+            }
+        </div>
     </div>
 };

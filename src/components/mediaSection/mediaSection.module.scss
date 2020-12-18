@@ -40,11 +40,17 @@
     color: $color-bright-1;
     margin: 0 10px 5px;
 
-    .imageContainer {
+    .emoji {
       height: 30px;
       width: 30px;
+      padding: 2px;
+      font-size: $size-normal;
       margin-right: 10px;
       border-radius: 50%;
+      @extend .flexColumn;
+      @extend .flexCenter;
+      @extend .flexAlignCenter;
+      background-color: $color-bright-2;
     }
   }
 }

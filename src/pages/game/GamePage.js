@@ -37,7 +37,7 @@ class GamePage extends React.Component {
                 payload: null
             });
             this.props.dispatch({
-                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
                 payload: this.sortEpisodesByMediaTypes(this.props.currentGame.episodes)
             });
         }
@@ -66,7 +66,7 @@ class GamePage extends React.Component {
         if (this.props.location.game) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: this.props.location.game});
             this.props.dispatch({
-                type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
                 payload: this.sortEpisodesByMediaTypes(this.props.location.game.episodes)
             });
         } else {
@@ -75,7 +75,7 @@ class GamePage extends React.Component {
                 .then((game) => {
                     this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: game});
                     this.props.dispatch({
-                        type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+                        type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
                         payload: this.sortEpisodesByMediaTypes(game.episodes)
                     });
                 })
@@ -105,7 +105,7 @@ class GamePage extends React.Component {
         const {error} = this.state;
 
         return <PageLayout smallHeader>
-            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} - Des jeux et des mots`}/>}
+            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} : Vidéos et podcasts - Des jeux et des mots`}/>}
             {!currentGame ?
                 error ?
                     <ErrorMessage>{error}</ErrorMessage> :
@@ -122,7 +122,7 @@ class GamePage extends React.Component {
                                 </div>
                                 <div className={styles.gameDevelopers}>
                                     {currentGame.companies.map((comp, index) => {
-                                        return <span>{comp.name}{index < currentGame.companies.length - 1 && ", "}</span>
+                                        return <span key={comp.name}>{comp.name}{index < currentGame.companies.length - 1 && ", "}</span>
                                     })}
                                 </div>
                                 <div className={styles.gameDate}>

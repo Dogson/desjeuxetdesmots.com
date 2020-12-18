@@ -17,7 +17,7 @@ class MediaPlayer extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.episodePlayed) {
-            if (this.hasMediaPlayedChanged(prevProps.episodePlayed, this.props.episodePlayed)) {
+            if (this.hasepisodePlayedChanged(prevProps.episodePlayed, this.props.episodePlayed)) {
                 this.audioInstance.playNext();
             } else {
                 if (this.isAudioContextDifferentFromState(this.props.playState)) {
@@ -35,7 +35,7 @@ class MediaPlayer extends React.Component {
         return playState.isPaused !== playState.audioContextPaused;
     }
 
-    hasMediaPlayedChanged(prevMedia, media) {
+    hasepisodePlayedChanged(prevMedia, media) {
         return !prevMedia || prevMedia._id !== media._id
     };
 

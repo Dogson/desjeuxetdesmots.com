@@ -8,19 +8,20 @@ import Carousel from "../carousel/carousel";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
 import {findPos} from "../../utils";
 import {setGamesForEpisode, toggleVerifyEpisode} from "../../endpoints/mediasEndpoint";
+import ActiveMediaBox from "../activeMediaBox/activeMediaBox";
 import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
-import ActiveEpisodeBox from "../activeEpisodeBox/activeEpisodeBox";
 
 class MediaSection extends React.Component {
     constructor(props) {
         super(props);
 
-        this._handleClickEpisode = this._handleClickEpisode.bind(this);
+        this._handleClickMedia = this._handleClickMedia.bind(this);
         this._handleSaveGames = this._handleSaveGames.bind(this);
-        this._handleVerifyEpisode = this._handleVerifyEpisode.bind(this);
+        this._handleVerifyMedia = this._handleVerifyMedia.bind(this);
+        this._handleCloseMedia = this._handleCloseMedia.bind(this);
     }
 
-    _handleClickEpisode(episode, ref) {
+    _handleClickMedia(episode, ref) {
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
             payload: {...episode}
@@ -36,86 +37,95 @@ class MediaSection extends React.Component {
             episodeId: this.props.episodeActive._id
         })
             .then((result) => {
-                this.saveEpisode(result);
+                this.saveMedia(result);
             })
     }
 
-    _handleVerifyEpisode() {
+    _handleVerifyMedia() {
         return toggleVerifyEpisode({
             verified: true,
             episodeId: this.props.episodeActive._id
         })
-            .then((episode) => {
-                this.saveEpisode(episode);
+            .then((newMedia) => {
+                this.saveMedia(newMedia);
             });
     }
 
-    goToNextEpisode() {
+    _handleCloseMedia() {
+        this.props.dispatch({
+            type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
+            payload: null
+        });
+    }
+
+    goToNextMedia() {
         let episodes = [];
-        this.props.medias.forEach((media) => {
+        this.props.episodesMedia.forEach((media) => {
             if (media.name === this.props.episodeActive.media.name) {
                 episodes = media.episodes;
             }
         })
-        const mappedEpisodes = episodes.map(ep => ep.name);
-        const currentEpIndex = mappedEpisodes.findIndex((ep) => {
-            return ep === this.props.episodeActive.name
+        const mappedMedia = episodes.map(media => media.name);
+        const currentMediaIndex = mappedMedia.findIndex((media) => {
+            return media === this.props.episodeActive.name
         });
-        const nextEp = episodes[currentEpIndex + 1];
+        const nextMedia = episodes[currentMediaIndex + 1];
         this.props.dispatch({
             type: ACTIONS_MEDIAS.SET_ACTIVE_EPISODE,
-            payload: nextEp
+            payload: nextMedia
         });
     }
 
-    saveEpisode(newEpisode) {
-        const {medias} = this.props;
-        const updatedMedias = medias.map((media) => {
+    saveMedia(newMedia) {
+        const {episodesMedia} = this.props;
+        const updatedMedias = episodesMedia.map((media) => {
             media.episodes = media.episodes.map((episode) => {
-                if (episode._id === newEpisode._id) {
-                    return {...newEpisode, verified: true};
+                if (episode._id === newMedia._id) {
+                    return {...newMedia, verified: true};
                 }
                 return episode;
             });
             return media;
         });
         this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_MEDIAS_LIST,
+            type: ACTIONS_MEDIAS.SET_EPISODES_LIST,
             payload: updatedMedias
         });
-        this.goToNextEpisode();
+        this.goToNextMedia();
     }
 
-    renderActiveEpisode(episodeActive, ref) {
-        return <div ref={ref}><ActiveEpisodeBox episode={episodeActive} onSaveGames={this._handleSaveGames}
-                                                onVerifyEpisode={this._handleVerifyEpisode}
+    renderActiveMedia(episodeActive, ref) {
+        return <div ref={ref}><ActiveMediaBox media={episodeActive} onSaveGames={this._handleSaveGames}
+                                              onVerifyMedia={this._handleVerifyMedia}
+                                              onCloseMedia={this._handleCloseMedia}
+                                              smallVideo={this.props.smallVideo}
         /></div>
     }
 
-    renderMediaRow(media) {
-        const {episodeActive, rowAttribute, carouselTitle, carouselImg, noTitle} = this.props;
+    renderMediaRow(epMedia) {
+        const {episodeActive, rowAttribute} = this.props;
         let episodeActiveType;
         if (episodeActive && episodeActive.media) {
             episodeActiveType = MEDIA_TYPES.find(medType => medType.dataLabel === episodeActive.media.type);
         }
-        const medias = media.episodes;
+        const episodes = epMedia.episodes;
         const activeItem = this.props.episodeActive;
-        if (medias && medias.length > 0) {
-            return <div key={media.name}
-                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: episodeActive && episodeActive.media && episodeActiveType && media.type === episodeActiveType.dataLabel})}>
+        if (episodes && episodes.length > 0) {
+            return <div key={epMedia.name}
+                        className={cx(styles.mediaRowContainer, {[styles.mediaRowContainerActive]: episodeActive && episodeActive.media && episodeActiveType && epMedia.type === episodeActiveType.dataLabel})}>
                 <div className={styles.mediaRowWrapper}>
-                    {!noTitle && <div className={styles.title}>
-                        <img className={styles.imageContainer} src={carouselImg || media.logoMin} alt={media.name}/>
-                        {carouselTitle || media.name}
-                    </div>}
-                    <Carousel medias={medias}
+                    <div className={styles.title}>
+                        <span role="img" aria-label={epMedia.name} className={styles.emoji}>{epMedia.emoji}</span>
+                        {epMedia.name}
+                    </div>
+                    <Carousel episodes={episodes}
                               onClickItem={(episode) => {
-                                  this._handleClickEpisode(episode, media.ref)
+                                  this._handleClickMedia(episode, epMedia.ref)
                               }}
                               activeItem={activeItem}
-                              smallerCards={media.type === "video"}/>
-                    <div className={styles.activeEpisodeContainer}>
-                        {episodeActive && episodeActive.media && media[rowAttribute] === episodeActive.media[rowAttribute] && this.renderActiveEpisode(episodeActive, media.ref)}
+                              smallerCards={epMedia.type === "video"}/>
+                    <div className={styles.activeMediaContainer}>
+                        {episodeActive && episodeActive.media && epMedia[rowAttribute] === episodeActive.media[rowAttribute] && this.renderActiveMedia(episodeActive, epMedia.ref)}
                     </div>
                 </div>
             </div>
@@ -126,8 +136,8 @@ class MediaSection extends React.Component {
     render() {
         return <div className={styles.gameContentWrapper}>
             <div className={styles.mediaRowContainer}>
-                {this.props.medias ? this.props.medias.map((media) => {
-                    return this.renderMediaRow(media);
+                {this.props.episodesMedia ? this.props.episodesMedia.map((epMedia) => {
+                    return this.renderMediaRow(epMedia);
                 }) : <LoadingSpinner/>}
             </div>
         </div>
@@ -137,7 +147,7 @@ class MediaSection extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        medias: state.mediaReducer.medias,
+        episodesMedia: state.mediaReducer.episodes,
         episodeActive: state.mediaReducer.episodeActive,
         currentGame: state.gamesReducer.currentGame
     }

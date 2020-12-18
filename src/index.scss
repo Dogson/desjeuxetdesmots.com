@@ -32,7 +32,7 @@ $color-bright-2: #FFC857;
 
 //media sizes
 $media-tablet: "screen and (max-width : 1260px)";
-$media-phone: "screen and (max-width : 600px)";
+$media-phone: "screen and (max-width : 700px)";
 
 body {
   margin: 0;
@@ -55,6 +55,10 @@ a {
 
 strong {
   font-weight: $weight-regular;
+}
+
+.light {
+  font-weight: $weight-light;
 }
 
 h2 {
@@ -198,7 +202,19 @@ input {
   @extend .flexRow;
   @extend .flexAlignCenter;
 
+
   &.small {
+    margin: 10px;
+    padding: 0 15px;
+
+    .input {
+      font-size: $size-small;
+      width: 300px;
+      padding: 8px 0;
+    }
+  }
+
+  &.smallest {
     width: 200px;
     border-color: transparent;
 
@@ -297,6 +313,10 @@ input {
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
 // Buttons
 .btn {
   color: $color-bright-1;
@@ -308,6 +328,7 @@ input {
   border: 1px solid $color-bright-1;
   padding: 10px 10px;
   letter-spacing: 1px;
+  text-align: center;
 
   &:hover, &:active {
     border: 1px solid $color-bright-2;
@@ -416,44 +437,38 @@ input[type="submit"] {
     position: relative;
   }
 
-  .mediasLogosContainer {
-    @extend .flexRow;
+  .mediasSummaryContainer {
+    @extend .flexColumn;
     @extend .flexCenter;
+    @extend .flexAlignCenter;
     width: 100%;
     flex-wrap: wrap;
     position: absolute;
     bottom: 20px;
 
-    .mediaLogo {
-      position: relative;
-      overflow: hidden;
-      width: 35px;
-      height: 35px;
-      padding: 5px;
+    .badge {
+      padding: 5px 10px;
+      opacity: 1;
+      border-radius: 15px;
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+      @extend .flexCenter;
+      color: $color-bright-1;
+      background-color: $color-dark-1;
+      font-weight: $weight-regular;
+      font-size: $size-small;
+      margin-top: 7px;
 
-      img, .moreLogos {
-        display: inline;
-        height: 100%;
-        margin: 0 auto;
-        opacity: 1;
-        border-radius: 50%;
-        box-shadow: 2px 2px 0 0 #FFC857;
+      .number {
+        font-size: $size-normal;
+        margin-right: 5px;
+        color: $color-bright-2;
       }
 
-      .moreLogos {
-        width: 100%;
-        display: flex !important;
-        @extend .flexAlignCenter;
-        @extend .flexCenter;
-        color: $color-dark-2;
-        background-color: $color-bright-2;
-        font-weight: $weight-bolder;
-        font-size: $size-small;
-        box-shadow: none;
+      .emoji {
+        margin-left: 3px;
       }
-
     }
-
 
   }
 
@@ -497,6 +512,12 @@ ul {
   .inputContainer {
     .input {
       width: auto;
+    }
+  }
+
+  .cardContainer {
+    .mediasSummaryContainer {
+      display: none;
     }
   }
 }

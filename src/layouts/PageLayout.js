@@ -1,15 +1,31 @@
 import React from "react"
-import Header from "../components/header/header";
+import {Header, MobileDrawer} from "../components/header/header";
 import Footer from "../components/footer/footer";
 import styles from "./pageLayout.module.scss";
+import {connect} from "react-redux";
+import cx from "classnames";
+import {LoadingSpinner} from "../components/loadingSpinner/loadingSpinner";
+import CookieConsent from "../components/cookieConsent/cookieConsent";
 
-export default ({children, title, smallHeader}) => (
-    <div className={styles.pageContainer}>
-        <Header smallHeader={smallHeader} />
-        <div className={styles.pageContent}>
+const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen, cookieConsent}) => {
+    return  <div className={styles.pageContainer}>
+        {smallHeader && <MobileDrawer/>}
+        <Header smallHeader={smallHeader} hideSettings={!mediaFilters}/>
+        <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen})}>
             {title ? <div className={styles.titleContainer}>{title}</div> : null}
-            {children}
+            {mediaFilters ? children : <LoadingSpinner/>}
         </div>
+        {!cookieConsent && <CookieConsent/>}
         <Footer/>
     </div>
-)
+}
+
+const mapStateToProps = state => {
+    return {
+        mediaFilters: state.settingsReducer.settings.filters.medias,
+        mobileDrawerOpen: state.settingsReducer.settings.mobileDrawerOpen,
+        cookieConsent: state.settingsReducer.cookieConsent
+    }
+};
+
+export default connect(mapStateToProps)(Layout);

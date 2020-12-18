@@ -6,10 +6,8 @@ import Popover from "react-popover";
 import {Checkbox} from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
 import cx from "classnames";
-import {MEDIA_LOGOS, MEDIA_TYPES} from "../../config/const";
+import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
-import {withGetScreen} from 'react-getscreen'
-import {compose} from "redux";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -22,7 +20,6 @@ class Settings extends React.Component {
             shouldCheckAllVideos: true,
             shouldCheckAllPodcasts: true
         }
-
 
         this._handleTogglePopover = this._handleTogglePopover.bind(this);
         this._handleChangeMediasFilter = this._handleChangeMediasFilter.bind(this);
@@ -39,10 +36,11 @@ class Settings extends React.Component {
 
 
     getShouldCheckAll(mediasFilter, type) {
+        const {medias} = this.props;
         let shouldCheckAll = false;
         Object.keys(mediasFilter)
             .filter((mediaName) => {
-                const media = MEDIA_LOGOS.find((media) => {
+                const media = medias.find((media) => {
                     return media.name === mediaName;
                 });
                 return media.type === type
@@ -64,8 +62,9 @@ class Settings extends React.Component {
     }
 
     _handleChangeMediasFilter(data, type) {
+        const {medias} = this.props;
         const {mediasFilter} = {...this.state};
-        const media = MEDIA_LOGOS.find((media) => {
+        const media = medias.find((media) => {
             return media.name === data;
         });
         if (media.type === type) {
@@ -87,10 +86,11 @@ class Settings extends React.Component {
 
     _handleSelectAll(type) {
         const {mediasFilter} = {...this.state};
-
+        const {medias} = this.props;
         const newMediasFilter = {...mediasFilter};
+
         Object.keys(mediasFilter).forEach((key) => {
-            const media = MEDIA_LOGOS.find((media) => {
+            const media = medias.find((media) => {
                 return media.name === key;
             });
             if (media.type === type) {
@@ -134,26 +134,27 @@ class Settings extends React.Component {
     }
 
     renderMediaTypeFilters(mediaType) {
+        const {medias} = this.props;
         const {mediasFilter} = this.state;
         const type = mediaType.dataLabel;
         const checkAll = type === "podcast" ? this.state.shouldCheckAllPodcasts : this.state.shouldCheckAllVideos;
-        return <div className={styles.subBlock}>
+        return <div className={styles.subBlock} key={type}>
             <div className={styles.subBlockTitle}>
                 <Checkbox shape="curve" color="#FFC857"
                           checked={!checkAll}
                           onChange={() => this._handleSelectAll(type)}
                 >
-                    <span>{mediaType.name}</span>
+                    <span>{mediaType.name} <span role="img" aria-label={mediaType.name}>{mediaType.emoji}</span></span>
                 </Checkbox>
             </div>
             {
-                MEDIA_LOGOS
+                medias
                     .filter((mediaLogo) => {
                         return mediaLogo.type === type
                     })
                     .sort((x, y) => x.name < y.name ? -1 : 1)
                     .map(media =>
-                        <div className={styles.filterRow}>
+                        <div className={styles.filterRow} key={media.name}>
                             <Checkbox shape="curve"
                                       checked={mediasFilter[media.name]}
                                       onChange={() => this._handleChangeMediasFilter(media.name, type)}>
@@ -167,7 +168,6 @@ class Settings extends React.Component {
     }
 
     renderPopoverContent() {
-        // const {remember} = this.state;
         return <div className={styles.settingsPopoverContainer}>
             <div className={styles.blockTitle}>
                 <FaFilter className={styles.icon}/>
@@ -195,6 +195,7 @@ class Settings extends React.Component {
 
     render() {
         const {isOpen} = this.state;
+
         return <div className={styles.settingsContainer}>
             <Popover
                 isOpen={isOpen}
@@ -212,8 +213,9 @@ class Settings extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        settings: state.settingsReducer.settings
+        settings: state.settingsReducer.settings,
+        medias: state.mediaReducer.medias
     }
 };
 
-export default compose(withGetScreen, connect(mapStateToProps))(Settings);
+export default connect(mapStateToProps)(Settings);
