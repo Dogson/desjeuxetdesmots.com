@@ -19,6 +19,12 @@
     .bodyContainer {
       flex-direction: column-reverse;
 
+      .warning {
+        color: $color-bright-2;
+        font-weight: $weight-regular;
+        font-size: $size-small;
+      }
+
       .rightRow {
         margin-left: 0;
 

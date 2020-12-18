@@ -4,7 +4,7 @@ import * as moment from "moment";
 import {DebounceInput} from "react-debounce-input";
 import cx from "classnames";
 import Loader from 'react-loader-spinner';
-import {FaCheck, FaSave, FaSearch, FaTimes} from "react-icons/fa";
+import {FaCheck, FaExclamationTriangle, FaSave, FaSearch, FaTimes} from "react-icons/fa";
 import {getGamesById, getGamesFromIGDB} from "../../endpoints/gamesEndpoint";
 import ReactTooltip from "react-tooltip";
 import {NavLink, withRouter} from "react-router-dom";
@@ -184,6 +184,16 @@ class ActiveMediaBox extends React.Component {
         </div>
     }
 
+    renderAlreadyUploadedWarning() {
+        const {media} = this.props;
+        const {_createdAt, releaseDate} = media;
+        const releaseDateOffset = moment(releaseDate).add(6, "hours");
+        if (releaseDateOffset.isBefore(moment(_createdAt))){
+            return <div className={styles.warning}><FaExclamationTriangle/> Ce média a probablement déja été uploadé</div>
+        }
+        return null;
+    }
+
     render() {
         const user = this.props.authUser;
         const {loadingGames} = this.state;
@@ -309,6 +319,7 @@ class ActiveMediaBox extends React.Component {
                                                                                                    aria-label="shrug">🤷</span>
                             </div>
                         }
+                        {user && !media.verified && this.renderAlreadyUploadedWarning()}
                         {user && <div className={styles.inputWithSuggestionsContainer}>
                             <div
                                 className={cx(styles.inputContainer, styles.smallest, {[styles.focus]: this.state.inputFocused})}>
