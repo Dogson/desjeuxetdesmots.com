@@ -52,6 +52,7 @@ class GamePage extends React.Component {
         if (!isEqual(this.props.settings.filters.medias, prevProps.settings.filters.medias)) {
             this.refreshGame();
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+            this.props.dispatch({type: ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS, payload: []});
         }
     }
 

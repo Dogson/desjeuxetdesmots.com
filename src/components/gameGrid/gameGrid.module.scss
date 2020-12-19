@@ -1,0 +1,58 @@
+@import "../../index";
+
+.gamesGridContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  flex-wrap: wrap;
+  max-width: 1500px;
+
+  .cardContainer {
+    width: 200px;
+    height: 266px;
+    opacity: 1;
+  }
+}
+
+.separator {
+  border-top: 1px solid $color-bright-2;
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.mediaGridContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  flex-wrap: wrap;
+  margin: 30px 0;
+
+  .cardContainer {
+    width: 150px;
+    height: 150px;
+    opacity: 1;
+
+  }
+}
+
+.noResultContainer {
+  color: $color-bright-1;
+
+  strong {
+    color: $color-bright-2;
+  }
+}
+
+
+.loaderContainer {
+  margin: 50px;
+  flex: 1;
+}
+
+@media #{$media-phone} {
+  .gamesGridContainer {
+    .cardContainer {
+      width: 150px;
+      height: 200px;
+    }
+  }
+}

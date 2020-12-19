@@ -10,38 +10,3 @@
     color: $color-bright-2;
   }
 }
-
-.gamesGridContainer {
-  @extend .flexRow;
-  @extend .flexCenter;
-  flex-wrap: wrap;
-  max-width: 1500px;
-
-  .cardContainer {
-    width: 200px;
-    height: 266px;
-    opacity: 1;
-  }
-}
-
-.loaderContainer {
-  margin: 50px;
-  flex: 1;
-}
-
-.noResultContainer {
-  color: $color-bright-1;
-
-  strong {
-    color: $color-bright-2;
-  }
-}
-
-@media #{$media-phone} {
-  .gamesGridContainer {
-    .cardContainer {
-      width: 150px;
-      height: 200px;
-    }
-  }
-}

@@ -6,7 +6,7 @@ import {Logo} from "../logo/logo";
 import Settings from "../settings/settings";
 import {FaSearch, FaArrowLeft} from "react-icons/fa";
 import {DebounceInput} from "react-debounce-input";
-import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
+import {getGamesAndMediasBySearch} from "../../endpoints/gamesEndpoint";
 import Sidebar from "react-sidebar";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
 import {connect} from "react-redux";
@@ -126,7 +126,7 @@ class PureHeaderSearchBar extends React.Component {
     async _handleChange(search) {
         this.setState({previewSearchInput: search})
         try {
-            const games = await getGamesBySearch({name: search, limit: 5});
+            const {games} = await getGamesAndMediasBySearch({name: search, limit: 5});
             this.setState({searchResults: games, cursor: -1})
         } catch (err) {
             this.setState({error: true})

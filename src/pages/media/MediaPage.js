@@ -45,6 +45,8 @@ class MediaPage extends React.Component {
             type: ACTIONS_GAMES.SET_GAMES,
             payload: {games: [], page: 1}
         });
+        this.props.dispatch({type: ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS, payload: []});
+
 
     }
 
@@ -66,6 +68,7 @@ class MediaPage extends React.Component {
             type: ACTIONS_GAMES.SET_GAMES,
             payload: {games: null}
         });
+        this.props.dispatch({type: ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS, payload: []});
     }
 
     renderCurrentMedia() {
@@ -98,7 +101,6 @@ class MediaPage extends React.Component {
     renderExternalLink() {
         const {currentMedia} = this.props;
         if (currentMedia.type === "video") {
-            console.log(currentMedia.feedUrl);
             const youtubeChannelId = currentMedia.feedUrl.split("channel_id=")[1];
             const youtubeChannelUrl = `https://www.youtube.com/channel/${youtubeChannelId}`;
             return <div className={styles.subscribeBtn}>

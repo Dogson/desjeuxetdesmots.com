@@ -37,6 +37,11 @@ export default (state = {
                 ...state,
                 playState: action.payload,
             };
+        case ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS:
+            return {
+                ...state,
+                searchedMedias: action.payload,
+            };
         default:
             return {
                 ...state

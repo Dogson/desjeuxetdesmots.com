@@ -17,15 +17,18 @@ export async function getGameById(gameId) {
     return _mapResultToGame(game);
 }
 
-export async function getGamesBySearch(params) {
+export async function getGamesAndMediasBySearch(params) {
     const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
     params.filters = filters && filters.medias && JSON.stringify({
         "media.name": params["media.name"] || _mapFilter(filters.medias),
     });
     delete params["media.name"];
-    const games = await get(API_CONFIG.endpoints.GAME, params);
-    return games.map(_mapResultToGame);
+    const result = await get(API_CONFIG.endpoints.GAME, params);
+    return {
+        games: result.games.map(_mapResultToGame),
+        medias: result.medias
+    };
 }
 
 function _mapResultToGame(result) {
