@@ -6,6 +6,12 @@
   margin: 0 20px 30px;
   position: relative;
 
+  .warning {
+    color: $color-bright-2;
+    font-weight: $weight-regular;
+    font-size: $size-small;
+  }
+
   &.video {
     width: 100%;
     margin: 0;
@@ -18,12 +24,6 @@
 
     .bodyContainer {
       flex-direction: column-reverse;
-
-      .warning {
-        color: $color-bright-2;
-        font-weight: $weight-regular;
-        font-size: $size-small;
-      }
 
       .rightRow {
         margin-left: 0;
