@@ -1,4 +1,5 @@
 import React from "react";
+import linkifyHtml from 'linkifyjs/html'
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import styles from "./mediaPage.module.scss";
@@ -80,6 +81,12 @@ class MediaPage extends React.Component {
         </div>
     }
 
+    renderDescription(description) {
+        return <div className={styles.mediaDescription}
+                    dangerouslySetInnerHTML={{__html: linkifyHtml(description.replace(/\n{3,}/g, "\n\n"))}}>
+        </div>
+    }
+
     renderMediaTitle() {
         const {currentMedia} = this.props;
         const {mediaName} = this.props.match.params;
@@ -94,6 +101,7 @@ class MediaPage extends React.Component {
             <div className={styles.epNumber}>
                 {currentMedia && currentMedia.total} {currentMedia && (currentMedia.type === "video" ? "vidéos" : "épisodes")}
             </div>
+            {currentMedia && this.renderDescription(currentMedia.description)}
             {currentMedia && this.renderExternalLink()}
         </div>
     }
