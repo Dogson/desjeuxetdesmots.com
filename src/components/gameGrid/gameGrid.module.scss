@@ -13,6 +13,36 @@
   }
 }
 
+.filtersTagsContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  margin-bottom: 20px;
+
+  .filterTag {
+    border: none;
+    margin: 0 5px;
+    transition: all 0.1s ease-in-out;
+
+    .icon {
+      margin-bottom: -2px;
+      color: $color-bright-1;
+    }
+
+    &.active {
+      color: $color-bright-2;
+      background-color: $color-dark-2;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      .icon {
+        color: $color-bright-2;
+      }
+    }
+  }
+}
+
 .separator {
   border-top: 1px solid $color-bright-2;
   opacity: 0.7;

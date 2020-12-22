@@ -13,6 +13,9 @@ import {LoadingSpinner} from "../loadingSpinner/loadingSpinner";
 import {ErrorMessage} from "../errorMessage/errorMessage";
 import {connect} from "react-redux";
 import {ACTIONS_MEDIAS} from "../../actions/mediaActions";
+import {MEDIA_TYPES} from "../../config/const";
+import {FaMinus, FaPlusCircle} from "react-icons/fa";
+import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
 
 class GameGridContainer extends React.Component {
     constructor(props) {
@@ -24,7 +27,8 @@ class GameGridContainer extends React.Component {
             error: false
         };
 
-        this._handleChange = this._handleChange.bind(this);
+        this._handleChangeSearchInput = this._handleChangeSearchInput.bind(this);
+        this._handleChangeFilter = this._handleChangeFilter.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
     }
 
@@ -59,8 +63,19 @@ class GameGridContainer extends React.Component {
 
     }
 
-    _handleChange(value) {
+    _handleChangeSearchInput(value) {
         this.props.history.push(`/?q=${value}`);
+    }
+
+    _handleChangeFilter(typeFilter) {
+        const types = {...this.props.settings.filters.types};
+        types[typeFilter] = !types[typeFilter];
+        this.props.dispatch({
+            type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
+            payload: {
+                types
+            }
+        })
     }
 
     async getMoreGames() {
@@ -122,6 +137,24 @@ class GameGridContainer extends React.Component {
         </InfiniteScroll>
     };
 
+    renderFilters() {
+        const {settings} = this.props;
+        const {filters} = settings;
+        const {types} = filters;
+        return <div className={styles.filtersTagsContainer}>
+            {
+                MEDIA_TYPES.map((mediaType, i) => {
+                    const {name, emoji, dataLabel} = mediaType
+                    return <button onClick={() => this._handleChangeFilter(dataLabel)} key={i}
+                                   className={cx(styles.btn, styles.filterTag, {[styles.active]: types[dataLabel]})}>
+                        {emoji} {name} {types[dataLabel] ? <FaMinus className={styles.icon}/> :
+                        <FaPlusCircle className={styles.icon}/>}
+                    </button>
+                })
+            }
+        </div>
+    }
+
     render() {
         const {disableSearch} = this.props;
         const searchInput = queryString.parse(this.props.location.search).q;
@@ -133,11 +166,12 @@ class GameGridContainer extends React.Component {
                     className={styles.input}
                     minLength={2}
                     debounceTimeout={300}
-                    onChange={(e) => this._handleChange(e.target.value)}
+                    onChange={(e) => this._handleChangeSearchInput(e.target.value)}
                     placeholder="Rechercher un jeu, un podcast, un·e vidéaste..."
                     onFocus={() => this.setState({inputFocused: true})}
                     onBlur={() => this.setState({inputFocused: false})}/>
             </div>}
+            {this.renderFilters()}
             {this.renderGameGrid()}
         </>
     }
