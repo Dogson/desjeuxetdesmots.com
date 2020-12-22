@@ -135,7 +135,7 @@ class MediaPage extends React.Component {
     render() {
         const {currentMedia} = this.props;
         return <PageLayout smallHeader dark>
-            {currentMedia && currentMedia.name && <Helmet
+            {currentMedia && currentMedia.name && <Helmet defer={false}
                 title={`${currentMedia.name} : ${currentMedia.type === "video" ? "Vidéos" : "Podcasts"} -  Des jeux et des mots`}/>}
             {this.renderCurrentMedia()}
         </PageLayout>
