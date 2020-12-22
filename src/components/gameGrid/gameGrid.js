@@ -29,6 +29,7 @@ class GameGridContainer extends React.Component {
 
         this._handleChangeSearchInput = this._handleChangeSearchInput.bind(this);
         this._handleChangeFilter = this._handleChangeFilter.bind(this);
+        this._handleReinitializeFilters = this._handleReinitializeFilters.bind(this);
         this.getMoreGames = this.getMoreGames.bind(this);
     }
 
@@ -61,6 +62,18 @@ class GameGridContainer extends React.Component {
             this.setState({hasMoreGames: true})
         }
 
+    }
+
+    _handleReinitializeFilters() {
+        this.props.dispatch({
+            type: ACTIONS_SETTINGS.SET_FILTERED_VALUES,
+            payload: {
+                types: {
+                    podcast: true,
+                    video: true
+                }
+            }
+        })
     }
 
     _handleChangeSearchInput(value) {
@@ -108,6 +121,29 @@ class GameGridContainer extends React.Component {
         this.setState({loading: false})
     }
 
+    renderNoResultsMessage() {
+        const {settings} = this.props;
+        let showResetFilterBtn = false;
+        const search = queryString.parse(this.props.location.search).q
+
+        Object.keys(settings.filters.types).forEach((key) => {
+            if (!settings.filters.types[key]) {
+                showResetFilterBtn = true;
+            }
+        })
+
+        return <div className={styles.noResultContainer}>
+            {search &&<div><strong>« {search} » : aucun résultat.</strong></div>}
+            {!search && <div><strong>Aucun résultat.</strong></div>}
+            {search &&<div>Aucun jeu, podcast, ou chaîne Youtube ne correspond à votre recherche.</div>}
+            {!search && <div>Ça ira sans doute mieux en réactivant au moins un filtre !</div>}
+            {showResetFilterBtn &&
+                <button className={styles.btn} onClick={this._handleReinitializeFilters}>Réinitialiser les filtres
+                </button>
+            }
+        </div>
+    }
+
     renderGameGrid() {
         const {disableLogo, disableMediasSummary, games, searchedMedias} = this.props;
         const {loading} = this.state;
@@ -121,10 +157,7 @@ class GameGridContainer extends React.Component {
                 <ErrorMessage>Une erreur est survenue lors du chargement des jeux.</ErrorMessage> :
                 <>
                     {games && searchedMedias && games.length === 0 && searchedMedias.length === 0 && !loading ?
-                        <div className={styles.noResultContainer}>
-                            <div><strong>Aucun jeu ne correspond à votre recherche.</strong></div>
-                            <div>Cela signifie probablement qu'aucun média n'a été encore publié à son sujet.</div>
-                        </div> :
+                        this.renderNoResultsMessage() :
                         <>
                             <MediasGrid medias={searchedMedias} games={games}/>
                             <GameGrid games={games} loading={loading} disableLogo={disableLogo}
@@ -147,7 +180,7 @@ class GameGridContainer extends React.Component {
                     const {name, emoji, dataLabel} = mediaType
                     return <button onClick={() => this._handleChangeFilter(dataLabel)} key={i}
                                    className={cx(styles.btn, styles.filterTag, {[styles.active]: types[dataLabel]})}>
-                        {emoji} {name} {types[dataLabel] ? <FaMinus className={styles.icon}/> :
+                        <span className={styles.text}>{emoji} {name}</span> {types[dataLabel] ? <FaMinus className={styles.icon}/> :
                         <FaPlusCircle className={styles.icon}/>}
                     </button>
                 })
@@ -171,7 +204,7 @@ class GameGridContainer extends React.Component {
                     onFocus={() => this.setState({inputFocused: true})}
                     onBlur={() => this.setState({inputFocused: false})}/>
             </div>}
-            {this.renderFilters()}
+            {!disableSearch && this.renderFilters()}
             {this.renderGameGrid()}
         </>
     }

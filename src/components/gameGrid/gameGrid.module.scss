@@ -24,20 +24,36 @@
     margin: 0 5px;
     transition: all 0.1s ease-in-out;
 
+    .text {
+      opacity: 0.8;
+    }
+
+
     .icon {
+      opacity: 1;
       margin-bottom: -2px;
-      color: $color-bright-1;
     }
 
     &.active {
       color: $color-bright-2;
       background-color: $color-dark-2;
+      border: 1px solid $color-bright-2;
+
+      &:hover {
+        color: $color-bright-2;
+      }
+
+      .text {
+        opacity: 1;
+      }
     }
 
     &:hover {
       transform: scale(1.05);
-      .icon {
-        color: $color-bright-2;
+      color: $color-bright-1;
+
+      .text {
+        opacity: 1;
       }
     }
   }
@@ -69,6 +85,11 @@
 
   strong {
     color: $color-bright-2;
+  }
+
+  .btn {
+    margin-top: 10px;
+    width: 100%;
   }
 }
 
