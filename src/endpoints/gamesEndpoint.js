@@ -20,10 +20,20 @@ export async function getGameById(gameId) {
 export async function getGamesAndMediasBySearch(params) {
     const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
-    params.filters = filters && filters.medias && JSON.stringify({
-        "media.name": params["media.name"] || _mapFilter(filters.medias),
-    });
+    params.filters = {};
+
+    if (params["media.name"] || filters && filters.media) {
+        params.filters["media.name"] = params["media.name"] || _mapFilter(filters.medias);
+    }
     delete params["media.name"];
+
+    if (params["media.type"] || filters && filters.types) {
+        params.filters["media.type"] = params["media.type"] || _mapFilter(filters.types);
+    }
+    delete params["media.type"];
+
+    params.filters = JSON.stringify(params.filters);
+
     const result = await get(API_CONFIG.endpoints.GAME, params);
     return {
         games: result.games.map(_mapResultToGame),
@@ -35,7 +45,7 @@ function _mapResultToGame(result) {
     const filters = store.getState().settingsReducer.settings.filters;
     result.episodes = result.episodes
         .filter((episode) => {
-            return (!filters.medias || filters.medias[episode.media.name]) && episode.verified;
+            return (!filters.types || filters.types[episode.media.type]) && episode.verified;
         })
         .sort((epX, epY) => {
             return epX.releaseDate > epY.releaseDate ? -1 : 1;

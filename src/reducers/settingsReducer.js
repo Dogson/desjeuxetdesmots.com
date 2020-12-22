@@ -2,7 +2,9 @@ import {ACTIONS_SETTINGS} from "../actions/settingsActions";
 
 export default (state = {
     settings: {
-        filters: {},
+        filters: {
+            types: {"podcast": true, "video": true}
+        },
         remember: false,
     },
     cookieConsent: localStorage.getItem('cookie-consent')
@@ -14,16 +16,10 @@ export default (state = {
                 settings: {
                     ...state.settings,
                     filters: {
-                        medias: {...action.payload.medias},
+                        types: {
+                            ...action.payload.types
+                        }
                     },
-                }
-            };
-        case ACTIONS_SETTINGS.SET_REMEMBER:
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    remember: action.payload
                 }
             };
         case ACTIONS_SETTINGS.IS_MOBILE_DRAWER_OPEN:

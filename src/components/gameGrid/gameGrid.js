@@ -51,7 +51,7 @@ class GameGridContainer extends React.Component {
         const {filters} = this.props.settings;
         const prevFilters = prevProps.settings.filters;
 
-        if (!isEqual(filters.medias, prevFilters.medias)) {
+        if (!isEqual(filters, prevFilters)) {
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
             this.props.dispatch({type: ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS, payload: []});
             this.setState({hasMoreGames: true})
