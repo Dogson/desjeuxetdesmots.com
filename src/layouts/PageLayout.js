@@ -6,10 +6,10 @@ import {connect} from "react-redux";
 import cx from "classnames";
 import CookieConsent from "../components/cookieConsent/cookieConsent";
 
-const Layout = ({children, title, notHomeHeader, mobileDrawerOpen, cookieConsent, dark, hideSettings}) => {
+const Layout = ({children, title, notHomeHeader, mobileDrawerOpen, cookieConsent, dark, hideSettings, noLogo}) => {
     return  <div className={styles.pageContainer}>
         {notHomeHeader && <MobileDrawer/>}
-        <Header notHomeHeader={notHomeHeader} hideSettings={hideSettings}/>
+        <Header notHomeHeader={notHomeHeader} hideSettings={hideSettings} noLogo={noLogo}/>
         <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen}, {[styles.dark]: dark})}>
             {title ? <div className={styles.titleContainer}>{title}</div> : null}
             {children}

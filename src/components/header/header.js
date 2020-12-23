@@ -95,11 +95,11 @@ export class Header extends React.Component {
     }
 
     render() {
-        const {notHomeHeader} = this.props;
+        const {notHomeHeader, noLogo} = this.props;
         return <div className={cx(styles.headerContainer, {[styles.notHomeHeader]: notHomeHeader})}>
             <div className={styles.headerWrapper}>
                 {this.renderNavMenu()}
-                {notHomeHeader &&
+                {notHomeHeader && !noLogo &&
                 <NavLink className={styles.titleContainer} to={"/"}>
                     <Logo/>
                 </NavLink>

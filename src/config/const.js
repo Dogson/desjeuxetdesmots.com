@@ -3,6 +3,7 @@ import React from 'react';
 export const MEDIA_TYPES = [
     {
         name: "Podcasts",
+        creator: "Podcast",
         emoji: "🎙️",
         route: "/admin/podcasts",
         dataLabel: "podcast",
@@ -10,6 +11,7 @@ export const MEDIA_TYPES = [
     },
     {
         name: "Vidéos",
+        creator: "Vidéaste",
         emoji: "🎥",
         route: "/admin/videos",
         dataLabel: "video",

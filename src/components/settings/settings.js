@@ -56,7 +56,7 @@ class Settings extends React.Component {
                 <Checkbox shape="curve" color="#FFC857"
                           checked={mediaTypesFilter[type]}
                           onChange={() => this._handleChangeMediasTypeFilter(type)}>
-                    <span>{mediaType.name} <span role="img" aria-label={mediaType.name}>{mediaType.emoji}</span></span>
+                    <span><span role="img" aria-label={mediaType.name}>{mediaType.emoji}</span> {mediaType.name} </span>
                 </Checkbox>
             </div>
         </div>

@@ -11,6 +11,7 @@ import withTracker from "./components/withTracker/withTracker";
 import {getAllMedias} from "./endpoints/mediasEndpoint";
 import {ACTIONS_MEDIAS} from "./actions/mediaActions";
 import {connect} from "react-redux";
+import MediaListPage from "./pages/media/MediaListPage";
 
 function Index() {
     return <Homepage/>
@@ -34,6 +35,7 @@ class App extends Component {
                     <Route path="/" exact component={withTracker(Index)}/>
                     <Route path="/admin" exact component={withTracker(Admin)}/>
                     <Route exact path="/game/:gameId" component={withTracker(GamePage)}/>
+                    <Route exact path="/media" component={withTracker(MediaListPage)}/>
                     <Route exact path="/media/:mediaName" component={withTracker(MediaPage)}/>
                     <Route component={withTracker(PageNotFound)}/>
                 </Switch>
