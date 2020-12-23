@@ -7,10 +7,12 @@ import cx from "classnames";
 import CookieConsent from "../components/cookieConsent/cookieConsent";
 import {DrawerNav} from "../components/drawerMenuNav/drawerMenuNav";
 import {NAV_ROUTES} from "../config/const";
+import Settings from "../components/settings/settings";
 
 const Layout = ({children, title, notHomeHeader, mobileDrawerOpen, cookieConsent, dark, hideSettings, noLogo}) => {
     return  <div className={styles.pageContainer}>
         {notHomeHeader && <DrawerSearch/>}
+        {!hideSettings && <Settings/>}
         <DrawerNav routes={NAV_ROUTES}/>
         <Header notHomeHeader={notHomeHeader} hideSettings={hideSettings} noLogo={noLogo}/>
         <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen}, {[styles.dark]: dark})}>

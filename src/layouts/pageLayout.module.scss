@@ -6,6 +6,7 @@
   @extend .flexColumn;
 
   .pageContent {
+    z-index: 5;
     flex: 1;
     background-color: $color-dark-1;
     @extend .flexColumn;

@@ -3,7 +3,6 @@ import styles from "./header.module.scss"
 import {NavLink, withRouter} from "react-router-dom";
 import cx from "classnames";
 import {Logo} from "../logo/logo";
-import Settings from "../settings/settings";
 import {FaSearch, FaArrowLeft} from "react-icons/fa";
 import {DebounceInput} from "react-debounce-input";
 import {getGamesAndMediasBySearch} from "../../endpoints/gamesEndpoint";
@@ -74,13 +73,6 @@ class PureMobileDrawer extends React.Component {
 export const DrawerSearch = withRouter(connect()(PureMobileDrawer));
 
 export class Header extends React.Component {
-    renderSettings() {
-        if (this.props.hideSettings) {
-            return null;
-        }
-        return <Settings/>
-    }
-
     renderNavMenu() {
         return <div className={styles.navMenuContainer}>
             {NAV_ROUTES.map((route, i) => {
@@ -110,7 +102,6 @@ export class Header extends React.Component {
                 </>
                 }
             </div>
-            {this.renderSettings()}
         </div>
     }
 
