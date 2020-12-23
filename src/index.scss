@@ -348,6 +348,10 @@ input {
     padding: 6px 6px;
   }
 
+  &.disabled {
+    opacity: 0.4;
+  }
+
 }
 
 input[type="submit"] {

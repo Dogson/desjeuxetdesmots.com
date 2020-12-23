@@ -175,12 +175,13 @@ class GameGridContainer extends React.Component {
         const {settings} = this.props;
         const {filters} = settings;
         const {types} = filters;
+        const {loading} = this.state;
         return <div className={styles.filtersTagsContainer}>
             {
                 MEDIA_TYPES.map((mediaType, i) => {
                     const {name, emoji, dataLabel} = mediaType
-                    return <button onClick={() => this._handleChangeFilter(dataLabel)} key={i}
-                                   className={cx(styles.btn, styles.filterTag, {[styles.active]: types[dataLabel]})}>
+                    return <button disabled={loading} onClick={() => this._handleChangeFilter(dataLabel)} key={i}
+                                   className={cx(styles.btn, styles.filterTag, {[styles.active]: types[dataLabel]}, {[styles.disabled]: loading})}>
                         <span className={styles.text}>{emoji} {name}</span> {types[dataLabel] ? <FaMinus className={styles.icon}/> :
                         <FaPlusCircle className={styles.icon}/>}
                     </button>
