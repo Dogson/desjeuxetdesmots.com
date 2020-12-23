@@ -100,12 +100,13 @@ class GameGridContainer extends React.Component {
         const page = this.props.page || 1;
         const search = searchInput;
         const previousGamesArray = this.props.games || [];
+        const {disableFilters} = this.props;
         try {
             const params = {name: search, page};
             if (this.props.currentMedia) {
                 params["media.name"] = this.props.currentMedia.name
             }
-            const {games, medias} = await getGamesAndMediasBySearch(params);
+            const {games, medias} = await getGamesAndMediasBySearch(params, disableFilters);
             this.setState({hasMoreGames: games.length > 0 && (!search || search.length === 0)});
             this.props.dispatch({
                 type: ACTIONS_GAMES.SET_GAMES,

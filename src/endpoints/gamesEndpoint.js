@@ -17,7 +17,7 @@ export async function getGameById(gameId) {
     return _mapResultToGame(game);
 }
 
-export async function getGamesAndMediasBySearch(params) {
+export async function getGamesAndMediasBySearch(params, disableFilters) {
     const filters = store.getState().settingsReducer.settings.filters;
     params.limit = params.limit || 28;
     params.filters = {};
@@ -27,7 +27,7 @@ export async function getGamesAndMediasBySearch(params) {
     }
     delete params["media.name"];
 
-    if (params["media.type"] || (filters && filters.types)) {
+    if (!disableFilters && (params["media.type"] || (filters && filters.types))) {
         params.filters["media.type"] = params["media.type"] || _mapFilter(filters.types);
     }
     delete params["media.type"];

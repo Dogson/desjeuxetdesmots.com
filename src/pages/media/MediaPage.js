@@ -139,7 +139,7 @@ class MediaPage extends React.Component {
     }
 
     renderGameGrid() {
-        return <GameGridContainer disableLogo disableSearch disableMediasSummary/>
+        return <GameGridContainer disableLogo disableSearch disableMediasSummary disableFilters/>
     }
 
     render() {
