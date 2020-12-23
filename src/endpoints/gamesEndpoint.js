@@ -22,12 +22,12 @@ export async function getGamesAndMediasBySearch(params) {
     params.limit = params.limit || 28;
     params.filters = {};
 
-    if (params["media.name"] || filters && filters.media) {
+    if (params["media.name"] || (filters && filters.media)) {
         params.filters["media.name"] = params["media.name"] || _mapFilter(filters.medias);
     }
     delete params["media.name"];
 
-    if (params["media.type"] || filters && filters.types) {
+    if (params["media.type"] || (filters && filters.types)) {
         params.filters["media.type"] = params["media.type"] || _mapFilter(filters.types);
     }
     delete params["media.type"];
