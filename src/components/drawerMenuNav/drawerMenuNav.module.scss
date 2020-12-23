@@ -1,0 +1,74 @@
+@import "../../index";
+
+.sidebarContainer {
+  display: none;
+
+  .sidebarButton {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 4;
+    color: $color-bright-1;
+  }
+
+  .menuNavMobile {
+    @extend .flexColumn;
+    @extend .flexAlignCenter;
+    flex: 1;
+
+    .backButton {
+      padding: 15px 0;
+      position: relative;
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+      @extend .flexCenter;
+      color: $color-bright-1;
+      width: 100%;
+
+      svg {
+        position: absolute;
+        left: 15px;
+      }
+
+      span {
+        text-transform: uppercase;
+        font-weight: $weight-regular;
+      }
+    }
+
+    .menuMobileLink {
+      @extend .flexRow;
+      text-transform: uppercase;
+      border-bottom: 1px solid $color-bright-2;
+      font-weight: $weight-light;
+      padding: 15px 40px;
+      width: 100%;
+      height: 100%;
+      color: $color-bright-1;
+
+      &:before {
+        content: '';
+        display: block;
+        width: 20px;
+      }
+
+      &:hover {
+        color: $color-bright-2;
+      }
+    }
+
+    .menuMobileLinkActive {
+      color: white;
+      background-color: $color-dark-2;
+      font-weight: $weight-regular;
+
+    }
+  }
+}
+
+
+@media #{$media-phone} {
+    .sidebarContainer {
+      display: flex;
+  }
+}

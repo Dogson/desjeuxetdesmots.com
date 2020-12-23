@@ -10,6 +10,7 @@ import {getGamesAndMediasBySearch} from "../../endpoints/gamesEndpoint";
 import Sidebar from "react-sidebar";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
 import {connect} from "react-redux";
+import {NAV_ROUTES} from "../../config/const";
 
 class PureMobileDrawer extends React.Component {
     constructor(props) {
@@ -70,7 +71,7 @@ class PureMobileDrawer extends React.Component {
     }
 }
 
-export const MobileDrawer = withRouter(connect()(PureMobileDrawer));
+export const DrawerSearch = withRouter(connect()(PureMobileDrawer));
 
 export class Header extends React.Component {
     renderSettings() {
@@ -82,16 +83,12 @@ export class Header extends React.Component {
 
     renderNavMenu() {
         return <div className={styles.navMenuContainer}>
-            <NavLink to="/" exact className={styles.navMenuItem} activeClassName={styles.active}>
-                Accueil
-            </NavLink>
-            <NavLink to="/media" className={styles.navMenuItem} activeClassName={styles.active}>
-                Médias
-            </NavLink>
-            <NavLink to="/about" exact className={styles.navMenuItem}
-                     activeClassName={styles.active}>
-                A propos
-            </NavLink>
+            {NAV_ROUTES.map((route, i) => {
+                return <NavLink key={i} to={route.path} exact className={styles.navMenuItem}
+                                activeClassName={styles.active}>
+                    {route.name}
+                </NavLink>
+            })}
         </div>
     }
 

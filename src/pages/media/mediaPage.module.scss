@@ -121,6 +121,7 @@
     max-width: 1250px;
     @extend .flexColumn;
     margin-top: 30px;
+    flex: 1;
 
     .mediaItem {
       @extend .flexRow;

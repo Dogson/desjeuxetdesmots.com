@@ -18,3 +18,14 @@ export const MEDIA_TYPES = [
         ref: React.createRef()
     }
 ];
+
+export const NAV_ROUTES = [
+    {
+        path: "/",
+        name: "Jeux"
+    },
+    {
+        path: "/media",
+        name: "Médias"
+    }
+]

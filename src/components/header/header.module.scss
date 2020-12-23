@@ -43,7 +43,7 @@
   text-align: center;
   text-transform: uppercase;
   font-weight: $weight-regular;
-  font-size:$size-small;
+  font-size: $size-small;
 }
 
 .navMenuItem::after {
@@ -70,14 +70,14 @@
 
 .navMenuItem:hover::after,
 .navMenuItem:focus::after,
-.navMenuItem.active::after{
+.navMenuItem.active::after {
   opacity: 1;
   -webkit-transform: translateY(-5px);
   -moz-transform: translateY(-5px);
   transform: translateY(-5px);
 }
 
-.navMenuItem.active::after{
+.navMenuItem.active::after {
   background: $color-bright-2;
 }
 
@@ -235,6 +235,11 @@
 }
 
 @media #{$media-phone} {
+  .headerContainer {
+    .navMenuContainer {
+      display: none;
+    }
+  }
   &.notHomeHeader {
     height: 50px;
 

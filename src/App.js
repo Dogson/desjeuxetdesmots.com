@@ -30,7 +30,7 @@ class App extends Component {
 
     render() {
         return (
-            <Router>
+            <Router forceRefresh>
                 <Switch>
                     <Route path="/" exact component={withTracker(Index)}/>
                     <Route path="/admin" exact component={withTracker(Admin)}/>
