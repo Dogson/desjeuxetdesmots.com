@@ -7,6 +7,7 @@
   @extend .flexColumn;
   @extend .flexAlignCenter;
   flex: 1;
+  z-index: 2;
 
   .mediaTitleContainer {
     @extend .flexColumn;
@@ -31,9 +32,10 @@
     .mediaName {
       text-transform: uppercase;
       letter-spacing: 1px;
-      font-size: 36px;
+      font-size: $size-biggest;
       font-weight: normal;
       margin-bottom: 5px;
+      text-align: center;
     }
 
     .epNumber {
@@ -101,6 +103,7 @@
     padding-bottom: 10px;
     color: $color-bright-2;
     margin-bottom: 20px;
+    text-align: center;
   }
 
   .info {
@@ -179,6 +182,12 @@
 
 @media #{$media-phone} {
   .mediaPageContainer {
+    .mediaTitleContainer {
+      .mediaName {
+        font-size: $size-bigger;
+      }
+    }
+
     .subscribeBtn {
       .mobile {
         display: unset;
@@ -186,6 +195,23 @@
 
       .desktop {
         display: none;
+      }
+    }
+  }
+
+  .mediaListPageContainer {
+    .mediasList {
+      .mediaItem {
+        margin: 20px 5px;
+
+        .mediaBlockLeft {
+          width: 120px !important;
+
+          .mediaLogo {
+            width: 120px;
+            height: 120px;
+          }
+        }
       }
     }
   }
