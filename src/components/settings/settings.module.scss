@@ -47,12 +47,11 @@
   }
 
   .settingsBlock {
-    @extend .flexRow;
+    @extend .flexColumn;
 
     .subBlock {
       @extend .flexColumn;
-      margin-bottom: 30px;
-      margin-right: 30px;
+      margin-bottom: 5px;
 
       &:last-child {
         margin-right: 0 !important;
@@ -96,10 +95,6 @@
 @media #{$media-phone} {
   .settingsPopoverContainer {
     max-width: calc(100vw - 10px);
-
-    .settingsBlock {
-      flex-direction: column;
-    }
 
     .settingsFooter {
       padding-top: 20px;

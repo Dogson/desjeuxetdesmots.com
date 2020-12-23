@@ -8,6 +8,7 @@ import '@djthoms/pretty-checkbox';
 import cx from "classnames";
 import {MEDIA_TYPES} from "../../config/const";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
+import {isEqual} from "lodash";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -21,6 +22,14 @@ class Settings extends React.Component {
         this._handleTogglePopover = this._handleTogglePopover.bind(this);
         this._handleChangeMediasTypeFilter = this._handleChangeMediasTypeFilter.bind(this);
         this._handleSaveSettings = this._handleSaveSettings.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+       const prevFilters = {...prevProps.settings.filters};
+       const filters = {...this.props.settings.filters};
+        if (!isEqual(filters, prevFilters)) {
+            this.setState({mediaTypesFilter: {...this.props.settings.filters.types}});
+        }
     }
 
     _handleTogglePopover() {
