@@ -5,53 +5,80 @@
   background-color: $color-dark-1;
   color: white;
   box-sizing: border-box;
-  position: relative;
-  z-index: 2;
-  padding: 30px;
   @extend .flexRow;
   @extend .flexCenter;
+  padding: 0 30px;
+  position: relative;
+  z-index: 3;
+  height: 56px;
+
+  .headerWrapper {
+    @extend .flexRow;
+    @extend .flexAlignCenter;
+    @extend .flexSpaceBetween;
+    max-width: 1250px;
+    width: 100%;
+  }
+
 
   .titleContainer {
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
-    @extend .logoFont;
+    transform: scale(0.40);
+  }
+
+  .navMenuContainer {
+    @extend .flexRow;
     height: 100%;
-    color: $color-bright-2;
-    font-size: 35px;
-
-    .logo {
-      height: 100%;
-      padding-bottom: 10px;
-    }
+    align-items: center;
   }
+}
 
-  &.smallHeader {
-    padding: 0 30px;
-    position: relative;
-    z-index: 3;
+/* Effect 4: bottom border enlarge */
+.navMenuItem {
+  position: relative;
+  color: $color-bright-1;
+  width: 100px;
+  height: 100%;
+  @extend .flexColumn;
+  @extend .flexCenter;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: $weight-regular;
+  font-size: $size-small;
+}
 
-    .titleContainer {
-      font-size: $size-big;
-      height: 50px;
-      @extend .flexRow;
-      @extend .flexCenter;
-      padding-right: 35px;
-      position: absolute;
-      left: 0;
-      top: 0;
+.navMenuItem::after {
+  position: absolute;
+  //top: 100%;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 3px;
+  background: $color-bright-1;
+  content: '';
+  opacity: 0;
+  -webkit-transition: height 0.1s, opacity 0.1s, -webkit-transform 0.1s;
+  -moz-transition: height 0.1s, opacity 0.1s, -moz-transform 0.1s;
+  transition: height 0.1s, opacity 0.1s, transform 0.1s;
+  -webkit-transform: translateY(-20px);
+  -moz-transform: translateY(-20px);
+  transform: translateY(-20px);
+}
 
-      .logo {
-        transform: scale(0.40);
-        margin-top: -16px;
-        padding: 0;
-      }
+.navMenuItem.active {
+  color: $color-bright-2;
+}
 
-      .logoTitle {
-        display: none;
-      }
+.navMenuItem:hover::after,
+.navMenuItem:focus::after,
+.navMenuItem.active::after {
+  opacity: 1;
+  -webkit-transform: translateY(-5px);
+  -moz-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
 
-    }
-  }
+.navMenuItem.active::after {
+  background: $color-bright-2;
 }
 
 .mobileSearch {
@@ -71,7 +98,7 @@
     }
 
     span {
-     text-transform: uppercase;
+      text-transform: uppercase;
       font-weight: $weight-regular;
     }
   }
@@ -86,7 +113,7 @@
     @extend .flexAlignCenter;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     z-index: 4;
     height: 50px;
     padding: 0 15px;
@@ -112,11 +139,13 @@
   border-radius: 10px;
   box-shadow: 3px 3px 0 0 #FFC857;
   width: 600px;
-  left: 0;
-  right: 0;
+  right: 20px;
   margin-top: 5px;
   margin-left: auto;
   margin-right: auto;
+
+  // Workaround z-index being ignored when transformed is used in the logo SVG, causing the logo to be above the container
+  transform: rotateZ(0) rotateY(0);
 
   ul {
     list-style-type: none;
@@ -148,8 +177,10 @@
         color: $color-dark-1;
 
         img {
-          height: 60px;
+          height: 100%;
+          width: 100%;
           opacity: 0.9;
+          object-fit: cover;
         }
       }
 
@@ -210,26 +241,24 @@
 
 @media #{$media-phone} {
   .headerContainer {
+    .navMenuContainer {
+      display: none;
+    }
+  }
+  &.notHomeHeader {
+    height: 50px;
+
     .titleContainer {
-      font-size: 30px;
+      width: 100px;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      left: auto;
+      top: auto;
     }
 
-    &.smallHeader {
-      height: 50px;
-
-      .titleContainer {
-        font-size: 20px;
-        width: 100px;
-        padding-right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        left: auto;
-        top: auto;
-      }
-
-      .desktopSearch {
-        display: none;
-      }
+    .desktopSearch {
+      display: none;
     }
   }
 

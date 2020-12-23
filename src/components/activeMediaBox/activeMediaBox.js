@@ -173,23 +173,26 @@ class ActiveMediaBox extends React.Component {
         const {media} = this.props;
         const {logo, name} = media.media;
 
-        return <div className={styles.authorAndDateContainer}>
-            <img src={logo} alt={name}/>
-            <div>
-                <div className={styles.author}>{name}</div>
-                <div className={styles.date}>
-                    {moment(media.releaseDate).format('DD/MM/YYYY')}
+        return <NavLink to={`/media/${name}`} className={styles.authorAndDateContainer}>
+            <div className={styles.authorAndDateContent}>
+                <img src={logo} alt={name}/>
+                <div>
+                    <div className={styles.author}>{name}</div>
+                    <div className={styles.date}>
+                        {moment(media.releaseDate).format('DD/MM/YYYY')}
+                    </div>
                 </div>
             </div>
-        </div>
+        </NavLink>
     }
 
     renderAlreadyUploadedWarning() {
         const {media} = this.props;
         const {_createdAt, releaseDate} = media;
         const releaseDateOffset = moment(releaseDate).add(6, "hours");
-        if (releaseDateOffset.isBefore(moment(_createdAt))){
-            return <div className={styles.warning}><FaExclamationTriangle/> Ce média a probablement déja été uploadé</div>
+        if (releaseDateOffset.isBefore(moment(_createdAt))) {
+            return <div className={styles.warning}><FaExclamationTriangle/> Ce média a probablement déja été uploadé
+            </div>
         }
         return null;
     }
@@ -266,7 +269,7 @@ class ActiveMediaBox extends React.Component {
                     </div>
                     <div className={styles.rightRowContainer}>
 
-                        <h2>Ça parle de quoi d'autre ?</h2>
+                        {episodeGames.length > 0 && <h2>Ça parle de quoi d'autre ?</h2>}
 
                         {this.state.showSaveBtn && user ?
                             <div className={styles.saveContainer} data-tip="Enregistrer les modifications"
@@ -299,25 +302,22 @@ class ActiveMediaBox extends React.Component {
                         }
                         <ReactTooltip effect="solid" place="left" id="verifyAndSave"/>
 
-                        {episodeGames.length > 0 ?
-                            <div className={styles.gamesContainer}>
-                                {episodeGames.map((game, i) => {
-                                    return <div key={i}>
-                                        {loadingGames ?
-                                            <GameCard game={game}/> :
-                                            <NavLink to={`/game/${game._id}`}>
-                                                <GameCard
-                                                    showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
-                                            </NavLink>}
+                        {episodeGames.length > 0 &&
+                        <div className={styles.gamesContainer}>
+                            {episodeGames.map((game, i) => {
+                                return <div key={i}>
+                                    {loadingGames ?
+                                        <GameCard game={game}/> :
+                                        <NavLink to={`/game/${game._id}`}>
+                                            <GameCard
+                                                showDelete={!!user} game={game} onDelete={this._handleDeleteGame}/>
+                                        </NavLink>}
 
-                                    </div>
+                                </div>
 
-                                })
-                                }
-                            </div> :
-                            <div className={styles.noGame}>Bah, de rien. C'est déja pas mal. <span role="img"
-                                                                                                   aria-label="shrug">🤷</span>
-                            </div>
+                            })
+                            }
+                        </div>
                         }
                         {user && !media.verified && this.renderAlreadyUploadedWarning()}
                         {user && <div className={styles.inputWithSuggestionsContainer}>

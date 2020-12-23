@@ -6,7 +6,7 @@ import {NavLink} from "react-router-dom";
 
 export const PageNotFound = () => {
     return <PageLayout>
-        <Helmet title="Page non trouvée"/>
+        <Helmet defer={false} title="Page non trouvée"/>
         <div className={styles.notFoundContainer}>
             <div className={styles.title}>404</div>
             <div className={styles.subtitle}>

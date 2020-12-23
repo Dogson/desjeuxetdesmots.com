@@ -1,19 +1,21 @@
 import React from "react"
-import {Header, MobileDrawer} from "../components/header/header";
+import {Header, DrawerSearch} from "../components/header/header";
 import Footer from "../components/footer/footer";
 import styles from "./pageLayout.module.scss";
 import {connect} from "react-redux";
 import cx from "classnames";
-import {LoadingSpinner} from "../components/loadingSpinner/loadingSpinner";
 import CookieConsent from "../components/cookieConsent/cookieConsent";
+import {DrawerNav} from "../components/drawerMenuNav/drawerMenuNav";
+import {NAV_ROUTES} from "../config/const";
 
-const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen, cookieConsent}) => {
+const Layout = ({children, title, notHomeHeader, mobileDrawerOpen, cookieConsent, dark, hideSettings, noLogo}) => {
     return  <div className={styles.pageContainer}>
-        {smallHeader && <MobileDrawer/>}
-        <Header smallHeader={smallHeader} hideSettings={!mediaFilters}/>
-        <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen})}>
+        {notHomeHeader && <DrawerSearch/>}
+        <DrawerNav routes={NAV_ROUTES}/>
+        <Header notHomeHeader={notHomeHeader} hideSettings={hideSettings} noLogo={noLogo}/>
+        <div className={cx(styles.pageContent, {[styles.hidden]: mobileDrawerOpen}, {[styles.dark]: dark})}>
             {title ? <div className={styles.titleContainer}>{title}</div> : null}
-            {mediaFilters ? children : <LoadingSpinner/>}
+            {children}
         </div>
         {!cookieConsent && <CookieConsent/>}
         <Footer/>
@@ -22,7 +24,6 @@ const Layout = ({children, title, smallHeader, mediaFilters, mobileDrawerOpen, c
 
 const mapStateToProps = state => {
     return {
-        mediaFilters: state.settingsReducer.settings.filters.medias,
         mobileDrawerOpen: state.settingsReducer.settings.mobileDrawerOpen,
         cookieConsent: state.settingsReducer.cookieConsent
     }

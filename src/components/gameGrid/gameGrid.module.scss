@@ -1,0 +1,146 @@
+@import "../../index";
+
+.gamesGridContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  flex-wrap: wrap;
+  max-width: 1500px;
+
+  .cardContainer {
+    width: 200px;
+    height: 266px;
+    opacity: 1;
+  }
+}
+
+.filtersTagsContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  margin-bottom: 20px;
+
+  .filterTag {
+    border: none;
+    margin: 0 5px;
+    transition: all 0.1s ease-in-out;
+
+    .text {
+      opacity: 0.8;
+    }
+
+
+    .icon {
+      opacity: 1;
+      margin-bottom: -2px;
+    }
+
+    &.active {
+      color: $color-bright-2;
+      background-color: $color-dark-2;
+
+      &:hover {
+        color: $color-bright-2;
+      }
+
+      .text {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      color: $color-bright-1;
+
+      .text {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.separator {
+  border-top: 1px solid $color-bright-2;
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.mediaGridContainer {
+  @extend .flexRow;
+  @extend .flexCenter;
+  @extend .flexAlignCenter;
+  flex-wrap: wrap;
+  margin: 30px 0;
+
+  .cardContainer {
+    width: 150px;
+    height: 150px;
+    opacity: 1;
+
+  }
+}
+
+.noResultContainer {
+  color: $color-bright-1;
+
+  strong {
+    color: $color-bright-2;
+  }
+
+  .btn {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+
+.loaderContainer {
+  margin: 50px;
+  flex: 1;
+}
+
+@media #{$media-phone} {
+  .gamesGridContainer {
+    .cardContainer {
+      width: 150px;
+      height: 200px;
+    }
+  }
+  .mediaGridContainer {
+    .cardContainer {
+      width: 120px;
+      height: 120px;
+      opacity: 1;
+
+      .hoveredInfo {
+        opacity: 1;
+        transition: all 0.2s ease-in-out;
+
+        .secondaryInfoContainer {
+          display: none;
+        }
+
+        .title {
+          margin-top: 5px;
+          text-transform: none;
+          font-size: $size-smaller;
+          text-align: left;
+        }
+      }
+
+      .backColor {
+        opacity: 1;
+        height: 200px;
+        width: 100%;
+        background: linear-gradient($color-dark-2 0%, rgba($color-dark-2, 0) 30%);
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+
+      .noBlur {
+        filter: none !important;
+      }
+    }
+  }
+}

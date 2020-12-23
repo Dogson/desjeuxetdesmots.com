@@ -49,9 +49,10 @@ class GamePage extends React.Component {
         if (!this.props.currentGame || this.props.currentGame._id !== this.props.match.params.gameId) {
             this.refreshGame();
         }
-        if (!isEqual(this.props.settings.filters.medias, prevProps.settings.filters.medias)) {
+        if (!isEqual(this.props.settings.filters, prevProps.settings.filters)) {
             this.refreshGame();
             this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+            this.props.dispatch({type: ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS, payload: []});
         }
     }
 
@@ -104,8 +105,8 @@ class GamePage extends React.Component {
         const {currentGame} = this.props;
         const {error} = this.state;
 
-        return <PageLayout smallHeader>
-            {currentGame && currentGame.name && <Helmet title={`${currentGame.name} : Vidéos et podcasts - Des jeux et des mots`}/>}
+        return <PageLayout notHomeHeader>
+            {currentGame && currentGame.name && <Helmet defer={false} title={`${currentGame.name} : Vidéos et podcasts - Des jeux et des mots`}/>}
             {!currentGame ?
                 error ?
                     <ErrorMessage>{error}</ErrorMessage> :

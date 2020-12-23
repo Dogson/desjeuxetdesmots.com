@@ -6,10 +6,11 @@ import {Logo} from "../logo/logo";
 import Settings from "../settings/settings";
 import {FaSearch, FaArrowLeft} from "react-icons/fa";
 import {DebounceInput} from "react-debounce-input";
-import {getGamesBySearch} from "../../endpoints/gamesEndpoint";
+import {getGamesAndMediasBySearch} from "../../endpoints/gamesEndpoint";
 import Sidebar from "react-sidebar";
 import {ACTIONS_SETTINGS} from "../../actions/settingsActions";
 import {connect} from "react-redux";
+import {NAV_ROUTES} from "../../config/const";
 
 class PureMobileDrawer extends React.Component {
     constructor(props) {
@@ -50,6 +51,7 @@ class PureMobileDrawer extends React.Component {
         return <div className={styles.mobileSearch}>
             <Sidebar
                 touch={true}
+                pullRight
                 sidebar={
                     <div>
                         <div className={styles.backButton}><FaArrowLeft
@@ -69,7 +71,7 @@ class PureMobileDrawer extends React.Component {
     }
 }
 
-export const MobileDrawer = withRouter(connect()(PureMobileDrawer));
+export const DrawerSearch = withRouter(connect()(PureMobileDrawer));
 
 export class Header extends React.Component {
     renderSettings() {
@@ -79,22 +81,35 @@ export class Header extends React.Component {
         return <Settings/>
     }
 
+    renderNavMenu() {
+        return <div className={styles.navMenuContainer}>
+            {NAV_ROUTES.map((route, i) => {
+                return <NavLink key={i} to={route.path} exact className={styles.navMenuItem}
+                                activeClassName={styles.active}>
+                    {route.name}
+                </NavLink>
+            })}
+        </div>
+    }
+
     render() {
-        const {smallHeader} = this.props;
-        return <div className={cx(styles.headerContainer, {[styles.smallHeader]: smallHeader})}>
-            <NavLink className={styles.titleContainer} to={"/"}>
-                <div className={styles.logo}>
+        const {notHomeHeader, noLogo} = this.props;
+        return <div className={cx(styles.headerContainer, {[styles.notHomeHeader]: notHomeHeader})}>
+            <div className={styles.headerWrapper}>
+                {this.renderNavMenu()}
+                {notHomeHeader && !noLogo &&
+                <NavLink className={styles.titleContainer} to={"/"}>
                     <Logo/>
-                </div>
-                <span className={styles.logoTitle}>Des jeux et des mots</span>
-            </NavLink>
-            {smallHeader &&
-            <>
-                <div className={styles.desktopSearch}>
-                    <HeaderSearchBar/>
-                </div>
-            </>
-            }
+                </NavLink>
+                }
+                {notHomeHeader &&
+                <>
+                    <div className={styles.desktopSearch}>
+                        <HeaderSearchBar/>
+                    </div>
+                </>
+                }
+            </div>
             {this.renderSettings()}
         </div>
     }
@@ -126,7 +141,7 @@ class PureHeaderSearchBar extends React.Component {
     async _handleChange(search) {
         this.setState({previewSearchInput: search})
         try {
-            const games = await getGamesBySearch({name: search, limit: 5});
+            const {games} = await getGamesAndMediasBySearch({name: search, limit: 5});
             this.setState({searchResults: games, cursor: -1})
         } catch (err) {
             this.setState({error: true})

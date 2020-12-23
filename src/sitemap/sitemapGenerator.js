@@ -10,7 +10,7 @@ const Sitemap = require("react-router-sitemap").default;
 async function generateSitemap() {
     try {
         // const games = await get(API_CONFIG.endpoints.GAME, {limit: 100000});
-        const res = await axios({
+        const resGame = await axios({
             url: "https://gamer-juice-api.herokuapp.com/games",
             method: 'GET',
             params: new URLSearchParams({limit: 1000000}),
@@ -19,14 +19,30 @@ async function generateSitemap() {
                 "X-Requested-With": "XMLHttpRequest"
             },
         });
-        const games = res.data;
+        const games = resGame.data;
 
-        const idMap = games.map((game) => {
+        const idMapGame = games.map((game) => {
             return {gameId: game._id};
         });
 
+        const resMedia = await axios({
+            url: "https://gamer-juice-api.herokuapp.com/medias",
+            method: 'GET',
+            params: new URLSearchParams({limit: 1000000}),
+            headers: {
+                'Accept': 'application/json',
+                "X-Requested-With": "XMLHttpRequest"
+            },
+        });
+        const medias = resMedia.data;
+
+        const idMapMedias = medias.map((media) => {
+            return {mediaId: media.name};
+        });
+
         const paramsConfig = {
-            "/game/:gameId": idMap
+            "/game/:gameId": idMapGame,
+            "/media/:mediaName": idMapMedias,
         };
         console.log("sitemap generated");
         return (

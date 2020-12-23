@@ -6,5 +6,6 @@ export default (
         <Route path="/" exact />
         <Route path="/admin" exact />
         <Route path="/game/:gameId" exact/>
+        <Route path="/media/:mediaName" exact/>
     </Route>
 );

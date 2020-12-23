@@ -30,7 +30,6 @@ class CookieConsent extends React.Component {
     _handleAcceptCookies() {
         GoogleAnalytics.initialize("UA-180553178-1");
         const page = this.props.location.pathname + this.props.location.search;
-        console.log(page);
         this._trackCurrentPage(page);
         this.props.dispatch({
             type: ACTIONS_SETTINGS.SET_COOKIE_CONSENT,

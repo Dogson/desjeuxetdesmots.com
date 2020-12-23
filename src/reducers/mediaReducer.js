@@ -17,6 +17,11 @@ export default (state = {
                 ...state,
                 episodes: action.payload,
             };
+        case ACTIONS_MEDIAS.SET_CURRENT_MEDIA:
+            return {
+                ...state,
+                currentMedia: action.payload,
+            };
         case ACTIONS_MEDIAS.SET_ACTIVE_EPISODE:
             return {
                 ...state,
@@ -31,6 +36,11 @@ export default (state = {
             return {
                 ...state,
                 playState: action.payload,
+            };
+        case ACTIONS_MEDIAS.SET_SEARCHED_MEDIAS:
+            return {
+                ...state,
+                searchedMedias: action.payload,
             };
         default:
             return {

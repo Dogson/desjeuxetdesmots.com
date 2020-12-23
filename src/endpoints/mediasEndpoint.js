@@ -6,6 +6,11 @@ export async function getAllMedias() {
     return await get(API_CONFIG.endpoints.MEDIAS);
 }
 
+
+export async function getMedia(name) {
+    return await get(`${API_CONFIG.endpoints.MEDIAS}/${name}`);
+}
+
 export async function getAllEpisodes() {
     const medias = await get(API_CONFIG.endpoints.EPISODES, {"verified": false});
     return _sortEpisodesByMedia(medias);

@@ -1,0 +1,219 @@
+@import "../../index";
+@import "../homepage/homepage.module";
+
+.mediaPageContainer, .mediaListPageContainer {
+  margin: 30px 0;
+  width: 100%;
+  @extend .flexColumn;
+  @extend .flexAlignCenter;
+  flex: 1;
+  z-index: 2;
+
+  .mediaTitleContainer {
+    @extend .flexColumn;
+    @extend .flexAlignCenter;
+    color: $color-bright-2;
+    margin-top: 20px;
+
+    .mediaLogo {
+      height: 200px;
+      width: 200px;
+      background-color: $color-dark-1;
+      box-shadow: 10px 10px 0 2px $color-bright-2;
+
+      margin-bottom: 30px;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .mediaName {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: $size-biggest;
+      font-weight: normal;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .epNumber {
+      font-size: $size-normal;
+    }
+
+    .mediaDescription {
+      margin: 30px 10px;
+      color: $color-bright-1;
+      font-style: italic;
+      max-width: 650px;
+      white-space: pre-wrap;
+    }
+  }
+
+  .subscribeBtn {
+    display: flex;
+    margin: 15px;
+
+    .mobile {
+      display: none;
+    }
+  }
+
+  .mediaRowContainer {
+    @extend .flexColumn;
+  }
+
+  .gamesContainer {
+    @extend .flexColumn;
+
+    .gamesGridTitleContainer {
+      @extend .flexRow;
+      @extend .flexAlignCenter;
+      letter-spacing: 1px;
+      color: $color-bright-1;
+      margin: 0 10px 5px;
+
+      .gamesGridTitleImg {
+        margin-right: 10px;
+        border-radius: 50%;
+        background-color: $color-dark-2;
+        color: $color-bright-2;
+        font-size: 20px;
+        padding: 5px;
+      }
+
+      .gameGridTitleText {
+      }
+    }
+
+    .gamesGrid {
+      align-self: center;
+    }
+  }
+
+}
+
+.mediaListPageContainer {
+  .pageTitle {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: $size-big;
+    font-weight: normal;
+    padding-bottom: 10px;
+    color: $color-bright-2;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .info {
+    color: $color-bright-1;
+    font-size: $size-small;
+
+    a {
+      margin: 0 5px;
+    }
+  }
+
+  .mediasList {
+    color: $color-bright-1;
+    width: 100%;
+    max-width: 1250px;
+    @extend .flexColumn;
+    margin-top: 30px;
+    flex: 1;
+
+    .mediaItem {
+      @extend .flexRow;
+      justify-content: center;
+      margin: 20px 0;
+
+      .mediaBlockLeft {
+        @extend .flexColumn;
+        @extend .flexAlignCenter;
+        width: 150px;
+        color: $color-bright-2;
+
+        .mediaLogo {
+          width: 150px;
+          height: 150px;
+          margin-bottom: 20px;
+          box-shadow: 10px 10px 0 2px #FFC857;
+          transition: all 0.1s ease-in-out;
+        }
+      }
+
+      .mediaBlockRight {
+        padding: 5px 30px;
+        max-width: 650px;
+        flex: 1;
+
+        .mediaTitle {
+          color: $color-bright-2;
+          margin-bottom: 5px;
+          @extend .flexColumn;
+
+          .mediaName {
+            text-transform: uppercase;
+            font-weight: $weight-regular;
+            margin-right: 5px;
+            font-size: $size-normal;
+          }
+
+          .mediaType {
+            font-size: $size-small;
+          }
+        }
+
+        .mediaDescription {
+          color: $color-bright-1;
+          font-style: italic;
+          font-size: $size-small;
+        }
+      }
+
+      &:hover {
+        .mediaLogo {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
+@media #{$media-phone} {
+  .mediaPageContainer {
+    .mediaTitleContainer {
+      .mediaName {
+        font-size: $size-bigger;
+      }
+    }
+
+    .subscribeBtn {
+      .mobile {
+        display: unset;
+      }
+
+      .desktop {
+        display: none;
+      }
+    }
+  }
+
+  .mediaListPageContainer {
+    .mediasList {
+      .mediaItem {
+        margin: 20px 5px;
+
+        .mediaBlockLeft {
+          width: 120px !important;
+
+          .mediaLogo {
+            width: 120px;
+            height: 120px;
+          }
+        }
+      }
+    }
+  }
+}
