@@ -1,5 +1,20 @@
 @import "../../index";
 
+.titleContainer {
+  @extend .flexColumn;
+  @extend .flexAlignCenter;
+  @extend .logoFont;
+  height: 100%;
+  color: $color-bright-2;
+  font-size: 35px;
+  margin-bottom: 20px;
+
+  .logo {
+    height: 100%;
+    padding-bottom: 10px;
+  }
+}
+
 .subtitle {
   color: $color-bright-1;
   font-size: $size-small;
@@ -8,5 +23,13 @@
 
   strong {
     color: $color-bright-2;
+  }
+}
+
+@media #{$media-phone} {
+  .headerContainer {
+    .titleContainer {
+      font-size: 30px;
+    }
   }
 }

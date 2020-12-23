@@ -79,22 +79,39 @@ export class Header extends React.Component {
         return <Settings/>
     }
 
-    render() {
-        const {smallHeader} = this.props;
-        return <div className={cx(styles.headerContainer, {[styles.smallHeader]: smallHeader})}>
-            <NavLink className={styles.titleContainer} to={"/"}>
-                <div className={styles.logo}>
-                    <Logo/>
-                </div>
-                <span className={styles.logoTitle}>Des jeux et des mots</span>
+    renderNavMenu() {
+        return <div className={styles.navMenuContainer}>
+            <NavLink to="/" exact className={styles.navMenuItem} activeClassName={styles.active}>
+                Accueil
             </NavLink>
-            {smallHeader &&
-            <>
-                <div className={styles.desktopSearch}>
-                    <HeaderSearchBar/>
-                </div>
-            </>
-            }
+            <NavLink to="/media" className={styles.navMenuItem} activeClassName={styles.active}>
+                Médias
+            </NavLink>
+            <NavLink to="/game/5fe1dfdf28a6b70021779dbb" exact className={styles.navMenuItem}
+                     activeClassName={styles.active}>
+                A propos
+            </NavLink>
+        </div>
+    }
+
+    render() {
+        const {notHomeHeader} = this.props;
+        return <div className={cx(styles.headerContainer, {[styles.notHomeHeader]: notHomeHeader})}>
+            <div className={styles.headerWrapper}>
+                {this.renderNavMenu()}
+                {notHomeHeader &&
+                <NavLink className={styles.titleContainer} to={"/"}>
+                    <Logo/>
+                </NavLink>
+                }
+                {notHomeHeader &&
+                <>
+                    <div className={styles.desktopSearch}>
+                        <HeaderSearchBar/>
+                    </div>
+                </>
+                }
+            </div>
             {this.renderSettings()}
         </div>
     }

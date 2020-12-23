@@ -105,7 +105,7 @@ class GamePage extends React.Component {
         const {currentGame} = this.props;
         const {error} = this.state;
 
-        return <PageLayout smallHeader>
+        return <PageLayout notHomeHeader>
             {currentGame && currentGame.name && <Helmet defer={false} title={`${currentGame.name} : Vidéos et podcasts - Des jeux et des mots`}/>}
             {!currentGame ?
                 error ?
