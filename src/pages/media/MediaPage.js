@@ -11,6 +11,8 @@ import GameGridContainer from "../../components/gameGrid/gameGrid";
 import cx from "classnames";
 import {ACTIONS_GAMES} from "../../actions/gamesActions";
 import {LoadingSpinner} from "../../components/loadingSpinner/loadingSpinner";
+import {PageNotFound} from "../404/pageNotFound";
+import {ErrorMessage} from "../../components/errorMessage/errorMessage";
 
 class MediaPage extends React.Component {
 
@@ -31,7 +33,7 @@ class MediaPage extends React.Component {
             this.refreshMedia()
                 .then(() => {
                     this.refreshGames();
-                });
+                })
 
 
         }
@@ -57,11 +59,17 @@ class MediaPage extends React.Component {
             payload: null
         });
         const {mediaName} = this.props.match.params;
-        const media = await getMedia(mediaName);
-        this.props.dispatch({
-            type: ACTIONS_MEDIAS.SET_CURRENT_MEDIA,
-            payload: media
-        });
+        let media;
+        try {
+            media = await getMedia(mediaName);
+            this.props.dispatch({
+                type: ACTIONS_MEDIAS.SET_CURRENT_MEDIA,
+                payload: media
+            });
+        } catch (err) {
+            const is404 = err.toJSON().message.indexOf("404") > -1;
+            this.setState({error: is404 ? 404 : "Une erreur est survenue lors du chargement du média"});
+        }
     }
 
     async refreshGames() {
@@ -77,7 +85,9 @@ class MediaPage extends React.Component {
             {this.renderMediaTitle()}
             {this.props.currentMedia ?
                 this.renderGameGrid() :
-                <LoadingSpinner/>}
+                this.state.error ?
+                    <ErrorMessage>{this.state.error}</ErrorMessage> :
+                    <LoadingSpinner/>}
         </div>
     }
 
@@ -134,9 +144,12 @@ class MediaPage extends React.Component {
 
     render() {
         const {currentMedia} = this.props;
+        if (this.state.error === 404) {
+            return <PageNotFound/>
+        }
         return <PageLayout notHomeHeader dark hideSettings>
             {currentMedia && currentMedia.name && <Helmet defer={false}
-                title={`${currentMedia.name} : ${currentMedia.type === "video" ? "Vidéos" : "Podcasts"} -  Des jeux et des mots`}/>}
+                                                          title={`${currentMedia.name} : ${currentMedia.type === "video" ? "Vidéos" : "Podcasts"} -  Des jeux et des mots`}/>}
             {this.renderCurrentMedia()}
         </PageLayout>
     }

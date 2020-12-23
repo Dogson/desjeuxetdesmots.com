@@ -87,7 +87,7 @@ export class Header extends React.Component {
             <NavLink to="/media" className={styles.navMenuItem} activeClassName={styles.active}>
                 Médias
             </NavLink>
-            <NavLink to="/game/5fe1dfdf28a6b70021779dbb" exact className={styles.navMenuItem}
+            <NavLink to="/about" exact className={styles.navMenuItem}
                      activeClassName={styles.active}>
                 A propos
             </NavLink>

@@ -5,6 +5,7 @@
   width: 100%;
   @extend .flexColumn;
   @extend .flexAlignCenter;
+  flex: 1;
 
   .mediaTitleContainer {
     @extend .flexColumn;
