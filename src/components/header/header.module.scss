@@ -144,6 +144,9 @@
   margin-left: auto;
   margin-right: auto;
 
+  // Workaround z-index being ignored when transformed is used in the logo SVG, causing the logo to be above the container
+  transform: rotateZ(0) rotateY(0);
+
   ul {
     list-style-type: none;
     padding: 0;
@@ -174,8 +177,10 @@
         color: $color-dark-1;
 
         img {
-          height: 60px;
+          height: 100%;
+          width: 100%;
           opacity: 0.9;
+          object-fit: cover;
         }
       }
 
