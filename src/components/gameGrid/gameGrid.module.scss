@@ -106,4 +106,40 @@
       height: 200px;
     }
   }
+  .mediaGridContainer {
+    .cardContainer {
+      width: 120px;
+      height: 120px;
+      opacity: 1;
+
+      .hoveredInfo {
+        opacity: 1;
+        transition: all 0.2s ease-in-out;
+
+        .secondaryInfoContainer {
+          display: none;
+        }
+
+        .title {
+          margin-top: 5px;
+          font-size: $size-small;
+        }
+      }
+
+      .backColor {
+        opacity: 1;
+        height: 200px;
+        width: 100%;
+        background: linear-gradient($color-dark-2 0%, rgba($color-dark-2, 0) 30%);
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+
+      .noBlur {
+        filter: none !important;
+      }
+    }
+  }
 }
