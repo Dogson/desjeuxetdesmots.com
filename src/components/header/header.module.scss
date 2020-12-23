@@ -27,20 +27,8 @@
 
   .navMenuContainer {
     @extend .flexRow;
-
-    //.navMenuItem {
-    //  width: 100px;
-    //  color: $color-bright-1;
-    //  font-size: $size-small;
-    //  text-transform: uppercase;
-    //  text-align: center;
-    //  margin: 0 10px;
-    //
-    //  &.active {
-    //    color: $color-bright-2;
-    //    font-weight: $weight-regular;
-    //  }
-    //}
+    height: 100%;
+    align-items: center;
   }
 }
 
@@ -49,14 +37,20 @@
   position: relative;
   color: $color-bright-1;
   width: 100px;
+  height: 100%;
+  @extend .flexColumn;
+  @extend .flexCenter;
   text-align: center;
+  text-transform: uppercase;
+  font-weight: $weight-regular;
+  font-size:$size-small;
 }
 
 .navMenuItem::after {
   position: absolute;
   //top: 100%;
   left: 0;
-  bottom: -22px;
+  bottom: -5px;
   width: 100%;
   height: 3px;
   background: $color-bright-1;

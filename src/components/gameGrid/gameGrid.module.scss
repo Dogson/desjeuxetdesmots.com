@@ -37,7 +37,6 @@
     &.active {
       color: $color-bright-2;
       background-color: $color-dark-2;
-      border: 1px solid $color-bright-2;
 
       &:hover {
         color: $color-bright-2;
@@ -122,7 +121,9 @@
 
         .title {
           margin-top: 5px;
-          font-size: $size-small;
+          text-transform: none;
+          font-size: $size-smaller;
+          text-align: left;
         }
       }
 
