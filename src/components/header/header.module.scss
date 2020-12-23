@@ -51,18 +51,17 @@
   position: absolute;
   //top: 100%;
   left: 0;
-  bottom: -5px;
-  width: 100%;
+  right: 0;
+  margin: auto;
+  bottom: 0;
+  width: 0;
   height: 3px;
   background: $color-bright-1;
   content: '';
-  opacity: 0;
-  -webkit-transition: height 0.1s, opacity 0.1s, -webkit-transform 0.1s;
-  -moz-transition: height 0.1s, opacity 0.1s, -moz-transform 0.1s;
-  transition: height 0.1s, opacity 0.1s, transform 0.1s;
-  -webkit-transform: translateY(-20px);
-  -moz-transform: translateY(-20px);
-  transform: translateY(-20px);
+  text-align: center;
+  -webkit-transition: width 0.3s, -webkit-transform 0.3s;
+  -moz-transition: width 0.3s, -moz-transform 0.3s;
+  transition: width 0.3s, transform 0.3s;
 }
 
 .navMenuItem.active {
@@ -72,14 +71,12 @@
 .navMenuItem:hover::after,
 .navMenuItem:focus::after,
 .navMenuItem.active::after {
-  opacity: 1;
-  -webkit-transform: translateY(-5px);
-  -moz-transform: translateY(-5px);
-  transform: translateY(-5px);
+  width: 100%;
 }
 
 .navMenuItem.active::after {
   background: $color-bright-2;
+  width: 100%;
 }
 
 .mobileSearch {
