@@ -50,6 +50,7 @@ class PureMobileDrawer extends React.Component {
         return <div className={styles.mobileSearch}>
             <Sidebar
                 touch={true}
+                pullRight
                 sidebar={
                     <div>
                         <div className={styles.backButton}><FaArrowLeft
