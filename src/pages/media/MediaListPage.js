@@ -26,7 +26,7 @@ class MediaListPage extends React.Component {
                 </NavLink>
                 <div className={styles.pageTitle}>Liste des podcasts et vidéastes</div>
                 <div className={styles.info}>
-                    <span>Il en manque ?</span>
+                    <div className={styles.text}>Il en manque ?</div>
                     <a className={cx(styles.btn, styles.small)}
                        href="https://twitter.com/humptydogson"
                        target="_blank" rel="noopener noreferrer">

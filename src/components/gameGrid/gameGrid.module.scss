@@ -48,8 +48,9 @@
     }
 
     &:hover {
-      transform: scale(1.05);
       color: $color-bright-1;
+      transform: unset;
+      box-shadow: unset;
 
       .text {
         opacity: 1;
