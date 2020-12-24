@@ -62,7 +62,7 @@
     .gradient {
       height: 200px;
       width: 100%;
-      background: linear-gradient($color-dark-2 0%, rgba($color-dark-1, 0) 35%);
+      background: linear-gradient($color-dark-2 0%, $color-dark-2 5%, rgba($color-dark-1, 0) 45%);
       position: absolute;
       left: 0;
       top: 0;
