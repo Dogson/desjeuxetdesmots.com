@@ -132,7 +132,9 @@
     .mediaItem {
       @extend .flexRow;
       justify-content: center;
-      margin: 20px 0;
+      margin: 20px auto;
+      max-width: 800px;
+      width: 100%;
 
       .mediaBlockLeft {
         @extend .flexColumn;
@@ -141,11 +143,10 @@
         color: $color-bright-2;
 
         .mediaLogo {
+          transition: box-shadow 0.1s, transform 0.1s;
           width: 150px;
           height: 150px;
           margin-bottom: 20px;
-          box-shadow: 10px 10px 0 2px #FFC857;
-          transition: all 0.1s ease-in-out;
         }
       }
 
@@ -180,7 +181,9 @@
 
       &:hover {
         .mediaLogo {
-          transform: scale(1.05);
+          box-shadow: 10px 10px 0 2px #FFC857;
+          transform: translateX(-10px) translateY(-10px);
+          transition: box-shadow 0.2s, transform 0.2s;
         }
       }
     }
