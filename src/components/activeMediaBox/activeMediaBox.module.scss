@@ -46,13 +46,17 @@
   }
 
   .closeBtn {
-    color: $color-bright-2;
+    color: $color-bright-1;
     font-size: 25px;
     position: absolute;
     padding: 10px;
     right: 0;
     top: 0;
     cursor: pointer;
+
+    &:hover {
+      color: $color-bright-2;
+    }
   }
 
   .titleContainer {
