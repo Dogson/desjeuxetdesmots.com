@@ -94,20 +94,7 @@
 }
 
 @media #{$media-phone} {
-  .settingsPopoverContainer {
-    max-width: calc(100vw - 10px);
-
-    .settingsFooter {
-      padding-top: 20px;
-    }
-
-    .longLabel {
-      white-space: normal;
-      max-width: 300px;
-      min-width: 200px;
-      position: relative;
-      top: -16px;
-      left: 2px;
-    }
+  .settingsContainer {
+    display: none;
   }
 }

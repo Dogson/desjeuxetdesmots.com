@@ -22,7 +22,6 @@ class GameGridContainer extends React.Component {
         super(props);
 
         this.state = {
-            hasMoreGames: true,
             loading: false,
             error: false
         };
@@ -35,6 +34,13 @@ class GameGridContainer extends React.Component {
 
     componentDidMount() {
         this.props.dispatch({type: ACTIONS_GAMES.SET_CURRENT_GAME, payload: null});
+        const searchValues = queryString.parse(this.props.location.search);
+        const isSearchValueDifferentThanSearchInput = searchValues && searchValues.q !== this.props.searchInput;
+        const hasNoSearchValueButHasSearchInput = !searchValues && this.props.searchInput;
+        if (isSearchValueDifferentThanSearchInput || hasNoSearchValueButHasSearchInput) {
+            this.props.dispatch({type: ACTIONS_GAMES.SET_GAMES, payload: {games: [], page: 1}});
+        }
+        this.setState({hasMoreGames: true})
     }
 
     componentDidUpdate(prevProps) {
@@ -77,6 +83,10 @@ class GameGridContainer extends React.Component {
     }
 
     _handleChangeSearchInput(value) {
+        this.props.dispatch({
+            type: ACTIONS_GAMES.SET_SEARCH_INPUT,
+            payload: value
+        })
         this.props.history.push(`/?q=${value}`);
     }
 
