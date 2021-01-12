@@ -32,7 +32,7 @@
   @extend .flexColumn;
   background-color: $color-dark-2;
   border-radius: 10px;
-  box-shadow: 3px 3px 0 0 #FFC857;
+  box-shadow: 3px 3px 0 0 $color-bright-2;
   margin-right: 20px;
 
   .blockTitle {

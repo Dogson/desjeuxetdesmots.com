@@ -241,7 +241,7 @@ class SearchPreviewResults extends React.Component {
                 <li className={cx(styles.allResults, {[styles.active]: cursor === results.length})}
                     onMouseOver={() => onHover(results.length)}>
                     <NavLink to={`/?q=${search}`}
-                             className={cx({[styles.btn]: mobile})}>
+                             className={cx(styles.itemContainer, {[styles.btn]: mobile})}>
                         <div className={styles.gameInfos}>
                             <div className={styles.gameTitle}> Tous les résultats
                                 pour "{search}"

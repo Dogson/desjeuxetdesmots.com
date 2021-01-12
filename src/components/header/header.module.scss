@@ -135,7 +135,7 @@
   @extend .flexColumn;
   background-color: $color-dark-2;
   border-radius: 10px;
-  box-shadow: 3px 3px 0 0 #FFC857;
+  box-shadow: 3px 3px 0 0 $color-bright-2;
   width: 600px;
   right: 20px;
   margin-top: 5px;
@@ -157,11 +157,14 @@
 
       &.allResults {
         color: $color-bright-1;
-        padding: 10px 20px;
         @extend .flexColumn;
         @extend .flexCenter;
         font-size: $size-small;
         cursor: pointer;
+
+        .itemContainer {
+          padding: 20px 20px;
+        }
 
         .gameTitle {
           text-transform: none;
@@ -173,6 +176,7 @@
         width: 45px;
         margin-right: 20px;
         color: $color-dark-1;
+        transition: all 0.1s ease-in-out;
 
         img {
           height: 100%;
@@ -191,8 +195,13 @@
       &.active {
         color: $color-bright-2;
 
-        img {
-          opacity: 1;
+        .imageContainer {
+          box-shadow: 5px 5px 0 0 $color-bright-2;
+          transform: translateX(-5px) translateY(-5px);
+          transition: box-shadow 0.2s, transform 0.2s;
+          img {
+            opacity: 1;
+          }
         }
 
         .gameTitle {

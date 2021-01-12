@@ -181,7 +181,7 @@
 
       &:hover {
         .mediaLogo {
-          box-shadow: 10px 10px 0 2px #FFC857;
+          box-shadow: 10px 10px 0 2px $color-bright-2;
           transform: translateX(-10px) translateY(-10px);
           transition: box-shadow 0.2s, transform 0.2s;
         }

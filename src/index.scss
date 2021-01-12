@@ -333,13 +333,13 @@ input[type="submit"] {
   padding: 10px 10px;
   letter-spacing: 1px;
   text-align: center;
-  box-shadow: 0 0 0 0 #FFC857;
+  box-shadow: 0 0 0 0 $color-bright-2;
   transition: box-shadow 0.1s, transform 0.1s;
 
   &:hover, &:active {
     border: 1px solid $color-bright-2;
     color: $color-bright-2;
-    box-shadow: 3px 3px 0 0 #FFC857;
+    box-shadow: 3px 3px 0 0 $color-bright-2;
     transform: translateX(-3px) translateY(-3px);
     transition: box-shadow 0.2s, transform 0.2s;
   }
