@@ -23,6 +23,13 @@ class PureMobileDrawer extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        this.props.dispatch({
+            type: ACTIONS_SETTINGS.IS_MOBILE_DRAWER_OPEN,
+            payload: false
+        })
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.location.pathname !== this.props.location.pathname) {
             this.setState({sidebarOpen: false});
@@ -55,7 +62,8 @@ class PureMobileDrawer extends React.Component {
                     <div>
                         <div className={styles.backButton}><FaArrowLeft
                             onClick={() => this._handleSetSidebarOpen(false)}/><span>Recherche</span></div>
-                        <HeaderSearchBar mobile onClickItem={() => this._handleSetSidebarOpen(false)}/>
+                        <HeaderSearchBar mobile isSidebarOpened={this.state.sidebarOpen}
+                                         onClickItem={() => this._handleSetSidebarOpen(false)}/>
                     </div>
                 }
                 open={this.state.sidebarOpen}
@@ -126,6 +134,15 @@ class PureHeaderSearchBar extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.setState({cursor: -1, searchResults: [], previewSearchInput: ""});
+        } else if (this.props.mobile &&
+            prevProps.onClickItem !== this.props.onClickItem &&
+            !this.props.inputFocused &&
+            this.props.isSidebarOpened
+        ) {
+            setTimeout(() => {
+                this.searchInput.focus();
+                this.setState({inputFocused: true})
+            }, 400)
         }
     }
 
@@ -200,7 +217,10 @@ class PureHeaderSearchBar extends React.Component {
                     onKeyDown={this._handleKeyDown}
                     placeholder="Rechercher un jeu"
                     onFocus={() => this.setState({inputFocused: true})}
-                    onBlur={this._handleBlur}/>
+                    onBlur={this._handleBlur}
+                    inputRef={(input) => {
+                        this.searchInput = input;
+                    }}/>
             </div>
             {
                 (inputFocused || mobile) &&

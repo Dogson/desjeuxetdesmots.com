@@ -49,7 +49,6 @@ export class DrawerNav extends React.Component {
 }
 
 const MenuNavMobile = ({routes, onClose}) => {
-    console.log(routes);
     return <div className={styles.menuNavMobile}>
         <div className={styles.menuHeader}>
             <div className={styles.backButton}>
