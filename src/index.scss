@@ -363,6 +363,52 @@ input[type="submit"] {
 
 }
 
+/* Effect 4: bottom border enlarge */
+.navMenuItem {
+  position: relative;
+  color: $color-bright-1;
+  width: 100px;
+  height: 100%;
+  @extend .flexColumn;
+  @extend .flexCenter;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: $weight-regular;
+  font-size: $size-small;
+}
+
+.navMenuItem::after {
+  position: absolute;
+  //top: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background: $color-bright-1;
+  content: '';
+  text-align: center;
+  -webkit-transition: width 0.3s, -webkit-transform 0.3s;
+  -moz-transition: width 0.3s, -moz-transform 0.3s;
+  transition: width 0.3s, transform 0.3s;
+}
+
+.navMenuItem.active {
+  color: $color-bright-2;
+}
+
+.navMenuItem:hover::after,
+.navMenuItem:focus::after,
+.navMenuItem.active::after {
+  width: 100%;
+}
+
+.navMenuItem.active::after {
+  background: $color-bright-2;
+  width: 100%;
+}
+
 input[type="submit"] {
   outline: none;
   border: none;

@@ -4,6 +4,8 @@ import styles from "./drawerMenuNav.module.scss";
 import {FaArrowLeft, FaBars} from "react-icons/fa";
 import {NavLink} from "react-router-dom";
 import {withRouter} from "react-router-dom";
+import {Logo} from "../logo/logo";
+import cx from "classnames";
 
 export class DrawerNav extends React.Component {
     constructor(props) {
@@ -25,7 +27,18 @@ export class DrawerNav extends React.Component {
                                         onClose={() => this.onSetSidebarOpen(false)}/>}
                 open={this.state.sidebarOpen}
                 onSetOpen={this.onSetSidebarOpen}
-                styles={{sidebar: {background: "#08090A", zIndex: 30, minHeight: "100vh", width: "100vw"}}}
+                styles={{
+                    sidebar: {
+                        background: "#2E4052",
+                        minHeight: "100vh",
+                        width: "200px",
+                        zIndex: 8
+                    },
+                    overlay: {
+                        zIndex: 7,
+                        backgroundColor: "rgba(0,0,0,.3)"
+                    }
+                }}
             >
                 <div className={styles.sidebarButton} onClick={() => this.onSetSidebarOpen(true)}>
                     <FaBars className={styles.icon}/>
@@ -36,18 +49,31 @@ export class DrawerNav extends React.Component {
 }
 
 const MenuNavMobile = ({routes, onClose}) => {
+    console.log(routes);
     return <div className={styles.menuNavMobile}>
-        <div className={styles.backButton}><FaArrowLeft
-            onClick={onClose}/><span>Menu</span></div>
-        {routes.map((route) => {
-            return  <MenuMobileLink route={route.path} name={route.name}/>
-        })}
+        <div className={styles.menuHeader}>
+            <div className={styles.backButton}>
+                <FaArrowLeft onClick={onClose}/>
+            </div>
+            <div className={styles.logoImageContainer}>
+                <Logo/>
+            </div>
+        </div>
+
+        <div className={styles.navMenuMobileContainer}>
+            {routes.map((route) => {
+                return <MenuMobileLink route={route.path} name={route.name}/>
+            })}
+        </div>
     </div>
 };
 
 const PureMenuMobileLink = (props) => {
     const {route, name} = props;
-    return <NavLink to={route} className={styles.menuMobileLink}>
+    return <NavLink to={route}
+                    exact
+                    className={cx(styles.navMenuItem, styles.menuMobileLink)}
+                    activeClassName={styles.active}>
         {name}
     </NavLink>
 };
