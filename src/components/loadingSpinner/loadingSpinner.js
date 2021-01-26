@@ -4,16 +4,33 @@ import cx from "classnames";
 import {FaGamepad, FaCommentDots} from "react-icons/fa";
 
 export const LoadingSpinner = ({size}) => {
-    return <div className={styles.loadingContainer}>
-        <div className={styles.flipCard} style={size && {height: size+"px", width: size+"px"}}>
-            <div className={cx(styles.flipCardInner, styles.rotateVertCenter)}>
-                <div className={styles.flipCardFront}>
-                    <FaCommentDots className={styles.icon} style={size && {fontSize: (size*(2/3))+"px", height: (size*(2/3))+"px"}}/>
-                </div>
-                <div className={styles.flipCardBack}>
-                    <FaGamepad className={styles.icon} style={size && {fontSize: (size*(2/3))+"px", height: (size*(2/3))+"px"}}/>
+    const flipCardCx = cx(
+        styles.LoadingSpinner_flipCard,
+        {[styles.LoadingSpinner_flipCard__small]: size === "small"}
+    );
+
+    const frontIconCx = cx(
+        styles.LoadingSpinner_frontIcon,
+        {[styles.LoadingSpinner_frontIcon__small]: size === "small"}
+    );
+
+    const backIconCx = cx(
+        styles.LoadingSpinner_backIcon,
+        {[styles.LoadingSpinner_backIcon__small]: size === "small"}
+    );
+
+    return (
+        <div className={styles.LoadingSpinner}>
+            <div className={flipCardCx}>
+                <div className={styles.LoadingSpinner_inner}>
+                    <div className={styles.LoadingSpinner_front}>
+                        <FaCommentDots className={frontIconCx}/>
+                    </div>
+                    <div className={styles.LoadingSpinner_back}>
+                        <FaGamepad className={backIconCx}/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    )
 };

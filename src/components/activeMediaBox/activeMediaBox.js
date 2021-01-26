@@ -343,7 +343,7 @@ class ActiveMediaBox extends React.Component {
                             </div>
                             <div className={styles.suggestionsContainer}>
                                 {this.state.loadingSuggestions ?
-                                    <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
+                                    <div className={styles.loadingContainer}><LoadingSpinner size="small"/>
                                     </div> : this.state.searchResults.map((result, i) => {
                                         return <div className={cx(styles.suggestionItem, {
                                             [styles.active]: this.state.episodeGames.find((game) => {

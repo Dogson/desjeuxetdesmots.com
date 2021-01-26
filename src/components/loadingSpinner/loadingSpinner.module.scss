@@ -30,31 +30,69 @@
   }
 }
 
-
-.rotateVertCenter {
+@mixin rotate-vert-center {
   -webkit-animation: flip-vertical-left 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
   animation: flip-vertical-left 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
 }
 
-.loadingContainer {
+.LoadingSpinner {
   flex: 1;
   height: 100%;
   @include flex-column-full-center;
+}
 
-  .flipCard {
-    width: 60px;
-    height: 60px;
-  }
+.LoadingSpinner_flipCard {
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
 
-  .icon {
-    font-size: 35px;
-    color: $color-dark-2;
-    height: 40px;
-  }
+.LoadingSpinner_flipCard__small {
+  height: 30px;
+  width: 30px;
+}
 
-  .flipCardFront {
-    .icon {
-      transform: rotateY(180deg);
-    }
-  }
+.LoadingSpinner_inner {
+  @include rotate-vert-center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.LoadingSpinner_front, .LoadingSpinner_back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  @include flex-column-full-center;
+}
+
+.LoadingSpinner_front {
+  background-color: $color-dark-2;
+}
+
+.LoadingSpinner_back {
+  transform: rotateY(180deg);
+  background-color: $color-bright-2;
+}
+
+.LoadingSpinner_frontIcon, .LoadingSpinner_backIcon {
+  font-size: 35px;
+  color: $color-dark-2;
+  height: 40px;
+}
+
+.LoadingSpinner_frontIcon__small, .LoadingSpinner_backIcon__small {
+  height: 20px;
+  width: 20px;
+}
+
+.LoadingSpinner_frontIcon {
+  transform: rotateY(180deg);
+  color: $color-bright-2 !important;
 }
