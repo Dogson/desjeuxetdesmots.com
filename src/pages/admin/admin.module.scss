@@ -23,7 +23,7 @@
   }
 
   .sectionGrid {
-    @extend .flexRow;
+    @include flex-row;
     flex: 1;
 
     .cardContainer {

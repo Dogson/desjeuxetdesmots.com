@@ -8,8 +8,8 @@
     padding-top: 20px;
     width: 100%;
     padding-bottom: 20px;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    @include flex-column;
+    align-items: center;
     transition: background-color 0.3s ease-in-out, max-height 0.3s ease-in-out;
     overflow: hidden;
 
@@ -28,14 +28,14 @@
   }
 
   .mediaRowWrapper {
-    @extend .flexColumn;
+    @include flex-column;
     max-width: 1300px;
     width: 100%;
   }
 
   .title {
-    @extend .flexRow;
-    @extend .flexAlignCenter;
+    @include flex-row;
+    align-items: center;
     letter-spacing: 1px;
     color: $color-bright-1;
     margin: 0 10px 5px;
@@ -47,9 +47,7 @@
       font-size: $size-normal;
       margin-right: 10px;
       border-radius: 50%;
-      @extend .flexColumn;
-      @extend .flexCenter;
-      @extend .flexAlignCenter;
+      @include flex-column-full-center;
       background-color: $color-bright-2;
     }
   }

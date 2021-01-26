@@ -1,9 +1,7 @@
 @import "../../index";
 
 .notFoundContainer {
-  @extend .flexColumn;
-  @extend .flexAlignCenter;
-  @extend .flexCenter;
+  @include flex-column-full-center;
   flex: 1;
 
   .title {

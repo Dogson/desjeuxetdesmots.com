@@ -1,9 +1,7 @@
 @import "../../index";
 
 .noMedia {
-  @extend .flexRow;
-  @extend .flexCenter;
-  @extend .flexAlignCenter;
+  @include flex-row-full-center;
   font-size: $size-big;
   color: $color-bright-2;
   min-height: 300px;

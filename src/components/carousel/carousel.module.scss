@@ -7,8 +7,8 @@
 
   .slideContainer {
     display: flex !important;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 30px;
 
     &:focus {
@@ -69,8 +69,8 @@
     }
 
     .cardHeader {
-      @extend .flexRow;
-      @extend .flexAlignCenter;
+      @include flex-row;
+      align-items: center;
       position: absolute;
       top: 0;
       left: 0;
@@ -168,8 +168,8 @@
   height: 100% !important;
   cursor: pointer;
   display: flex !important;
-  @extend .flexRow;
-  @extend .flexAlignCenter;
+  @include flex-row;
+  align-items: center;
   transform: translate(0, -60%);
   color: $color-bright-1 !important;
   transition: all 0.1s ease-in-out;
@@ -196,7 +196,7 @@
 }
 
 .dotsContainer {
-  @extend .flexRow;
+  @include flex-row;
   position: absolute;
   top: -20px;
   right: 8px;

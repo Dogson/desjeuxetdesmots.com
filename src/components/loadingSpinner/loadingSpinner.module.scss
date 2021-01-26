@@ -39,9 +39,7 @@
 .loadingContainer {
   flex: 1;
   height: 100%;
-  @extend .flexColumn;
-  @extend .flexAlignCenter;
-  @extend .flexCenter;
+  @include flex-column-full-center;
 
   .flipCard {
     width: 60px;

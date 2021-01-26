@@ -7,7 +7,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css");
 
 //layout
-$containerWidth: 1000px;
+$container-width: 1000px;
 
 //font weights :
 $weight-light: 300;
@@ -34,6 +34,29 @@ $color-bright-2: #FFC857;
 $media-tablet: "screen and (max-width : 1260px)";
 $media-phone: "screen and (max-width : 700px)";
 
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-column-full-center {
+  @include flex-column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-row-full-center {
+  @include flex-row;
+  justify-content: center;
+  align-items: center;
+}
+
+
 body {
   margin: 0;
 }
@@ -57,40 +80,10 @@ strong {
   font-weight: $weight-regular;
 }
 
-.light {
-  font-weight: $weight-light;
-}
-
 h2 {
   color: $color-bright-2;
   font-weight: $weight-light;
   font-size: $size-normal;
-}
-
-.logoFont {
-  font-family: 'Karla', sans-serif;
-}
-
-.flexColumn {
-  display: flex;
-  flex-direction: column;
-}
-
-.flexRow {
-  display: flex;
-  flex-direction: row;
-}
-
-.flexSpaceBetween {
-  justify-content: space-between;
-}
-
-.flexCenter {
-  justify-content: center;
-}
-
-.flexAlignCenter {
-  align-items: center;
 }
 
 input {
@@ -138,9 +131,7 @@ input[type="submit"] {
   height: 100%;
   backface-visibility: hidden;
   border-radius: 50%;
-  @extend .flexColumn;
-  @extend .flexCenter;
-  @extend .flexAlignCenter;
+  @include flex-column-full-center;
 }
 
 /* Style the back side */
@@ -159,10 +150,10 @@ input[type="submit"] {
 
 //Forms
 .formContainer {
-  @extend .flexColumn;
+  @include flex-column;
 
   label {
-    @extend .flexColumn;
+    @include flex-column;
     margin-bottom: 30px;
 
     span {
@@ -203,8 +194,8 @@ input[type="submit"] {
   border: 1px solid $color-bright-1;
   margin: 20px;
   border-radius: 50px;
-  @extend .flexRow;
-  @extend .flexAlignCenter;
+  @include flex-row;
+  align-items: center;
 
 
   &.small {
@@ -266,7 +257,7 @@ input[type="submit"] {
 }
 
 .inputWithSuggestionsContainer {
-  @extend .flexColumn;
+  @include flex-column;
 
   .alternativeSearch {
     color: $color-bright-1;
@@ -369,8 +360,8 @@ input[type="submit"] {
   color: $color-bright-1;
   width: 100px;
   height: 100%;
-  @extend .flexColumn;
-  @extend .flexCenter;
+  @include flex-column;
+  justify-content: center;
   text-align: center;
   text-transform: uppercase;
   font-weight: $weight-regular;
@@ -441,8 +432,8 @@ input[type="submit"] {
   .hoveredInfo {
     transition: all 0.2s ease-in-out;
     opacity: 0;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    @include flex-column;
+    align-items: center;
     padding: 0 5px;
     height: 100%;
     position: relative;
@@ -497,9 +488,7 @@ input[type="submit"] {
   }
 
   .mediasSummaryContainer {
-    @extend .flexColumn;
-    @extend .flexCenter;
-    @extend .flexAlignCenter;
+    @include flex-column-full-center;
     width: 100%;
     flex-wrap: wrap;
     position: absolute;
@@ -509,9 +498,7 @@ input[type="submit"] {
       padding: 5px 10px;
       opacity: 1;
       border-radius: 15px;
-      @extend .flexRow;
-      @extend .flexAlignCenter;
-      @extend .flexCenter;
+      @include flex-row-full-center;
       color: $color-bright-1;
       background-color: $color-dark-1;
       font-weight: $weight-regular;
