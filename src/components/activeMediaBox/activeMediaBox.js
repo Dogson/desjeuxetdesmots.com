@@ -326,7 +326,7 @@ class ActiveMediaBox extends React.Component {
                                 <FaSearch className={styles.icon}/>
                                 <DebounceInput
                                     value={this.state.searchInput}
-                                    className={cx(styles.Input, styles.input)}
+                                    className={cx(styles.InputText, styles.input)}
                                     minLength={2}
                                     debounceTimeout={300}
                                     onChange={(e) => this._handleChange(e.target.value)}

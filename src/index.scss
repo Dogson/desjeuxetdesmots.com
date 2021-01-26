@@ -86,11 +86,44 @@ h2 {
   font-size: $size-normal;
 }
 
-.Input {
+//Forms
+.Form {
+  @include flex-column;
+  border: 1px solid $color-bright-2;
+  padding: 30px 80px;
+}
+
+.Form_label {
+  @include flex-column;
+  margin-bottom: 30px;
+}
+
+.Form_labelContent {
+  color: $color-bright-1;
+  font-size: $size-small;
+  padding: 10px 15px;
+  letter-spacing: 1px;
+}
+
+.Form_error {
+  font-size: $size-small;
+  margin: 10px 0 0 15px;
+  height: 20px;
+  color: $color-bright-2;
+  width: 300px;
+}
+
+.Form_inputSubmit {
+  width: auto !important;
+}
+
+// Inputs
+.InputText {
   background: none;
   box-shadow: none;
   padding: 10px 20px;
   border: 1px solid $color-bright-1;
+  border-radius: 25px;
   width: 300px;
   font-size: $size-small;
   color: $color-bright-1;
@@ -99,50 +132,6 @@ h2 {
 
   &:focus {
     outline: none;
-  }
-}
-
-.Input__submit {
-  width: auto !important;
-}
-
-//Forms
-.formContainer {
-  @include flex-column;
-
-  label {
-    @include flex-column;
-    margin-bottom: 30px;
-
-    span {
-      color: $color-bright-1;
-      font-size: $size-small;
-      padding: 10px 15px;
-      letter-spacing: 1px;
-    }
-
-    input {
-      border-radius: 25px;
-    }
-
-    &:focus-within {
-      input {
-        color: $color-bright-2;
-        border: 1px solid $color-bright-2;
-      }
-
-      span {
-        color: $color-bright-2;
-      }
-    }
-  }
-
-  .errorMessage {
-    font-size: $size-small;
-    margin: 10px 0 0 15px;
-    height: 20px;
-    color: $color-bright-2;
-    width: 300px;
   }
 }
 
@@ -356,26 +345,6 @@ h2 {
 .navMenuItem.active::after {
   background: $color-bright-2;
   width: 100%;
-}
-
-input[type="submit"] {
-  outline: none;
-  border: none;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: $color-bright-2;
-  }
-
-  &:focus {
-    outline: none !important;
-  }
-
-  ::-moz-focus-inner {
-    border: 0 !important;
-  }
 }
 
 

@@ -1,15 +1,5 @@
 @import "../../index";
 
-.formContainer {
-
-  border: 1px solid $color-bright-2;
-  padding: 30px 80px;
-
-  button {
-    margin: 20px 15px;
-  }
-}
-
 .sectionGridContainer {
   width: 100%;
   box-sizing: border-box;
@@ -48,7 +38,7 @@
 }
 
 @media #{$media-phone} {
-  .formContainer {
+  .Form {
     padding: 0;
     border: none;
 
