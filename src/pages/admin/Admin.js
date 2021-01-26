@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
+import cx from "classnames";
 
 import PageLayout from "../../layouts/PageLayout";
 
@@ -61,16 +62,18 @@ class Admin extends Component {
         return <form className={styles.formContainer} onSubmit={this._handleSubmit}>
             <label>
                 <span>identifiant</span>
-                <input type="text" value={this.state.username}
+                <input className={styles.Input}
+                       type="text" value={this.state.username}
                        onChange={(e) => this._handlechangeUsername(e.target.value)}/>
             </label>
             <label>
                 <span>mot de passe</span>
-                <input type="password" value={this.state.password}
+                <input className={styles.Input}
+                       type="password" value={this.state.password}
                        onChange={(e) => this._handleChangePassword(e.target.value)}/>
                 <div className={styles.errorMessage}>{this.state.errorMessage}</div>
             </label>
-            <button className={styles.btn}><input type="submit" value="se connecter"/></button>
+            <input className={cx(styles.Input, styles.Input__submit, styles.btn)} type="submit" value="se connecter"/>
         </form>;
     }
 

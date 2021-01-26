@@ -86,7 +86,7 @@ h2 {
   font-size: $size-normal;
 }
 
-input {
+.Input {
   background: none;
   box-shadow: none;
   padding: 10px 20px;
@@ -98,11 +98,11 @@ input {
   font-family: 'Roboto', sans-serif;
 
   &:focus {
-    outline: none
+    outline: none;
   }
 }
 
-input[type="submit"] {
+.Input__submit {
   width: auto !important;
 }
 

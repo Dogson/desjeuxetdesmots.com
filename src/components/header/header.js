@@ -210,7 +210,7 @@ class PureHeaderSearchBar extends React.Component {
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
                     value={previewSearchInput}
-                    className={cx(styles.input)}
+                    className={cx(styles.Input, styles.input)}
                     minLength={1}
                     debounceTimeout={300}
                     onChange={(e) => this._handleChange(e.target.value)}
