@@ -134,6 +134,10 @@
         font-weight: $weight-regular;
         font-size: $size-small;
 
+        .descriptionContent {
+          white-space: pre-wrap;
+        }
+
         .link {
           max-width: 250px;
           overflow: hidden;
