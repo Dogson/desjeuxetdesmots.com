@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
+import cx from "classnames";
 
 import PageLayout from "../../layouts/PageLayout";
 
@@ -58,19 +59,21 @@ class Admin extends Component {
     }
 
     renderLoggingForm() {
-        return <form className={styles.formContainer} onSubmit={this._handleSubmit}>
-            <label>
-                <span>identifiant</span>
-                <input type="text" value={this.state.username}
+        return <form className={styles.Form} onSubmit={this._handleSubmit}>
+            <label className={styles.Form_label}>
+                <span className={styles.Form_labelContent}>identifiant</span>
+                <input className={styles.InputText}
+                       type="text" value={this.state.username}
                        onChange={(e) => this._handlechangeUsername(e.target.value)}/>
             </label>
-            <label>
-                <span>mot de passe</span>
-                <input type="password" value={this.state.password}
+            <label className={styles.Form_label}>
+                <span className={styles.Form_labelContent}>mot de passe</span>
+                <input className={styles.InputText}
+                       type="password" value={this.state.password}
                        onChange={(e) => this._handleChangePassword(e.target.value)}/>
-                <div className={styles.errorMessage}>{this.state.errorMessage}</div>
+                <div className={styles.Form_error}>{this.state.errorMessage}</div>
             </label>
-            <button className={styles.btn}><input type="submit" value="se connecter"/></button>
+            <input className={cx(styles.Form_inputSubmit, styles.btn)} type="submit" value="Se connecter"/>
         </form>;
     }
 

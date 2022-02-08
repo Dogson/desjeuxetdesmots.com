@@ -14,10 +14,10 @@ import PlayPodcast from "../mediaPlayerWidgets/playPodcast";
 import Truncate from 'react-truncate-markup';
 import {connect} from "react-redux";
 import PlayVideo from "../mediaPlayerWidgets/playVideo";
-import {isValidUrl} from "../../utils";
-import decode from "entity-decode/browser"
 import {Checkbox} from "pretty-checkbox-react";
 import {ACTIONS_USERS} from "../../actions/usersActions";
+import {isValidUrl} from "../../utils";
+import decode from "entity-decode/browser"
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -233,10 +233,11 @@ class ActiveMediaBox extends React.Component {
 
                         {this.state.showFullDesc ?
                             <div>
-                                {media.description.split("\n").map((line, key) => {
+                                {isVideo ? media.description.split("\n").map((line, key) => {
                                     return <div style={{minHeight: 10}}
                                                 key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
-                                })}
+                                }) : <div className={styles.descriptionContent}
+                                          dangerouslySetInnerHTML={{__html: media.description}}/>}
                                 <button onClick={() => this.setState({
                                     showFullDesc: false
                                 })}
@@ -248,12 +249,11 @@ class ActiveMediaBox extends React.Component {
                                 showFullDesc: true
                             })}
                                                                              className={cx(styles.readMoreBtn)}>Voir plus</button></span>}>
-                                <div>
-                                    {media.description.split("\n").map((line, key) => {
-                                        return <div style={{minHeight: 10}}
-                                                    key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
-                                    })}
-                                </div>
+                                {isVideo ? <div>{media.description.split("\n").map((line, key) => {
+                                    return <div style={{minHeight: 10}}
+                                                key={key}><p>{this.renderDescriptionLine(line)}</p></div>
+                                })}</div> : <div className={styles.descriptionContent}
+                                                 dangerouslySetInnerHTML={{__html: media.description}}/>}
                             </Truncate>
                         }
                     </div>
@@ -326,7 +326,7 @@ class ActiveMediaBox extends React.Component {
                                 <FaSearch className={styles.icon}/>
                                 <DebounceInput
                                     value={this.state.searchInput}
-                                    className={styles.input}
+                                    className={cx(styles.InputText, styles.input)}
                                     minLength={2}
                                     debounceTimeout={300}
                                     onChange={(e) => this._handleChange(e.target.value)}
@@ -343,7 +343,7 @@ class ActiveMediaBox extends React.Component {
                             </div>
                             <div className={styles.suggestionsContainer}>
                                 {this.state.loadingSuggestions ?
-                                    <div className={styles.loadingContainer}><LoadingSpinner size={30}/>
+                                    <div className={styles.loadingContainer}><LoadingSpinner size="small"/>
                                     </div> : this.state.searchResults.map((result, i) => {
                                         return <div className={cx(styles.suggestionItem, {
                                             [styles.active]: this.state.episodeGames.find((game) => {

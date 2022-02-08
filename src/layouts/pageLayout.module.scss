@@ -3,14 +3,14 @@
 .pageContainer {
   width: 100%;
   min-height: 100vh;
-  @extend .flexColumn;
+  @include flex-column;
 
   .pageContent {
     z-index: 5;
     flex: 1;
     background-color: $color-dark-1;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    @include flex-column;
+    align-items: center;
 
     .titleContainer {
       margin-bottom: 30px;
@@ -43,11 +43,11 @@
     }
 
     .menuNavMobile {
-      @extend .flexColumn;
-      @extend .flexAlignCenter;
+      @include flex-column;
+      align-items: center;
 
       .menuMobileLink {
-        @extend .flexRow;
+        @include flex-row;
         text-transform: uppercase;
         border-bottom: 1px solid $color-bright-1;
         font-weight: $weight-light;

@@ -20,7 +20,7 @@
 
   .cookieConsentFooter {
     margin-top: 30px;
-    @extend .flexRow;
+    @include flex-row;
     justify-content: flex-end;
 
     .btn {

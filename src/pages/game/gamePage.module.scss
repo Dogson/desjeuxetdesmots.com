@@ -9,17 +9,15 @@
     width: 100%;
     height: 400px;
     position: relative;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
-    @extend .flexCenter;
+    @include flex-column-full-center;
 
     .headerContent {
       position: relative;
       z-index: 2;
       max-width: 1300px;
       width: 100%;
-      @extend .flexRow;
-      @extend .flexAlignCenter;
+      @include flex-row;
+      align-items: center;
 
       .coverImg {
         width: 200px;

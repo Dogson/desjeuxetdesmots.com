@@ -7,7 +7,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css");
 
 //layout
-$containerWidth: 1000px;
+$container-width: 1000px;
 
 //font weights :
 $weight-light: 300;
@@ -34,6 +34,29 @@ $color-bright-2: #FFC857;
 $media-tablet: "screen and (max-width : 1260px)";
 $media-phone: "screen and (max-width : 700px)";
 
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-column-full-center {
+  @include flex-column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-row-full-center {
+  @include flex-row;
+  justify-content: center;
+  align-items: center;
+}
+
+
 body {
   margin: 0;
 }
@@ -57,47 +80,50 @@ strong {
   font-weight: $weight-regular;
 }
 
-.light {
-  font-weight: $weight-light;
-}
-
 h2 {
   color: $color-bright-2;
   font-weight: $weight-light;
   font-size: $size-normal;
 }
 
-.logoFont {
-  font-family: 'Karla', sans-serif;
+//Forms
+.Form {
+  @include flex-column;
+  border: 1px solid $color-bright-2;
+  padding: 30px 80px;
 }
 
-.flexColumn {
-  display: flex;
-  flex-direction: column;
+.Form_label {
+  @include flex-column;
+  margin-bottom: 30px;
 }
 
-.flexRow {
-  display: flex;
-  flex-direction: row;
+.Form_labelContent {
+  color: $color-bright-1;
+  font-size: $size-small;
+  padding: 10px 15px;
+  letter-spacing: 1px;
 }
 
-.flexSpaceBetween {
-  justify-content: space-between;
+.Form_error {
+  font-size: $size-small;
+  margin: 10px 0 0 15px;
+  height: 20px;
+  color: $color-bright-2;
+  width: 300px;
 }
 
-.flexCenter {
-  justify-content: center;
+.Form_inputSubmit {
+  width: auto !important;
 }
 
-.flexAlignCenter {
-  align-items: center;
-}
-
-input {
+// Inputs
+.InputText {
   background: none;
   box-shadow: none;
   padding: 10px 20px;
   border: 1px solid $color-bright-1;
+  border-radius: 25px;
   width: 300px;
   font-size: $size-small;
   color: $color-bright-1;
@@ -105,95 +131,7 @@ input {
   font-family: 'Roboto', sans-serif;
 
   &:focus {
-    outline: none
-  }
-}
-
-input[type="submit"] {
-  width: auto !important;
-}
-
-/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
-.flipCard {
-  background-color: transparent;
-  width: 90px;
-  height: 90px;
-  perspective: 1000px; /* Remove this if you don't want the 3D effect */
-}
-
-/* This container is needed to position the front and back side */
-.flipCardInner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-}
-
-/* Position the front and back side */
-.flipCardFront, .flipCardBack {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 50%;
-  @extend .flexColumn;
-  @extend .flexCenter;
-  @extend .flexAlignCenter;
-}
-
-/* Style the back side */
-.flipCardBack {
-  transform: rotateY(180deg);
-  background-color: $color-bright-2;
-}
-
-.flipCardFront {
-  background-color: $color-dark-2;
-
-  .icon {
-    color: $color-bright-2 !important;
-  }
-}
-
-//Forms
-.formContainer {
-  @extend .flexColumn;
-
-  label {
-    @extend .flexColumn;
-    margin-bottom: 30px;
-
-    span {
-      color: $color-bright-1;
-      font-size: $size-small;
-      padding: 10px 15px;
-      letter-spacing: 1px;
-    }
-
-    input {
-      border-radius: 25px;
-    }
-
-    &:focus-within {
-      input {
-        color: $color-bright-2;
-        border: 1px solid $color-bright-2;
-      }
-
-      span {
-        color: $color-bright-2;
-      }
-    }
-  }
-
-  .errorMessage {
-    font-size: $size-small;
-    margin: 10px 0 0 15px;
-    height: 20px;
-    color: $color-bright-2;
-    width: 300px;
+    outline: none;
   }
 }
 
@@ -203,8 +141,8 @@ input[type="submit"] {
   border: 1px solid $color-bright-1;
   margin: 20px;
   border-radius: 50px;
-  @extend .flexRow;
-  @extend .flexAlignCenter;
+  @include flex-row;
+  align-items: center;
 
 
   &.small {
@@ -266,7 +204,7 @@ input[type="submit"] {
 }
 
 .inputWithSuggestionsContainer {
-  @extend .flexColumn;
+  @include flex-column;
 
   .alternativeSearch {
     color: $color-bright-1;
@@ -369,8 +307,8 @@ input[type="submit"] {
   color: $color-bright-1;
   width: 100px;
   height: 100%;
-  @extend .flexColumn;
-  @extend .flexCenter;
+  @include flex-column;
+  justify-content: center;
   text-align: center;
   text-transform: uppercase;
   font-weight: $weight-regular;
@@ -409,26 +347,6 @@ input[type="submit"] {
   width: 100%;
 }
 
-input[type="submit"] {
-  outline: none;
-  border: none;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: $color-bright-2;
-  }
-
-  &:focus {
-    outline: none !important;
-  }
-
-  ::-moz-focus-inner {
-    border: 0 !important;
-  }
-}
-
 
 .cardContainer {
   cursor: pointer;
@@ -441,8 +359,8 @@ input[type="submit"] {
   .hoveredInfo {
     transition: all 0.2s ease-in-out;
     opacity: 0;
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    @include flex-column;
+    align-items: center;
     padding: 0 5px;
     height: 100%;
     position: relative;
@@ -497,9 +415,7 @@ input[type="submit"] {
   }
 
   .mediasSummaryContainer {
-    @extend .flexColumn;
-    @extend .flexCenter;
-    @extend .flexAlignCenter;
+    @include flex-column-full-center;
     width: 100%;
     flex-wrap: wrap;
     position: absolute;
@@ -509,9 +425,7 @@ input[type="submit"] {
       padding: 5px 10px;
       opacity: 1;
       border-radius: 15px;
-      @extend .flexRow;
-      @extend .flexAlignCenter;
-      @extend .flexCenter;
+      @include flex-row-full-center;
       color: $color-bright-1;
       background-color: $color-dark-1;
       font-weight: $weight-regular;

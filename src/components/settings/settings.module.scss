@@ -2,9 +2,7 @@
 
 .settingsContainer {
   .adminButton {
-    @extend .flexRow;
-    @extend .flexAlignCenter;
-    @extend .flexCenter;
+    @include flex-row-full-center;
 
     z-index: 7;
     padding: 10px;
@@ -29,7 +27,7 @@
 
 .settingsPopoverContainer {
   padding: 30px 40px;
-  @extend .flexColumn;
+  @include flex-column;
   background-color: $color-dark-2;
   border-radius: 10px;
   box-shadow: 3px 3px 0 0 $color-bright-2;
@@ -48,10 +46,10 @@
   }
 
   .settingsBlock {
-    @extend .flexColumn;
+    @include flex-column;
 
     .subBlock {
-      @extend .flexColumn;
+      @include flex-column;
       margin-bottom: 5px;
 
       &:last-child {
@@ -80,7 +78,7 @@
   .settingsFooter {
     color: $color-bright-1;
     font-size: $size-small;
-    @extend .flexColumn;
+    @include flex-column;
 
     .btn {
       margin-top: 20px;

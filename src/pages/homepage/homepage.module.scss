@@ -1,9 +1,9 @@
 @import "../../index";
 
 .titleContainer {
-  @extend .flexColumn;
-  @extend .flexAlignCenter;
-  @extend .logoFont;
+  @include flex-column;
+  align-items: center;
+  font-family: 'Karla', sans-serif;
   height: 100%;
   color: $color-bright-2;
   font-size: 35px;

@@ -1,9 +1,7 @@
 @import "src/index";
 
 .errorContainer {
-  @extend .flexColumn;
-  @extend .flexCenter;
-  @extend .flexAlignCenter;
+  @include flex-column-full-center;
   color: #ff9933;
   font-size: $size-big;
   min-height: 300px;

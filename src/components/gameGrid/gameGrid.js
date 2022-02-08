@@ -208,7 +208,7 @@ class GameGridContainer extends React.Component {
                 <FaSearch className={styles.icon}/>
                 <DebounceInput
                     value={searchInput}
-                    className={styles.input}
+                    className={cx(styles.InputText, styles.input)}
                     minLength={2}
                     debounceTimeout={300}
                     onChange={(e) => this._handleChangeSearchInput(e.target.value)}

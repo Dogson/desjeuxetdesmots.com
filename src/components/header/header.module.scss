@@ -5,17 +5,17 @@
   background-color: $color-dark-1;
   color: white;
   box-sizing: border-box;
-  @extend .flexRow;
-  @extend .flexCenter;
+  @include flex-row;
+  justify-content: center;
   padding: 0 30px;
   position: relative;
   z-index: 6;
   height: 56px;
 
   .headerWrapper {
-    @extend .flexRow;
-    @extend .flexAlignCenter;
-    @extend .flexSpaceBetween;
+    @include flex-row;
+    justify-content: space-between;
+    align-items: center;
     max-width: 1250px;
     width: 100%;
   }
@@ -26,7 +26,7 @@
   }
 
   .navMenuContainer {
-    @extend .flexRow;
+    @include flex-row;
     height: 100%;
     align-items: center;
     width: 390px;
@@ -40,9 +40,7 @@
   .backButton {
     padding: 15px 0;
     position: relative;
-    @extend .flexRow;
-    @extend .flexAlignCenter;
-    @extend .flexCenter;
+    @include flex-row-full-center;
 
     svg {
       position: absolute;
@@ -60,9 +58,7 @@
   }
 
   .sidebarButton {
-    @extend .flexColumn;
-    @extend .flexCenter;
-    @extend .flexAlignCenter;
+    @include flex-column-full-center;
     position: absolute;
     top: 0;
     right: 0;
@@ -85,7 +81,7 @@
 
       .itemContainer {
         padding: 10px 10px;
-        @extend .flexCenter;
+        justify-content: center;
       }
 
       .gameTitle {
@@ -100,7 +96,7 @@
   position: absolute;
   padding: 0 30px;
   z-index: 22;
-  @extend .flexColumn;
+  justify-content: center;
   background-color: $color-dark-2;
   border-radius: 10px;
   box-shadow: 3px 3px 0 0 $color-bright-2;
@@ -120,13 +116,13 @@
     li {
       .itemContainer {
         padding: 10px 20px;
-        @extend .flexRow;
+        @include flex-row;
       }
 
       &.allResults {
         color: $color-bright-1;
-        @extend .flexColumn;
-        @extend .flexCenter;
+        @include flex-column;
+        justify-content: center;
         font-size: $size-small;
         cursor: pointer;
 
@@ -156,8 +152,8 @@
 
 
       .gameInfos {
-        @extend .flexColumn;
-        @extend .flexCenter;
+        @include flex-column;
+        justify-content: center;
       }
 
       &.active {

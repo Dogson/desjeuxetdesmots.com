@@ -2,7 +2,7 @@
 
 .activeMediaBoxContainer {
   width: 100%;
-  @extend .flexColumn;
+  @include flex-column;
   margin: 0 20px 30px;
   position: relative;
 
@@ -60,9 +60,8 @@
   }
 
   .titleContainer {
-    //@extend .flexRow;
-    @extend .flexSpaceBetween;
-    @extend .flexAlignCenter;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
     max-width: 1000px;
     width: calc(100%);
@@ -79,12 +78,12 @@
     .authorAndDateContainer {
       color: $color-bright-2;
       margin: 10px 0;
-      @extend .flexRow;
-      @extend .flexAlignCenter;
+      @include flex-row;
+      align-items: center;
 
       .authorAndDateContent {
-        @extend .flexRow;
-        @extend .flexAlignCenter;
+        @include flex-row;
+        align-items: center;
         transition: all 0.1s ease-in-out;
 
         &:hover {
@@ -117,11 +116,11 @@
   }
 
   .bodyContainer {
-    @extend .flexRow;
+    @include flex-row;
 
     .leftRow, .rightRow {
-      @extend .flexColumn;
-      @extend .flexAlignCenter;
+      @include flex-column;
+      align-items: center;
     }
 
     .leftRow {
@@ -134,6 +133,10 @@
         color: $color-bright-1;
         font-weight: $weight-regular;
         font-size: $size-small;
+
+        .descriptionContent {
+          white-space: pre-wrap;
+        }
 
         .link {
           max-width: 250px;
@@ -170,12 +173,12 @@
       margin-left: 30px;
 
       .rightRowContainer {
-        @extend .flexColumn;
+        @include flex-column;
         margin-top: 10px;
       }
 
       .saveContainer, .verifyContainer {
-        @extend .flexRow;
+        @include flex-row;
         justify-content: flex-end;
         align-self: flex-end;
         color: $color-bright-1;
@@ -198,7 +201,7 @@
       .gamesContainer {
         min-height: 150px;
         margin-bottom: 10px;
-        @extend .flexRow;
+        @include flex-row;
         flex-wrap: wrap;
         align-self: flex-start;
 
@@ -217,7 +220,7 @@
         }
 
         .hoveredInfo {
-          @extend .flexCenter;
+          justify-content: center;
 
           .title {
             font-size: $size-smaller;

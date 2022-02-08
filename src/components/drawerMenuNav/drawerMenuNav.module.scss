@@ -13,17 +13,15 @@
   }
 
   .menuNavMobile {
-    @extend .flexColumn;
-    @extend .flexAlignCenter;
+    @include flex-column;
+    align-items: center;
     height: 100%;
     flex: 1;
 
     .menuHeader {
       margin: 15px 0;
       position: relative;
-      @extend .flexRow;
-      @extend .flexAlignCenter;
-      @extend .flexCenter;
+      @include flex-row-full-center;
       color: $color-bright-1;
       width: 100%;
       height: 40px;
@@ -43,16 +41,14 @@
     }
 
     .navMenuMobileContainer {
-      @extend .flexColumn;
-      @extend .flexCenter;
-      @extend .flexAlignCenter;
+      @include flex-column-full-center;
       margin-bottom: 70px;
 
      flex: 1;
     }
 
     .menuMobileLink {
-      @extend .flexRow;
+      @include flex-row;
       text-transform: uppercase;
       padding: 15px 40px;
       width: 50px;
