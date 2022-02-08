@@ -18,6 +18,7 @@ import {Checkbox} from "pretty-checkbox-react";
 import {ACTIONS_USERS} from "../../actions/usersActions";
 import {isValidUrl} from "../../utils";
 import decode from "entity-decode/browser"
+import ReactHtmlParser from 'react-html-parser'
 
 class ActiveMediaBox extends React.Component {
     constructor(props) {
@@ -237,7 +238,7 @@ class ActiveMediaBox extends React.Component {
                                     return <div style={{minHeight: 10}}
                                                 key={key}><p>{this.renderDescriptionLine(line)}</p></div>;
                                 }) : <div className={styles.descriptionContent}
-                                          dangerouslySetInnerHTML={{__html: media.description}}/>}
+                                >{ReactHtmlParser(media.description)}</div>}
                                 <button onClick={() => this.setState({
                                     showFullDesc: false
                                 })}
@@ -252,8 +253,8 @@ class ActiveMediaBox extends React.Component {
                                 {isVideo ? <div>{media.description.split("\n").map((line, key) => {
                                     return <div style={{minHeight: 10}}
                                                 key={key}><p>{this.renderDescriptionLine(line)}</p></div>
-                                })}</div> : <div className={styles.descriptionContent}
-                                                 dangerouslySetInnerHTML={{__html: media.description}}/>}
+                                })}</div> :<div className={styles.descriptionContent}
+                                >{ReactHtmlParser(media.description)}</div>}
                             </Truncate>
                         }
                     </div>
